@@ -25,7 +25,15 @@ button,select,input{font:inherit}
 .pixel-title{font-size:clamp(28px,5vw,66px);text-align:center;line-height:1.05;letter-spacing:2px;text-shadow:0 4px 0 #000,0 0 20px rgba(210,175,99,.35);margin:0 0 8px;color:#f7e8b8}
 .subtitle{color:#b3bed0;margin-bottom:22px;text-align:center}
 .panel{background:linear-gradient(#151d2b,#0f1521);border:2px solid var(--border);box-shadow:var(--shadow);border-radius:10px;padding:14px}
-.menu{display:grid;gap:10px;width:min(520px,92vw)}
+.menu{display:grid;gap:10px;width:min(920px,96vw)}
+#homeScreen.active{display:flex;align-items:center;justify-content:center;padding:10px 12px;overflow:hidden}
+#homeScreen .screen-shell{width:min(980px,100%);height:100%;display:grid;grid-template-rows:auto auto 1fr;align-items:start;justify-items:center;padding-top:4px}
+#homeScreen .pixel-title{font-size:clamp(24px,4.4vw,58px);margin-bottom:4px}
+#homeScreen .subtitle{margin-bottom:10px;font-size:clamp(13px,1.9vw,18px)}
+#homeScreen .panel{width:min(980px,96vw);max-height:100%;overflow:hidden;padding:12px}
+#homeScreen .menu{grid-template-columns:repeat(2,minmax(220px,1fr));align-content:start}
+#homeScreen .menu .btn.primary,#homeScreen .menu .btn.small.danger{grid-column:1/-1}
+#homeScreen .btn{min-height:44px;padding:10px 12px}
 .btn{border:2px solid #4c5970;background:#1a2435;color:var(--ink);padding:12px 14px;border-radius:8px;box-shadow:0 4px 0 #080b10;cursor:pointer;text-align:center;min-height:48px}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #080b10}
 .btn.primary{border-color:#9a7b3c;background:#302616;color:#ffe7a5}
@@ -51,7 +59,7 @@ button,select,input{font:inherit}
 .hud-top{display:grid;grid-template-columns:1fr 1fr;gap:14px}.fighter-panel{background:rgba(5,8,14,.78);border:2px solid #344158;border-radius:8px;padding:8px;backdrop-filter:blur(4px)}
 .fighter-panel.enemy{text-align:right}.fighter-name{font-weight:800;font-size:13px}.bar{height:13px;border:2px solid #263047;background:#080b10;border-radius:8px;overflow:hidden;margin-top:5px}.bar span{display:block;height:100%;transition:width .15s linear}.hp span{background:linear-gradient(90deg,#b73d49,#e77a68)}.focus span{background:linear-gradient(90deg,#3f6c9b,#82b8ec)}
 .status-line{height:18px;font-size:10px;color:#f2d991;margin-top:4px}.hud-center{display:flex;justify-content:center;align-items:flex-start;height:24px}.battle-message{font-size:13px;background:rgba(7,10,16,.82);border:1px solid #42516b;border-radius:6px;padding:5px 8px;opacity:0;transition:opacity .15s}.battle-message.show{opacity:1}
-.hud-bottom{pointer-events:auto;display:grid;grid-template-columns:110px 1fr 110px;gap:10px;align-items:end}.defense-stack{display:grid;gap:7px}.spell-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.battle-btn{position:relative;min-height:62px;background:rgba(17,24,39,.94);color:#f5edd9;border:2px solid #394761;border-radius:8px;padding:7px 6px;box-shadow:0 4px 0 rgba(0,0,0,.65);overflow:hidden}.battle-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.65)}.battle-btn:disabled{opacity:.45}.battle-btn .bname{font-size:11px;font-weight:800}.battle-btn .bmeta{font-size:9px;color:#9ba9bd;margin-top:4px}.cooldown-mask{position:absolute;left:0;right:0;bottom:0;background:rgba(3,6,10,.64);height:0%;pointer-events:none}.battle-btn.ready{border-color:#b5934f}
+.hud-bottom{pointer-events:auto;display:grid;grid-template-columns:1fr 118px;gap:10px;align-items:end}.defense-stack{display:grid;gap:7px}.spell-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.battle-btn{position:relative;min-height:62px;background:rgba(17,24,39,.94);color:#f5edd9;border:2px solid #394761;border-radius:8px;padding:7px 6px;box-shadow:0 4px 0 rgba(0,0,0,.65);overflow:hidden}.battle-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.65)}.battle-btn:disabled{opacity:.45}.battle-btn .bname{font-size:11px;font-weight:800}.battle-btn .bmeta{font-size:9px;color:#9ba9bd;margin-top:4px}.cooldown-mask{position:absolute;left:0;right:0;bottom:0;background:rgba(3,6,10,.64);height:0%;pointer-events:none}.battle-btn.ready{border-color:#b5934f}
 .mode-badge{position:absolute;top:68px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:1px;color:#b7c7da;background:rgba(4,8,13,.7);padding:4px 8px;border:1px solid #39475e;border-radius:999px}
 .rotate{position:absolute;inset:0;background:#070a10;z-index:50;display:none;align-items:center;justify-content:center;text-align:center;padding:24px}.rotate strong{display:block;color:#f2d991;font-size:22px;margin-bottom:10px}
 .modal{position:absolute;inset:0;background:rgba(0,0,0,.72);display:none;z-index:30;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.modal-card{width:min(620px,95vw);max-height:88vh;overflow:auto;background:#111827;border:2px solid #43516a;border-radius:12px;box-shadow:0 10px 0 #020305;padding:16px}.modal-card h2{margin-top:0;color:#f4d88d}.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}.stat{background:#0b111b;border:1px solid #2d394f;padding:9px;border-radius:7px}.stat b{display:block;color:#f0d691;font-size:16px}
@@ -61,8 +69,8 @@ button,select,input{font:inherit}
 .notice{font-size:11px;color:#94a4ba;line-height:1.4}.campaign-stage{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-bottom:1px solid #263047}.campaign-stage:last-child{border-bottom:none}.stars{color:#d6b965;letter-spacing:1px}
 .home-scene{position:absolute;inset:0;overflow:hidden;pointer-events:none}.castle{position:absolute;left:8%;right:8%;bottom:0;height:42%;background:linear-gradient(#101929,#090f19);clip-path:polygon(0 100%,0 75%,7% 75%,7% 58%,12% 58%,12% 32%,16% 32%,16% 68%,22% 68%,22% 45%,29% 45%,29% 18%,32% 18%,32% 45%,38% 45%,38% 63%,45% 63%,45% 36%,49% 36%,49% 10%,52% 10%,52% 37%,58% 37%,58% 65%,64% 65%,64% 48%,71% 48%,71% 27%,74% 27%,74% 49%,82% 49%,82% 64%,88% 64%,88% 44%,92% 44%,92% 72%,100% 72%,100% 100%)}
 .moon{position:absolute;width:92px;height:92px;border-radius:50%;background:#e7e0bd;box-shadow:0 0 50px rgba(231,224,189,.3);right:12%;top:10%}.fog{position:absolute;left:-10%;right:-10%;bottom:34%;height:90px;background:linear-gradient(transparent,rgba(115,133,158,.09),transparent);animation:fog 16s linear infinite}@keyframes fog{from{transform:translateX(-4%)}to{transform:translateX(4%)}}
-@media (orientation:portrait){#battleScreen.active~.rotate,.rotate{display:flex}#app>.screen:not(#battleScreen){padding:14px}.spell-grid{grid-template-columns:1fr}.hud-bottom{grid-template-columns:80px 1fr 80px}.battle-btn{min-height:54px}.battle-btn .bname{font-size:9px}}
-@media (max-height:520px){.hud-top{gap:8px}.fighter-panel{padding:5px}.bar{height:10px}.hud-bottom{grid-template-columns:92px 1fr 92px}.battle-btn{min-height:52px;padding:5px}.battle-btn .bname{font-size:10px}.battle-btn .bmeta{display:none}.mode-badge{top:52px}}
+@media (orientation:portrait){#battleScreen.active~.rotate,.rotate{display:flex}#app>.screen:not(#battleScreen){padding:14px}.spell-grid{grid-template-columns:1fr}.hud-bottom{grid-template-columns:1fr 82px}.battle-btn{min-height:54px}.battle-btn .bname{font-size:9px}}
+@media (max-height:520px){.hud-top{gap:8px}.fighter-panel{padding:5px}.bar{height:10px}.hud-bottom{grid-template-columns:1fr 92px}.battle-btn{min-height:52px;padding:5px}.battle-btn .bname{font-size:10px}.battle-btn .bmeta{display:none}.mode-badge{top:52px}}
 .skill-card{text-align:center}.skill-level{font-size:34px;color:#f0d17d;margin:10px}.collector-card{min-height:150px;text-align:center;display:flex;flex-direction:column;justify-content:center}.collector-card.locked{filter:grayscale(1);opacity:.38}@media(max-width:760px){#skillsGrid{grid-template-columns:1fr!important}}
 
 </style>
@@ -71,16 +79,14 @@ button,select,input{font:inherit}
 <div id="app">
   <section id="homeScreen" class="screen active center">
     <div class="home-scene"><div class="moon"></div><div class="fog"></div><div class="castle"></div></div>
-    <div style="position:relative;z-index:2;width:100%;display:flex;align-items:center;justify-content:center;flex-direction:column">
+    <div class="screen-shell" style="position:relative;z-index:2">
       <h1 class="pixel-title">ГАРРИ ПОТТЕР<br><span style="font-size:.55em">ПИКСЕЛЬНЫЕ ДУЭЛИ</span></h1>
-      <div class="subtitle">Фанатская пиксельная дуэльная игра · iPhone</div>
+      <div class="subtitle">Фанатская мобильная дуэльная игра по кино-вселенной</div>
       <div class="menu panel">
-        <button id="continueBtn" class="btn primary">Продолжить</button>
+        <button id="continueBtn" class="btn primary">Продолжить историю</button>
         <button id="campaignBtn" class="btn">Кампания</button>
-        <button id="duelBtn" class="btn">Свободная дуэль</button>
         <button id="spellBtn" class="btn">Книга заклинаний</button>
         <button id="skillsBtn" class="btn">Развитие Гарри</button>
-        <button id="endlessBtn" class="btn">Бесконечная дуэль</button>
         <button id="collectionBtn" class="btn">Коллекция</button>
         <button id="achieveBtn" class="btn">Достижения</button>
         <button id="settingsBtn" class="btn">Настройки</button>
@@ -91,7 +97,7 @@ button,select,input{font:inherit}
 
   <section id="campaignScreen" class="screen">
     <div style="width:100%">
-      <div class="topbar"><button class="btn small backHome">← Меню</button><h2>Кампания</h2><button id="unlockDemoBtn" class="btn small">Открыть демо-контент</button></div>
+      <div class="topbar"><button class="btn small backHome">← Меню</button><h2>Кампания</h2><span class="notice">Последовательное прохождение</span></div>
       <div id="campaignYears" class="grid years"></div>
     </div>
   </section>
@@ -99,7 +105,7 @@ button,select,input{font:inherit}
   <section id="spellScreen" class="screen">
     <div style="width:100%">
       <div class="topbar"><button class="btn small backHome">← Меню</button><h2>Книга заклинаний</h2><div class="notice">В бою: <span id="loadoutText"></span></div></div>
-      <div class="panel" style="margin-bottom:12px"><b>Набор на дуэль</b><div class="notice">Выберите до четырёх боевых заклинаний. Протего и уклонение всегда доступны отдельно. Когда выбирается пятое заклинание, самое старое автоматически убирается.</div></div>
+      <div class="panel" style="margin-bottom:12px"><b>Набор на дуэль</b><div class="notice">Выберите до четырёх боевых заклинаний. Протего доступно отдельно и расходует концентрацию. Новые заклинания открываются постепенно по сюжету.</div></div>
       <div id="spellGrid" class="spell-grid"></div>
     </div>
   </section>
@@ -152,7 +158,7 @@ button,select,input{font:inherit}
       <div class="settings-row"><span>Сложность</span><select id="settingDifficulty"><option value="student">Ученик</option><option value="wizard">Волшебник</option><option value="auror">Мракоборец</option></select></div>
       <div class="settings-row"><span>Звуковые эффекты</span><input id="settingSound" type="checkbox"/></div>
       <div class="settings-row"><span>8-битная фоновая музыка</span><input id="settingMusic" type="checkbox"/></div>
-      <div class="settings-row"><span>Открыть Тёмные искусства для свободной дуэли</span><input id="secretToggle" type="checkbox"/></div>
+      
       <div id="saveInfo" class="notice" style="padding:14px 0"></div>
       <button id="resetBtn" class="btn danger" style="width:100%">Удалить локальный прогресс</button>
     </div>
@@ -170,7 +176,6 @@ button,select,input{font:inherit}
       </div>
       <div class="hud-center"><div id="battleMessage" class="battle-message"></div></div>
       <div class="hud-bottom">
-        <div class="defense-stack"><button id="dodgeBtn" class="battle-btn"><div class="bname">УКЛОНЕНИЕ</div><div class="bmeta">тайминг</div></button></div>
         <div id="spellButtons" class="spell-buttons"></div>
         <div class="defense-stack"><button id="protegoBtn" class="battle-btn"><div class="bname">ПРОТЕГО</div><div class="bmeta">8 конц.</div></button><button id="battleExit" class="battle-btn"><div class="bname">ВЫХОД</div></button></div>
       </div>
@@ -206,7 +211,7 @@ const now = ()=>performance.now();
 const rnd = (a,b)=>a+Math.random()*(b-a);
 const pick = a=>a[Math.floor(Math.random()*a.length)];
 
-const GAME_VERSION='1.0.0-fan';
+const GAME_VERSION='1.1.0-fan';
 const SAVE_KEY='hp_pixel_duels_ru_v1';
 
 const STATUS_RU={
@@ -345,35 +350,51 @@ const DEFAULT_SAVE={
   selectedEnemy:'draco'
 };
 let save=loadSave();
+function hasFinalStoryClear(){return !!save.ranks['7-9']}
+function normalizeSave(){
+  const forbidden=['crucio','imperio','avada'];
+  save.secretSpells=hasFinalStoryClear();
+  if(!save.secretSpells){
+    save.unlockedSpells=save.unlockedSpells.filter(id=>!forbidden.includes(id));
+    save.loadout=save.loadout.filter(id=>!forbidden.includes(id));
+  }
+  while(save.loadout.length<4){
+    const add=SPELLS.find(s=>s.combat&&save.unlockedSpells.includes(s.id)&&!save.loadout.includes(s.id));
+    if(!add)break;
+    save.loadout.push(add.id);
+  }
+}
+normalizeSave();
 function loadSave(){try{const v=JSON.parse(localStorage.getItem(SAVE_KEY)); return deepMerge(structuredClone(DEFAULT_SAVE),v||{});}catch(e){return structuredClone(DEFAULT_SAVE)}}
 function deepMerge(a,b){for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==='object')deepMerge(a[k],b[k]);else a[k]=b[k]}return a}
 function persist(){localStorage.setItem(SAVE_KEY,JSON.stringify(save))}
 function resetSave(){save=structuredClone(DEFAULT_SAVE);persist();renderAll();showScreen('homeScreen')}
 
-const screens=['homeScreen','campaignScreen','spellScreen','duelScreen','skillsScreen','endlessScreen','collectionScreen','achieveScreen','settingsScreen','battleScreen'];
-function showScreen(id){screens.forEach(x=>$('#'+x)?.classList.toggle('active',x===id)); if(id==='campaignScreen')renderCampaign(); if(id==='spellScreen')renderSpells(); if(id==='duelScreen')renderDuelMenu(); if(id==='skillsScreen')renderSkills(); if(id==='endlessScreen')renderEndless(); if(id==='collectionScreen')renderCollection(); if(id==='achieveScreen')renderAchievements(); if(id==='settingsScreen')renderSettings();}
+const screens=['homeScreen','campaignScreen','spellScreen','skillsScreen','collectionScreen','achieveScreen','settingsScreen','battleScreen'];
+function showScreen(id){screens.forEach(x=>$('#'+x)?.classList.toggle('active',x===id)); if(id==='campaignScreen')renderCampaign(); if(id==='spellScreen')renderSpells(); if(id==='skillsScreen')renderSkills(); if(id==='collectionScreen')renderCollection(); if(id==='achieveScreen')renderAchievements(); if(id==='settingsScreen')renderSettings();}
 
 function rankStars(r){return r==='S'?'★★★★':r==='A'?'★★★':r==='B'?'★★':'★'}
 function stageKey(y,i){return `${y}-${i}`}
 
 function renderCampaign(){
  const root=$('#campaignYears'); root.innerHTML='';
- CAMPAIGN.forEach(y=>{
-   const locked=y.year>save.unlockedYear;
-   const done=y.stages.filter((_,i)=>save.ranks[stageKey(y.year,i)]).length;
-   const card=document.createElement('div'); card.className='card'+(locked?' locked':'');
-   card.innerHTML=`<h3>${y.year}-й год — ${y.title}</h3><p>${done} из ${y.stages.length} испытаний пройдено</p><div class="progress"><span style="width:${done/y.stages.length*100}%"></span></div><div class="stageList"></div>`;
-   const list=$('.stageList',card);
-   y.stages.forEach((st,i)=>{
-     const unlocked=!locked && i < (save.unlockedStages[y.year]||1);
-     const rank=save.ranks[stageKey(y.year,i)]||'';
-     const row=document.createElement('div'); row.className='campaign-stage';
-     row.innerHTML=`<div><b>${i+1}. ${st[1]}</b><div class="notice">${ENEMIES[st[0]].arena}</div></div><div>${rank?`<span class="stars">${rankStars(rank)}</span>`:''} <button class="btn small" ${unlocked?'':'disabled'}>${unlocked?'В бой':'Закрыто'}</button></div>`;
-     $('button',row).onclick=()=>{save.selectedEnemy=st[0];persist();openPreBattle(st[0],{campaign:{year:y.year,index:i}})};
-     list.appendChild(row);
-   });
-   root.appendChild(card);
+ const current=CAMPAIGN[Math.max(0,Math.min(CAMPAIGN.length-1,(save.unlockedYear||1)-1))];
+ const done=current.stages.filter((_,i)=>save.ranks[stageKey(current.year,i)]).length;
+ const card=document.createElement('div'); card.className='card';
+ card.innerHTML=`<h3>${current.year}-й год — ${current.title}</h3><p>${done} из ${current.stages.length} испытаний пройдено</p><div class="progress"><span style="width:${done/current.stages.length*100}%"></span></div><div class="notice" style="margin:10px 0 6px">Сюжет открывается поэтапно: неизвестные испытания скрыты до победы в предыдущих.</div><div class="stageList"></div>`;
+ const list=$('.stageList',card);
+ current.stages.forEach((st,i)=>{
+   const unlocked=i < (save.unlockedStages[current.year]||1);
+   const cleared=!!save.ranks[stageKey(current.year,i)];
+   const rank=save.ranks[stageKey(current.year,i)]||'';
+   const row=document.createElement('div'); row.className='campaign-stage';
+   const stageName=unlocked?`${i+1}. ${st[1]}`:`${i+1}. Неизвестное испытание`;
+   const stagePlace=unlocked?ENEMIES[st[0]].arena:'Откроется после следующей победы';
+   row.innerHTML=`<div><b>${stageName}</b><div class="notice">${stagePlace}</div></div><div>${cleared?`<span class="stars">${rankStars(rank)}</span>`:''} <button class="btn small" ${unlocked?'':'disabled'}>${cleared?'Повтор':'В бой'}</button></div>`;
+   $('button',row).onclick=()=>{save.selectedEnemy=st[0];persist();openPreBattle(st[0],{campaign:{year:current.year,index:i}})};
+   list.appendChild(row);
  });
+ root.appendChild(card);
 }
 
 function isSpellUnlocked(s){return save.unlockedSpells.includes(s.id) || (s.secret&&save.secretSpells)}
@@ -381,14 +402,26 @@ function spellLevel(id){return save.spellLevel[id]||1}
 function effectiveSpell(s){const lv=spellLevel(s.id), bonus=1+(lv-1)*.08;return {...s,damage:s.damage>0?Math.round(s.damage*bonus):s.damage<0?Math.round(s.damage*(1+(lv-1)*.1)):0,dur:Math.round(s.dur*(1+(lv-1)*.08)),cd:Math.max(500,Math.round(s.cd*(1-(lv-1)*.04)))} }
 function renderSpells(){
  const root=$('#spellGrid');root.innerHTML='';
- SPELLS.forEach(s=>{
-   const unlocked=isSpellUnlocked(s), equipped=save.loadout.includes(s.id),lv=spellLevel(s.id),master=save.spellMastery[s.id]||0;
-   const d=document.createElement('div');d.className='spell-card'+(equipped?' equipped':'')+(unlocked?'':' locked');
-   d.innerHTML=`<div class="spell-name">${s.name}</div><div class="spell-type">${s.type}${s.dark?' · Тёмное':''}</div><div class="spell-desc">${s.desc}</div><div><span class="tag">Уровень ${lv}/5</span>${s.combat?`<span class="tag">${s.focus} конц.</span>`:'<span class="tag">сюжетное</span>'}</div><div class="spell-meta"><span>Мастерство ${master}%</span><span>${unlocked?'Открыто':`Год ${s.unlock}`}</span></div><div style="display:flex;gap:6px;margin-top:9px"><button class="btn small equip" ${(!unlocked||!s.combat)?'disabled':''}>${equipped?'Убрать':'Выбрать'}</button><button class="btn small upgrade" ${(lv>=5||master<100)?'disabled':''}>Улучшить</button></div>`;
+ const visible=SPELLS.filter(s=>isSpellUnlocked(s));
+ visible.forEach(s=>{
+   const equipped=save.loadout.includes(s.id),lv=spellLevel(s.id),master=save.spellMastery[s.id]||0;
+   const d=document.createElement('div');d.className='spell-card'+(equipped?' equipped':'');
+   d.innerHTML=`<div class="spell-name">${s.name}</div><div class="spell-type">${s.type}${s.dark?' · Тёмное':''}</div><div class="spell-desc">${s.desc}</div><div><span class="tag">Уровень ${lv}/5</span>${s.combat?`<span class="tag">${s.focus} конц.</span>`:'<span class="tag">сюжетное</span>'}</div><div class="spell-meta"><span>Мастерство ${master}%</span><span>Открыто</span></div><div style="display:flex;gap:6px;margin-top:9px"><button class="btn small equip" ${(!s.combat)?'disabled':''}>${equipped?'Убрать':'Выбрать'}</button><button class="btn small upgrade" ${(lv>=5||master<100)?'disabled':''}>Улучшить</button></div>`;
    $('.equip',d).onclick=()=>toggleEquip(s.id);
    $('.upgrade',d).onclick=()=>{if(master>=100&&lv<5){save.spellLevel[s.id]=lv+1;save.spellMastery[s.id]=0;persist();renderSpells();}};
    root.appendChild(d);
  });
+ const hiddenCombat=SPELLS.filter(s=>s.combat&&!isSpellUnlocked(s)&&!s.secret).length;
+ if(hiddenCombat>0){
+   const teaser=document.createElement('div');teaser.className='spell-card locked';
+   teaser.innerHTML=`<div class="spell-name">Неизвестные заклинания</div><div class="spell-type">Прогрессия</div><div class="spell-desc">Новые боевые чары открываются постепенно по мере прохождения кампании. Осталось скрытых заклинаний: ${hiddenCombat}.</div><div><span class="tag">Сюжетное открытие</span></div>`;
+   root.appendChild(teaser);
+ }
+ if(!hasFinalStoryClear()){
+   const dark=document.createElement('div');dark.className='spell-card locked';
+   dark.innerHTML=`<div class="spell-name">Запретные заклинания</div><div class="spell-type">Тёмные искусства</div><div class="spell-desc">Непростительные заклинания заблокированы и открываются только после финала истории.</div><div><span class="tag">Финальная награда</span></div>`;
+   root.appendChild(dark);
+ }
  $('#loadoutText').textContent=save.loadout.map(id=>spellById(id)?.name).join(' · ');
 }
 function toggleEquip(id){
@@ -410,19 +443,19 @@ function renderAchievements(){
  const root=$('#achievementList');root.innerHTML='';data.forEach(([id,n,d,ico])=>{const el=document.createElement('div');el.className='achievement'+(save.achievements[id]?' done':'');el.innerHTML=`<div class="badge-icon">${ico}</div><div><b>${n}</b><div class="notice">${d}</div></div><div style="margin-left:auto">${save.achievements[id]?'✓':''}</div>`;root.appendChild(el)});
 }
 function renderSettings(){
- $('#settingMode').value=save.settings.mode;$('#settingDifficulty').value=save.settings.difficulty;$('#settingSound').checked=save.settings.sound;$('#settingMusic').checked=save.settings.music;$('#secretToggle').checked=save.secretSpells;
+ $('#settingMode').value=save.settings.mode;$('#settingDifficulty').value=save.settings.difficulty;$('#settingSound').checked=save.settings.sound;$('#settingMusic').checked=save.settings.music;
  $('#saveInfo').textContent=`Уровень Гарри: ${save.playerLevel} · Опыт: ${save.xp} · Победы: ${save.stats.wins} · Версия: ${GAME_VERSION}`;
 }
 const CARD_POOL=['Альбус Дамблдор','Минерва Макгонагалл','Сириус Блэк','Римус Люпин','Рубеус Хагрид','Северус Снегг','Гермиона Грейндж','Рон Уизли','Невилл Долгопупс','Фред и Джордж Уизли','Добби','Фоукс'];
 function renderSkills(){
-  const defs={dueling:['ДУЭЛИ','Быстрее восстанавливает концентрацию и сокращает перезарядку.'],defense:['ЗАЩИТА','Расширяет окно идеального Протего и уклонения, снижает входящий урон.'],knowledge:['МАГИЧЕСКИЕ ЗНАНИЯ','Усиливает длительность состояний и мастерство заклинаний.']};
+  const defs={dueling:['ДУЭЛИ','Быстрее восстанавливает концентрацию и сокращает перезарядку.'],defense:['ЗАЩИТА','Расширяет окно идеального Протего, усиливает щит и снижает входящий урон.'],knowledge:['МАГИЧЕСКИЕ ЗНАНИЯ','Усиливает длительность состояний и мастерство заклинаний.']};
   $('#skillPointsText').textContent=`Очки развития: ${save.skillPoints}`;const root=$('#skillsGrid');root.innerHTML='';
   for(const [id,[name,desc]] of Object.entries(defs)){const lv=save.skills[id]||0,d=document.createElement('div');d.className='card skill-card';d.innerHTML=`<h3>${name}</h3><div class="skill-level">${lv}/5</div><p>${desc}</p><button class="btn small" ${save.skillPoints<=0||lv>=5?'disabled':''}>Улучшить</button>`;$('button',d).onclick=()=>{if(save.skillPoints>0&&lv<5){save.skillPoints--;save.skills[id]=lv+1;persist();renderSkills()}};root.appendChild(d)}
 }
 function renderEndless(){$('#endlessMode').value=save.settings.mode;$('#endlessBest').textContent=`Лучший результат: ${save.endlessBest||0} побед подряд`;}
 function renderCollection(){const root=$('#collectionGrid');root.innerHTML='';CARD_POOL.forEach((name,i)=>{const own=save.cards.includes(name),d=document.createElement('div');d.className='card collector-card'+(own?'':' locked');d.innerHTML=`<div style="font-size:34px">${own?'✦':'?'}</div><h3>${own?name:'Неизвестная карточка'}</h3><p>${own?'Получена за победы над сильными противниками.':'Побеждайте боссов кампании.'}</p>`;root.appendChild(d)});}
 function awardCard(){const left=CARD_POOL.filter(c=>!save.cards.includes(c));if(!left.length)return null;const c=pick(left);save.cards.push(c);return c;}
-function renderAll(){renderCampaign();renderSpells();renderDuelMenu();renderSkills();renderEndless();renderCollection();renderAchievements();renderSettings();}
+function renderAll(){renderCampaign();renderSpells();renderSkills();renderCollection();renderAchievements();renderSettings();}
 
 function openPreBattle(enemyId,extra={}){
  const e=ENEMIES[enemyId]; if(!e)return;
@@ -468,7 +501,7 @@ class BattleEngine{
    $('#modeBadge').textContent=this.mode==='realtime'?'РЕАЛЬНОЕ ВРЕМЯ':'ПОШАГОВЫЙ БОЙ';
    $('#playerName').textContent='Гарри Поттер';$('#enemyName').textContent=this.enemy.name;
    const root=$('#spellButtons');root.innerHTML='';this.loadout.forEach((s,i)=>{const b=document.createElement('button');b.className='battle-btn ready';b.innerHTML=`<div class="bname">${s.name}</div><div class="bmeta">${s.focus} концентрации</div><div class="cooldown-mask"></div>`;b.onclick=()=>this.playerCast(s.id,b);root.appendChild(b)});
-   $('#dodgeBtn').onclick=()=>this.dodge();$('#protegoBtn').onclick=()=>this.protego();$('#battleExit').onclick=()=>this.abort();
+   $('#protegoBtn').onclick=()=>this.protego();$('#battleExit').onclick=()=>this.abort();
    this.updateHUD();
  }
  setupTurnMode(){
@@ -479,7 +512,7 @@ class BattleEngine{
    $('#playerHp').style.width=`${100*this.player.hp/this.player.maxHp}%`;$('#enemyHp').style.width=`${100*this.foe.hp/this.foe.maxHp}%`;$('#playerFocus').style.width=`${this.player.focus}%`;$('#enemyFocus').style.width=`${this.foe.focus}%`;
    $('#playerStatus').textContent=this.statusText(this.player);$('#enemyStatus').textContent=this.statusText(this.foe);
    const t=now();$$('#spellButtons .battle-btn').forEach((b,i)=>{const s=this.loadout[i],rem=Math.max(0,(this.cooldowns[s.id]||0)-t),pct=s.cd?rem/s.cd*100:0;$('.cooldown-mask',b).style.height=pct+'%';b.disabled=!this.canPlayerAct()||rem>0||this.player.focus<s.focus;b.classList.toggle('ready',!b.disabled)});
-   $('#dodgeBtn').disabled=!this.canPlayerAct()||this.mode==='turnbased'&&this.turn!=='player';$('#protegoBtn').disabled=!this.canPlayerAct()||this.player.focus<8||this.mode==='turnbased'&&this.turn!=='player';
+   $('#protegoBtn').disabled=!this.canPlayerAct()||this.player.focus<8||this.mode==='turnbased'&&this.turn!=='player';
  }
  statusText(c){const t=now();return Object.entries(c.statuses).filter(([_,until])=>until>t).map(([k])=>STATUS_RU[k]||k).join(' · ')}
  hasStatus(c,s){return (c.statuses[s]||0)>now()}
@@ -553,10 +586,8 @@ class BattleEngine{
    if(this.enemy.creature==='boggart'&&owner==='player'&&s.id==='riddikulus')dmg=Math.max(45,dmg*4);
    if(owner==='player'&&s.id==='vipera'&&this.foe.lastSpell==='serpensortia')dmg=28;
    if(owner==='player'&&s.id==='aguamenti'&&this.hasStatus(this.player,'burn')){delete this.player.statuses.burn;this.message('Агуаменти тушит огонь!',700)}
-   const dodging=forceDodge || to.dodgeUntil>t;
    const shielded=forceShield || to.shieldUntil>t;
-   if(dodging){const perfect=Math.abs((to.dodgeUntil-520)-t)<170+(save.skills.defense||0)*22;if(perfect){this.perfects++;this.message('ИДЕАЛЬНОЕ УКЛОНЕНИЕ',650);sfx('perfect');this.player.focus=clamp(this.player.focus+8,0,100)}else this.message('Уклонение!',400);return}
-   if(shielded){const perfect=Math.abs((to.shieldUntil-720)-t)<190+(save.skills.defense||0)*22;if(perfect&&owner==='enemy'){this.perfects++;this.message('ИДЕАЛЬНОЕ ПРОТЕГО',650);sfx('perfect');this.foe.hp=clamp(this.foe.hp-Math.max(4,Math.round(dmg*.55)),0,this.foe.maxHp);this.floatText(this.W*.73,this.H*.45,'ОТРАЖЕНО','#9ed7ff');this.checkEnd();return}else{this.message('ПРОТЕГО',420);sfx('shield');return}}
+   if(shielded){const perfect=Math.abs((to.shieldUntil-720)-t)<210+(save.skills.defense||0)*24;if(perfect&&owner==='enemy'){this.perfects++;this.message('ИДЕАЛЬНОЕ ПРОТЕГО',650);sfx('perfect');this.foe.hp=clamp(this.foe.hp-Math.max(4,Math.round(dmg*.55)),0,this.foe.maxHp);this.floatText(this.W*.73,this.H*.45,'ОТРАЖЕНО','#9ed7ff');this.checkEnd();return}else{this.message('ПРОТЕГО',420);sfx('shield');return}}
    if(to.barrierUntil>t)dmg=Math.round(dmg*.45);
    if(owner==='enemy')dmg=Math.round(dmg*this.diff.dmg*(1-(save.skills.defense||0)*.035));
    if(owner==='player'&&s.status)s={...s,dur:Math.round(s.dur*(1+(save.skills.knowledge||0)*.08))};
@@ -573,7 +604,7 @@ class BattleEngine{
  applyDots(dt){
    const t=now();for(const c of [this.player,this.foe]){for(const st of ['burn','bleed'])if(this.hasStatus(c,st)){c._dot=(c._dot||0)+dt;if(c._dot>900){c._dot=0;const dmg=st==='bleed'?3:2;c.hp=clamp(c.hp-dmg,0,c.maxHp);if(c===this.player)this.damageTaken+=dmg;else this.damageDone+=dmg;this.floatText(c===this.player?this.W*.27:this.W*.73,this.H*.4,'-'+dmg,st==='bleed'?'#c44962':'#ff8b47')}}}
    if(this.enemy.creature==='dementor'){this.specialTimer+=dt;if(this.specialTimer>1800){this.specialTimer=0;this.player.focus=clamp(this.player.focus-5,0,100)}}
-   if(this.enemy.creature==='basilisk'){this.specialTimer+=dt;if(this.specialTimer>6500){this.specialTimer=0;this.message('ВАСИЛИСК СМОТРИТ — УКЛОНИСЬ!',900);setTimeout(()=>{if(this.running&&this.player.dodgeUntil<now()){this.addStatus(this.player,'root',2600);this.player.hp=clamp(this.player.hp-18,0,100);this.damageTaken+=18;this.message('ОКАМЕНЕНИЕ!',900);this.checkEnd()}},900)}}
+   if(this.enemy.creature==='basilisk'){this.specialTimer+=dt;if(this.specialTimer>6500){this.specialTimer=0;this.message('ВАСИЛИСК СМОТРИТ — ПРИКРОЙСЯ ПРОТЕГО!',900);setTimeout(()=>{if(this.running&&this.player.shieldUntil<now()){this.addStatus(this.player,'root',2600);this.player.hp=clamp(this.player.hp-18,0,100);this.damageTaken+=18;this.message('ОКАМЕНЕНИЕ!',900);this.checkEnd()}},900)}}
  }
  startClash(ps,es){
    this.clash={value:.5,start:now(),playerSpell:ps,enemySpell:es,lastTap:now()};this.message('СТОЛКНОВЕНИЕ ЗАКЛИНАНИЙ!',900);$('#clashModal').classList.add('show');$('#clashTap').onclick=()=>{if(this.clash){this.clash.value=clamp(this.clash.value+.055,0,1);this.clash.lastTap=now();tone(760,.03)}};
@@ -613,7 +644,7 @@ class BattleEngine{
    c.fillStyle='rgba(255,255,255,.18)';c.font=`${10*this.scale}px monospace`;c.textAlign='center';c.fillText(name,W/2,H*.12);
  }
  drawFighter(c,x,y,left,who){
-   const s=this.scale,enemyId=who===this.foe?this.enemyId:'harry';const creature=who===this.foe?this.enemy.creature:null;const rooted=this.hasStatus(who,'root'),lev=this.hasStatus(who,'levitate');if(lev)y-=24*s;const flip=left?1:-1;const bob=Math.sin(performance.now()/260+(left?0:1.4))*1.2*s;
+   const s=this.scale*1.28,enemyId=who===this.foe?this.enemyId:'harry';const creature=who===this.foe?this.enemy.creature:null;const rooted=this.hasStatus(who,'root'),lev=this.hasStatus(who,'levitate');if(lev)y-=24*s;const flip=left?1:-1;const bob=Math.sin(performance.now()/260+(left?0:1.4))*1.2*s;
    c.fillStyle='rgba(0,0,0,.38)';c.fillRect(x-24*s,y+45*s,48*s,7*s);
    c.save();c.translate(x,y+bob);c.scale(flip,1);
    if(creature==='basilisk'||creature==='snake'){c.fillStyle=creature==='basilisk'?'#315e3d':'#477a49';for(let i=0;i<6;i++)c.fillRect((-38+i*12)*s,(12+Math.sin(i)*7)*s,20*s,10*s);c.fillRect(18*s,-8*s,34*s,22*s);c.fillStyle='#e6d15a';c.fillRect(40*s,-3*s,5*s,5*s);c.fillStyle='#d8e6d1';c.fillRect(50*s,6*s,16*s,3*s);c.restore();return}
@@ -622,15 +653,15 @@ class BattleEngine{
    if(creature==='dragon'){c.fillStyle='#58382f';c.fillRect(-26*s,-12*s,52*s,28*s);c.fillRect(14*s,-27*s,38*s,24*s);c.fillStyle='#7e5141';c.beginPath();c.moveTo(-18*s,-8*s);c.lineTo(-48*s,-38*s);c.lineTo(-36*s,2*s);c.fill();c.fillStyle='#e7c45a';c.fillRect(40*s,-20*s,5*s,5*s);c.restore();return}
    if(creature==='troll'||creature==='werewolf'){c.fillStyle=creature==='troll'?'#6d7666':'#53483e';c.fillRect(-18*s,-20*s,36*s,50*s);c.fillRect(-13*s,-39*s,26*s,22*s);c.fillStyle='#d2b390';c.fillRect(-7*s,-31*s,4*s,4*s);c.fillRect(5*s,-31*s,4*s,4*s);c.restore();return}
    const palette={harry:['#1d1b19','#561e27','#d3a078'],draco:['#d8d0b8','#1e2c25','#d8a77d'],draco6:['#d8d0b8','#222b27','#d8a77d'],snape:['#171516','#101014','#c99d7d'],bellatrix:['#171317','#24151f','#c99579'],bellatrix7:['#171317','#24151f','#c99579'],voldemort1:['#e2e0d7','#253328','#d8d5c9'],voldemort2:['#e2e0d7','#253328','#d8d5c9'],dumbledore:['#d9d7cf','#5e496b','#d0a27f'],mcgonagall:['#3b332c','#24412f','#cc9f79'],hermione:['#5d3929','#4c2630','#d5a17e'],ron:['#9b5d36','#4c2630','#d5a17e']};const pal=palette[enemyId]||['#3a2a20','#252f3a','#d3a078'];
-   c.fillStyle=pal[1];c.fillRect(-13*s,-13*s,26*s,43*s);c.fillStyle=enemyId==='harry'?'#5a2028':pal[1];c.fillRect(-16*s,15*s,32*s,23*s);c.fillStyle=pal[2];c.fillRect(-9*s,-35*s,18*s,18*s);c.fillStyle=pal[0];c.fillRect(-12*s,-41*s,24*s,9*s);
+   c.fillStyle=pal[1];c.fillRect(-15*s,-12*s,30*s,48*s);c.fillStyle=enemyId==='harry'?'#5a2028':pal[1];c.fillRect(-18*s,18*s,36*s,24*s);c.fillStyle=pal[2];c.fillRect(-10*s,-36*s,20*s,20*s);c.fillStyle=pal[0];c.fillRect(-13*s,-43*s,26*s,10*s);c.fillStyle='rgba(255,255,255,.08)';c.fillRect(-7*s,-10*s,4*s,22*s);c.fillRect(3*s,-10*s,4*s,22*s);
    if(enemyId==='harry'){c.fillStyle='#171717';c.fillRect(-8*s,-37*s,5*s,4*s);c.fillRect(3*s,-37*s,5*s,4*s);c.strokeStyle='#555';c.lineWidth=1*s;c.strokeRect?.(-9*s,-38*s,7*s,6*s);c.strokeRect?.(2*s,-38*s,7*s,6*s);c.fillStyle='#d9c3ad';c.fillRect(0,-34*s,2*s,4*s)}
    if(enemyId.includes('voldemort')){c.fillStyle='#1f2421';c.fillRect(-1*s,-31*s,3*s,2*s);c.fillStyle='#a24c42';c.fillRect(-1*s,-25*s,3*s,2*s)}
-   const cast=(who.castUntil||0)>now();c.fillStyle=pal[2];c.fillRect(10*s,(cast?-18:-10)*s,12*s,6*s);c.fillStyle='#6b4a30';c.fillRect(20*s,(cast?-22:-12)*s,28*s,3*s);
+   const cast=(who.castUntil||0)>now();c.fillStyle=pal[2];c.fillRect(12*s,(cast?-20:-10)*s,12*s,7*s);c.fillStyle='#6b4a30';c.fillRect(22*s,(cast?-24:-12)*s,30*s,3*s);
    if(rooted){c.fillStyle='#b8c8d8';c.globalAlpha=.48;c.fillRect(-19*s,-22*s,38*s,63*s);c.globalAlpha=1}
    if(who.shieldUntil>now()||who.barrierUntil>now()){c.strokeStyle='#83c5ff';c.lineWidth=3*s;c.globalAlpha=.7;c.beginPath();c.arc(4*s,-2*s,40*s,-Math.PI/2,Math.PI/2);c.stroke();c.globalAlpha=1}
    c.restore();
  }
- drawProjectile(c,p){const s=this.scale,dir=Math.sign(p.vx);c.globalAlpha=.25;c.fillStyle=p.spell.color;for(let i=1;i<=5;i++)c.fillRect(p.x-dir*i*8*s,p.y-rnd(2,5)*s,Math.max(2,(7-i))*s,4*s);c.beginPath();c.arc(p.x,p.y,p.r*2.5,0,Math.PI*2);c.fill();c.globalAlpha=1;c.fillStyle=p.spell.color;c.fillRect(p.x-p.r,p.y-p.r,p.r*2,p.r*2);c.fillStyle='#fff';c.fillRect(p.x-p.r*.3,p.y-p.r*.3,p.r*.6,p.r*.6)}
+ drawProjectile(c,p){const s=this.scale,dir=Math.sign(p.vx)||1,t=(now()-p.born)/1000,spell=p.spell;c.save();if(['expelliarmus','stupefy','rictusempra','impedimenta','confundus','levicorpus','petrificus'].includes(spell.id)){c.strokeStyle=spell.color;c.lineWidth=6*s;c.shadowColor=spell.color;c.shadowBlur=18*s;c.beginPath();c.moveTo(p.x-dir*26*s,p.y);c.lineTo(p.x+dir*10*s,p.y);c.stroke();c.fillStyle='#fff';c.fillRect(p.x-3*s,p.y-3*s,6*s,6*s)}else if(['incendio','confringo','bombarda','bombarda_maxima','reducto'].includes(spell.id)){c.fillStyle='rgba(255,160,80,.25)';c.beginPath();c.arc(p.x,p.y,16*s,0,Math.PI*2);c.fill();[['#ffd36b',0],['#ff9b43',3*s],['#ff5d35',6*s]].forEach(([col,off])=>{c.fillStyle=col;c.beginPath();c.arc(p.x-off*0.12,p.y,10*s-off,0,Math.PI*2);c.fill()});for(let i=0;i<6;i++){c.fillStyle=i%2?'#ffcf73':'#ff6a36';c.fillRect(p.x-dir*(10+i*5)*s,p.y+Math.sin(t*15+i)*6*s,4*s,4*s)}}else if(spell.id==='aguamenti'){c.strokeStyle='#7fd1ff';c.lineWidth=8*s;c.lineCap='round';c.beginPath();c.moveTo(p.x-dir*28*s,p.y+Math.sin(t*12)*4*s);c.quadraticCurveTo(p.x-dir*10*s,p.y-8*s,p.x+dir*4*s,p.y);c.stroke();c.fillStyle='#c8eeff';for(let i=0;i<4;i++)c.fillRect(p.x-dir*(i*8+2)*s,p.y+Math.sin(t*10+i)*5*s,3*s,3*s)}else if(spell.id==='serpensortia'){c.fillStyle='#6ea45a';for(let i=0;i<6;i++){const bx=p.x-dir*(i*8)*s,by=p.y+Math.sin(t*9+i*.7)*5*s;c.fillRect(bx,by,9*s,6*s)}c.fillStyle='#88c56a';c.fillRect(p.x+dir*6*s,p.y-4*s,12*s,10*s);c.fillStyle='#e7d85c';c.fillRect(p.x+dir*12*s,p.y-1*s,2*s,2*s)}else if(spell.id==='patronus'){c.globalAlpha=.92;c.strokeStyle='#dffdff';c.lineWidth=5*s;c.shadowColor='#d6f2ff';c.shadowBlur=24*s;c.beginPath();c.moveTo(p.x-dir*20*s,p.y+6*s);c.lineTo(p.x-dir*6*s,p.y-8*s);c.lineTo(p.x+dir*8*s,p.y-6*s);c.lineTo(p.x+dir*20*s,p.y+3*s);c.stroke();c.beginPath();c.moveTo(p.x,p.y-7*s);c.lineTo(p.x,p.y-20*s);c.moveTo(p.x-4*s,p.y-18*s);c.lineTo(p.x-10*s,p.y-28*s);c.moveTo(p.x+4*s,p.y-18*s);c.lineTo(p.x+10*s,p.y-28*s);c.stroke()}else if(['oppugno','wingardium','piertotum'].includes(spell.id)){for(let i=0;i<4;i++){const ox=p.x-dir*(i*7)*s,oy=p.y+Math.sin(t*9+i)*7*s;c.fillStyle=i%2?'#cbb98b':'#a7a7a7';c.fillRect(ox,oy,6*s,6*s)}}else if(spell.id==='aranea'){c.strokeStyle='#e1e7be';c.lineWidth=3*s;for(let i=0;i<4;i++){c.beginPath();c.moveTo(p.x-dir*(i*8)*s,p.y-6*s);c.lineTo(p.x-dir*(i*8+4)*s,p.y+6*s);c.stroke()}c.fillStyle='#fff3c8';c.fillRect(p.x-4*s,p.y-4*s,8*s,8*s)}else if(spell.id==='vipera'){c.strokeStyle='#c4ffd2';c.lineWidth=4*s;c.beginPath();c.moveTo(p.x-dir*18*s,p.y+8*s);c.lineTo(p.x,p.y);c.lineTo(p.x+dir*14*s,p.y-9*s);c.stroke()}else{c.globalAlpha=.25;c.fillStyle=spell.color;for(let i=1;i<=5;i++)c.fillRect(p.x-dir*i*8*s,p.y-rnd(2,5)*s,Math.max(2,(7-i))*s,4*s);c.beginPath();c.arc(p.x,p.y,p.r*2.5,0,Math.PI*2);c.fill();c.globalAlpha=1;c.fillStyle=spell.color;c.fillRect(p.x-p.r,p.y-p.r,p.r*2,p.r*2);c.fillStyle='#fff';c.fillRect(p.x-p.r*.3,p.y-p.r*.3,p.r*.6,p.r*.6)}c.restore()}
  checkEnd(){if(this.player.hp<=0)this.end(false);else if(this.foe.hp<=0)this.end(true)}
  end(win){
    if(!this.running)return;this.running=false;window.removeEventListener('resize',this._resize);$('#clashModal').classList.remove('show');$('#timingModal').classList.remove('show');
@@ -646,8 +677,20 @@ class BattleEngine{
    persist();this.showResults(win,rank,elapsed);
  }
  unlockAfterWin(){
-   if(this.extra.campaign){const {year,index}=this.extra.campaign;save.unlockedStages[year]=Math.max(save.unlockedStages[year]||1,index+2);if(index>=CAMPAIGN[year-1].stages.length-1&&year<7)save.unlockedYear=Math.max(save.unlockedYear,year+1)}
-   const unlockable=SPELLS.filter(s=>s.unlock<=save.unlockedYear&&s.combat&&!s.secret&&!save.unlockedSpells.includes(s.id));if(unlockable.length){const s=unlockable[0];save.unlockedSpells.push(s.id);this._newSpell=s.name}
+   if(this.extra.campaign){
+     const {year,index}=this.extra.campaign;
+     save.unlockedStages[year]=Math.max(save.unlockedStages[year]||1,index+2);
+     const isYearCleared=index>=CAMPAIGN[year-1].stages.length-1;
+     if(isYearCleared&&year<7)save.unlockedYear=Math.max(save.unlockedYear,year+1);
+     if(year===7&&index>=CAMPAIGN[6].stages.length-1){
+       save.secretSpells=true;
+       ['crucio','imperio','avada'].forEach(id=>{if(!save.unlockedSpells.includes(id))save.unlockedSpells.push(id)});
+       this._newSpell='Непростительные заклинания';
+       return;
+     }
+   }
+   const unlockable=SPELLS.filter(s=>s.combat&&!s.secret&&s.unlock<=save.unlockedYear&&!save.unlockedSpells.includes(s.id));
+   if(unlockable.length){const s=unlockable[0];save.unlockedSpells.push(s.id);this._newSpell=s.name}
  }
  calcRank(win,elapsed){if(!win)return 'C';let score=100;score-=this.damageTaken*.55;score+=this.perfects*4+this.bestCombo*3;score-=Math.max(0,elapsed-70)*.12;if(score>=105)return'S';if(score>=82)return'A';if(score>=58)return'B';return'C'}
  showResults(win,rank,elapsed){
@@ -661,15 +704,25 @@ function startBattle(enemyId,extra={}){const mode=extra.mode||save.settings.mode
 
 // UI wiring
 function initUI(){
- $('#continueBtn').onclick=()=>showScreen('campaignScreen');$('#newGameBtn').onclick=()=>{if(confirm('Начать новую игру и удалить текущий локальный прогресс?'))resetSave()};$('#campaignBtn').onclick=()=>showScreen('campaignScreen');$('#spellBtn').onclick=()=>showScreen('spellScreen');$('#skillsBtn').onclick=()=>showScreen('skillsScreen');$('#endlessBtn').onclick=()=>showScreen('endlessScreen');$('#collectionBtn').onclick=()=>showScreen('collectionScreen');$('#duelBtn').onclick=()=>showScreen('duelScreen');$('#achieveBtn').onclick=()=>showScreen('achieveScreen');$('#settingsBtn').onclick=()=>showScreen('settingsScreen');
+ $('#continueBtn').onclick=()=>showScreen('campaignScreen');
+ $('#newGameBtn').onclick=()=>{if(confirm('Начать новую игру и удалить текущий локальный прогресс?'))resetSave()};
+ $('#campaignBtn').onclick=()=>showScreen('campaignScreen');
+ $('#spellBtn').onclick=()=>showScreen('spellScreen');
+ $('#skillsBtn').onclick=()=>showScreen('skillsScreen');
+ $('#collectionBtn').onclick=()=>showScreen('collectionScreen');
+ $('#achieveBtn').onclick=()=>showScreen('achieveScreen');
+ $('#settingsBtn').onclick=()=>showScreen('settingsScreen');
  $$('.backHome').forEach(b=>b.onclick=()=>showScreen('homeScreen'));
- $('#duelStart').onclick=()=>{save.selectedEnemy=$('#enemySelect').value;save.settings.mode=$('#duelModeSelect').value;persist();openPreBattle(save.selectedEnemy,{mode:save.settings.mode})};
- $('#endlessStart').onclick=()=>{save.settings.mode=$('#endlessMode').value;persist();startEndless(save.settings.mode)};
- $('#preBattleCancel').onclick=()=>$('#preBattleModal').classList.remove('show');$('#preBattleStart').onclick=()=>{const m=$('#preBattleModal'),id=m.dataset.enemy,extra=m._extra||{};m.classList.remove('show');startBattle(id,extra)};
- $('#resultContinue').onclick=()=>{$('#resultModal').classList.remove('show');if(battle?.extra?.endless&&battle.player.hp>0&&battle.foe.hp<=0){startNextEndless(battle)}else showScreen(battle?.extra?.campaign?'campaignScreen':battle?.extra?.endless?'endlessScreen':'duelScreen')};$('#resultRetry').onclick=()=>{const id=battle.enemyId,ex=battle.extra;$('#resultModal').classList.remove('show');startBattle(id,ex)};
+ $('#preBattleCancel').onclick=()=>$('#preBattleModal').classList.remove('show');
+ $('#preBattleStart').onclick=()=>{const m=$('#preBattleModal'),id=m.dataset.enemy,extra=m._extra||{};m.classList.remove('show');startBattle(id,extra)};
+ $('#resultContinue').onclick=()=>{$('#resultModal').classList.remove('show');showScreen(battle?.extra?.campaign?'campaignScreen':'homeScreen')};
+ $('#resultRetry').onclick=()=>{const id=battle.enemyId,ex=battle.extra;$('#resultModal').classList.remove('show');startBattle(id,ex)};
  $('#timingStop').onclick=()=>battle?.confirmTiming();
- $('#settingMode').onchange=e=>{save.settings.mode=e.target.value;persist()};$('#settingDifficulty').onchange=e=>{save.settings.difficulty=e.target.value;persist()};$('#settingSound').onchange=e=>{save.settings.sound=e.target.checked;persist()};$('#settingMusic').onchange=e=>{save.settings.music=e.target.checked;persist();save.settings.music?startMusic():stopMusic()};$('#secretToggle').onchange=e=>{save.secretSpells=e.target.checked;persist();renderSpells()};$('#resetBtn').onclick=()=>{if(confirm('Точно удалить весь локальный прогресс?'))resetSave()};
- $('#unlockDemoBtn').onclick=()=>{save.unlockedYear=7;for(let y=1;y<=7;y++)save.unlockedStages[y]=99;SPELLS.filter(s=>!s.secret).forEach(s=>{if(!save.unlockedSpells.includes(s.id))save.unlockedSpells.push(s.id)});persist();renderAll();alert('Для демонстрации открыты все годы и обычные заклинания.')};
+ $('#settingMode').onchange=e=>{save.settings.mode=e.target.value;persist()};
+ $('#settingDifficulty').onchange=e=>{save.settings.difficulty=e.target.value;persist()};
+ $('#settingSound').onchange=e=>{save.settings.sound=e.target.checked;persist()};
+ $('#settingMusic').onchange=e=>{save.settings.music=e.target.checked;persist();save.settings.music?startMusic():stopMusic()};
+ $('#resetBtn').onclick=()=>{if(confirm('Точно удалить весь локальный прогресс?'))resetSave()};
  document.addEventListener('visibilitychange',()=>{if(document.hidden&&battle?.running&&battle.mode==='realtime')battle.message('ПАУЗА',1000)});
 }
 
