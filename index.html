@@ -325,6 +325,82 @@ html,body,#app{width:100%;height:100%;overflow:hidden}
 @media (orientation:landscape) and (max-height:500px){#homeScreen .pixel-title{font-size:clamp(26px,4.2vw,48px)}#homeScreen .subtitle{font-size:11px;margin-bottom:2px}#homeSummary{width:min(1100px,96vw)}.home-dashboard{grid-template-columns:1.2fr .85fr;gap:8px;margin:0 0 4px}.summary-hero{padding:10px;gap:8px}.summary-kicker{font-size:10px}.summary-title{font-size:clamp(18px,2.4vw,28px)}.summary-copy{display:none}.summary-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.summary-mini{padding:8px}.summary-mini b{font-size:18px}.summary-mini small{font-size:10px}.summary-side{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.summary-side .summary-pill{padding:8px}.summary-side .summary-pill:last-child{display:none}.summary-side .summary-pill b{font-size:16px}.summary-side .summary-pill small{font-size:10px}.summary-actions{gap:6px}.summary-actions .tag{padding:4px 8px;font-size:10px}#homeScreen .panel.menu{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(34px,1fr);gap:6px;padding:8px;align-self:end}#homeScreen .panel.menu .btn{min-height:34px;font-size:12px;padding:5px 8px}#homeScreen .panel.menu .btn.primary{grid-column:1/-1}}
 </style>
 
+
+<style id="v901-iphone-landscape-fix">
+@media (orientation:landscape) and (max-height:500px){
+  :root{--safe-top:max(6px,env(safe-area-inset-top));--safe-right:max(10px,env(safe-area-inset-right));--safe-bottom:max(28px,env(safe-area-inset-bottom));--safe-left:max(10px,env(safe-area-inset-left))}
+  .screen{padding:var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left)}
+
+  /* HOME — everything must fit on one iPhone landscape screen */
+  #homeScreen.active{align-items:stretch;justify-content:center;padding:var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left)}
+  #homeScreen .screen-shell{width:min(1100px,100%);height:100%;min-height:0;display:grid;grid-template-rows:auto auto 104px minmax(0,1fr);gap:3px;align-items:start;justify-items:center;padding:0}
+  #homeScreen .pixel-title{font-size:clamp(25px,4vw,38px);line-height:.92;margin:0;letter-spacing:1.5px}
+  #homeScreen .subtitle{font-size:9px;line-height:1.1;margin:0 0 2px}
+  #homeSummary{width:min(1100px,96vw);height:104px;min-height:0;margin:0}
+  .home-dashboard{width:100%;height:100%;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(220px,.75fr);gap:7px;margin:0}
+  .summary-hero{min-height:0;padding:8px 10px;gap:5px;border-radius:14px}
+  .summary-kicker{font-size:8px;line-height:1;letter-spacing:.09em}
+  .summary-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+  .summary-title{font-size:clamp(17px,2.7vw,24px);line-height:1}
+  .summary-copy{display:none}
+  .summary-actions{gap:4px;justify-content:flex-end}
+  .summary-actions .tag{padding:3px 6px;font-size:8px;margin:0}
+  .summary-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+  .summary-mini{min-height:0;padding:5px 7px;border-radius:10px}
+  .summary-mini span{font-size:7px;line-height:1;letter-spacing:.06em}
+  .summary-mini b{font-size:14px;line-height:1;margin:3px 0 0}
+  .summary-mini small{display:none}
+  .summary-side{display:grid;grid-template-columns:1fr 1fr;gap:7px;min-height:0}
+  .summary-side .summary-pill{min-height:0;padding:8px 9px;border-radius:12px;justify-content:center}
+  .summary-side .summary-pill:nth-child(3){display:none}
+  .summary-side .summary-pill span{font-size:8px;line-height:1.1;letter-spacing:.07em}
+  .summary-side .summary-pill b{font-size:14px;line-height:1.05;margin-top:4px}
+  .summary-side .summary-pill small{font-size:8px;line-height:1.15;margin-top:3px}
+  #homeScreen .panel.menu{align-self:stretch;justify-self:center;width:min(1100px,96vw);height:100%;min-height:0;max-height:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:38px 1fr 1fr;gap:5px;padding:7px;border-radius:14px;overflow:hidden}
+  #homeScreen .panel.menu .btn{min-height:0;height:100%;padding:5px 7px;font-size:11px;border-width:1px;border-radius:10px;box-shadow:0 2px 0 #080b10}
+  #homeScreen .panel.menu .btn.primary{grid-column:1/-1}
+
+  /* CAMPAIGN — landscape layout must NOT collapse to one vertical column at 844px */
+  #campaignScreen .full-layout{height:100%;min-height:0;gap:4px}
+  #campaignScreen .topbar{min-height:38px;height:38px;margin-bottom:4px;padding:2px 0 5px}
+  #campaignScreen .topbar h2{font-size:17px}
+  #campaignScreen .topbar .btn{min-height:32px;padding:5px 8px;font-size:11px}
+  #campaignScreen .topbar .notice{font-size:9px}
+  #campaignShell{display:block;width:100%;height:calc(100% - 46px);min-height:0}
+  .campaign-v9{width:100%!important;height:100%!important;display:grid!important;grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr)!important;grid-template-rows:minmax(0,1fr) 68px!important;grid-template-areas:"mission art" "rail rail"!important;gap:7px!important;min-height:0!important}
+  .campaign-year-card{display:none!important}
+  .campaign-mission-card{grid-area:mission!important;min-height:0;padding:9px 10px;gap:5px;border-radius:14px;overflow:hidden}
+  .campaign-mission-card .year-kicker{font-size:8px;line-height:1;letter-spacing:.10em}
+  .campaign-mission-title{font-size:clamp(17px,2.6vw,23px);line-height:1;margin:0}
+  .campaign-mission-opponent{font-size:11px;line-height:1.1}
+  .mission-badges{gap:4px;margin:0}
+  .mission-badge{padding:3px 6px;font-size:8px}
+  .mission-row-list{gap:4px;margin:0;min-height:0}
+  .mission-row:nth-child(1),.mission-row:nth-child(2){display:none}
+  .mission-row{grid-template-columns:28px minmax(0,1fr);gap:6px;padding:5px 7px;border-radius:10px}
+  .mission-icon{width:28px;height:28px;border-radius:9px;font-size:14px}
+  .mission-copy span{font-size:7px;letter-spacing:.08em}
+  .mission-copy b{font-size:10px;line-height:1.1;margin-top:1px}
+  .mission-copy small{display:none}
+  .campaign-mission-card .btn{min-height:32px;height:32px;margin-top:auto;padding:4px 8px;font-size:11px;border-radius:10px}
+  .campaign-art-card{grid-area:art!important;min-height:0;padding:7px;grid-template-rows:minmax(0,1fr) 17px;gap:4px;border-radius:14px;overflow:hidden}
+  .campaign-art-wrap{min-height:0!important;height:100%;border-radius:10px}
+  .campaign-art-card canvas{min-height:0!important;width:100%;height:100%;border-radius:10px}
+  .campaign-art-caption{font-size:8px;line-height:1;padding:0 2px;white-space:nowrap;overflow:hidden}
+  .campaign-art-caption b{font-size:9px;overflow:hidden;text-overflow:ellipsis}
+  .campaign-art-caption span:first-child{display:none}
+  .campaign-rail{grid-area:rail!important;min-height:0;padding:6px 7px;border-radius:12px;overflow:hidden}
+  .stage-rail-title{margin:0 0 4px;font-size:8px}
+  .stage-rail-title span{font-size:8px;letter-spacing:.08em}.stage-rail-title b{font-size:9px}
+  .stage-rail{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:4px!important}
+  .stage-node{min-height:38px!important;height:38px;padding:3px 4px;border-radius:9px;display:grid;grid-template-columns:18px minmax(0,1fr);align-items:center;gap:4px;text-align:left}
+  .stage-node:before{display:none}
+  .stage-node i{width:18px;height:18px;font-size:9px;margin:0}
+  .stage-node strong{font-size:8px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stage-node small{display:none}
+}
+</style>
+
 </head>
 <body>
 <div id="app">
@@ -460,7 +536,7 @@ const rnd = (a,b)=>a+Math.random()*(b-a);
 const pick = a=>a[Math.floor(Math.random()*a.length)];
 const weightedPick=(arr,weightFn)=>{let total=0,weights=arr.map(x=>{const w=Math.max(.01,weightFn(x));total+=w;return w});let r=Math.random()*total;for(let i=0;i<arr.length;i++){r-=weights[i];if(r<=0)return arr[i]}return arr[arr.length-1]};
 
-const GAME_VERSION='9.0.0-fan';
+const GAME_VERSION='9.0.1-fan';
 const SAVE_KEY='hp_pixel_duels_ru_v3';
 
 const STATUS_RU={
