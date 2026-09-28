@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<meta name="theme-color" content="#090d14"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Пиксельные дуэли"/>
+<title>Гарри Поттер: Пиксельные дуэли</title>
+<style>
+:root{
+  --bg:#090d14; --panel:#111826; --panel2:#182133; --ink:#f4edd7; --muted:#a7b0c3;
+  --gold:#d2af63; --danger:#df6b6b; --good:#80c99b; --mana:#6ea7d8; --accent:#8e78c8;
+  --border:#344056; --shadow:0 8px 0 #05070b;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070a;color:var(--ink);font-family:"SFMono-Regular",ui-monospace,Menlo,Monaco,Consolas,monospace}
+body{touch-action:manipulation}
+button,select,input{font:inherit}
+#app{width:100%;height:100%;position:relative;background:radial-gradient(circle at 50% 30%,#192238 0,#090d14 50%,#05070a 100%)}
+.screen{position:absolute;inset:0;display:none;overflow:auto;padding:18px}
+.screen.active{display:flex}
+.center{align-items:center;justify-content:center;flex-direction:column}
+.pixel-title{font-size:clamp(28px,5vw,66px);text-align:center;line-height:1.05;letter-spacing:2px;text-shadow:0 4px 0 #000,0 0 20px rgba(210,175,99,.35);margin:0 0 8px;color:#f7e8b8}
+.subtitle{color:#b3bed0;margin-bottom:22px;text-align:center}
+.panel{background:linear-gradient(#151d2b,#0f1521);border:2px solid var(--border);box-shadow:var(--shadow);border-radius:10px;padding:14px}
+.menu{display:grid;gap:10px;width:min(520px,92vw)}
+.btn{border:2px solid #4c5970;background:#1a2435;color:var(--ink);padding:12px 14px;border-radius:8px;box-shadow:0 4px 0 #080b10;cursor:pointer;text-align:center;min-height:48px}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #080b10}
+.btn.primary{border-color:#9a7b3c;background:#302616;color:#ffe7a5}
+.btn.danger{border-color:#7b3f46;background:#35181e}
+.btn.good{border-color:#3f7256;background:#173123}
+.btn.small{min-height:36px;padding:8px 10px;font-size:13px}
+.topbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(7,10,16,.92);backdrop-filter:blur(8px);padding:8px 0 12px;border-bottom:1px solid #263047;margin-bottom:12px}
+.topbar h2{margin:0;font-size:18px}
+.grid{display:grid;gap:12px}
+.grid.years{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{background:linear-gradient(160deg,#182235,#101724);border:2px solid #303d56;border-radius:10px;padding:14px;box-shadow:0 5px 0 #05070a}
+.card.locked{opacity:.45;filter:grayscale(.6)}
+.card h3{margin:0 0 6px;color:#f1d793;font-size:16px}.card p{margin:5px 0;color:#b2bdd0;font-size:13px;line-height:1.35}
+.progress{height:10px;border:2px solid #273247;background:#080c12;border-radius:8px;overflow:hidden}.progress>span{display:block;height:100%;background:linear-gradient(90deg,#8d6f33,#e0bd68);width:0}
+.spell-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.spell-card{position:relative;min-height:148px;background:#111827;border:2px solid #2e3b53;border-radius:10px;padding:12px;box-shadow:0 4px 0 #05070a}
+.spell-card.equipped{border-color:#d2af63;box-shadow:0 4px 0 #05070a,0 0 0 2px rgba(210,175,99,.18) inset}.spell-card.locked{opacity:.5;filter:grayscale(.8)}
+.spell-name{font-weight:800;color:#f2d991;margin-bottom:4px}.spell-type{font-size:11px;color:#8fb1dd;text-transform:uppercase}.spell-desc{font-size:12px;color:#b7c1d1;line-height:1.35;margin:8px 0}.spell-meta{display:flex;justify-content:space-between;color:#8997ad;font-size:11px}
+.tag{display:inline-block;border:1px solid #44536d;border-radius:999px;padding:2px 7px;font-size:10px;color:#b8c6db;margin-right:4px;margin-top:4px}
+#battleScreen{padding:0;overflow:hidden;background:#05070a}
+#battleCanvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;background:#101522}
+#battleHUD{position:absolute;inset:0;pointer-events:none;padding:12px;display:flex;flex-direction:column;justify-content:space-between}
+.hud-top{display:grid;grid-template-columns:1fr 1fr;gap:14px}.fighter-panel{background:rgba(5,8,14,.78);border:2px solid #344158;border-radius:8px;padding:8px;backdrop-filter:blur(4px)}
+.fighter-panel.enemy{text-align:right}.fighter-name{font-weight:800;font-size:13px}.bar{height:13px;border:2px solid #263047;background:#080b10;border-radius:8px;overflow:hidden;margin-top:5px}.bar span{display:block;height:100%;transition:width .15s linear}.hp span{background:linear-gradient(90deg,#b73d49,#e77a68)}.focus span{background:linear-gradient(90deg,#3f6c9b,#82b8ec)}
+.status-line{height:18px;font-size:10px;color:#f2d991;margin-top:4px}.hud-center{display:flex;justify-content:center;align-items:flex-start;height:24px}.battle-message{font-size:13px;background:rgba(7,10,16,.82);border:1px solid #42516b;border-radius:6px;padding:5px 8px;opacity:0;transition:opacity .15s}.battle-message.show{opacity:1}
+.hud-bottom{pointer-events:auto;display:grid;grid-template-columns:110px 1fr 110px;gap:10px;align-items:end}.defense-stack{display:grid;gap:7px}.spell-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.battle-btn{position:relative;min-height:62px;background:rgba(17,24,39,.94);color:#f5edd9;border:2px solid #394761;border-radius:8px;padding:7px 6px;box-shadow:0 4px 0 rgba(0,0,0,.65);overflow:hidden}.battle-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.65)}.battle-btn:disabled{opacity:.45}.battle-btn .bname{font-size:11px;font-weight:800}.battle-btn .bmeta{font-size:9px;color:#9ba9bd;margin-top:4px}.cooldown-mask{position:absolute;left:0;right:0;bottom:0;background:rgba(3,6,10,.64);height:0%;pointer-events:none}.battle-btn.ready{border-color:#b5934f}
+.mode-badge{position:absolute;top:68px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:1px;color:#b7c7da;background:rgba(4,8,13,.7);padding:4px 8px;border:1px solid #39475e;border-radius:999px}
+.rotate{position:absolute;inset:0;background:#070a10;z-index:50;display:none;align-items:center;justify-content:center;text-align:center;padding:24px}.rotate strong{display:block;color:#f2d991;font-size:22px;margin-bottom:10px}
+.modal{position:absolute;inset:0;background:rgba(0,0,0,.72);display:none;z-index:30;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.modal-card{width:min(620px,95vw);max-height:88vh;overflow:auto;background:#111827;border:2px solid #43516a;border-radius:12px;box-shadow:0 10px 0 #020305;padding:16px}.modal-card h2{margin-top:0;color:#f4d88d}.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}.stat{background:#0b111b;border:1px solid #2d394f;padding:9px;border-radius:7px}.stat b{display:block;color:#f0d691;font-size:16px}
+.rank{font-size:72px;color:#f0cd6d;text-align:center;text-shadow:0 5px 0 #583f12}.settings-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #263047}.settings-row select{background:#101827;color:#f4edd7;border:1px solid #42506a;border-radius:6px;padding:8px}
+.achievement{display:flex;gap:10px;align-items:center;background:#101827;border:1px solid #2f3b52;border-radius:8px;padding:10px}.achievement.done{border-color:#786338}.badge-icon{width:36px;height:36px;border-radius:6px;background:#252f42;display:grid;place-items:center;color:#f2d17c;font-size:20px}
+.timing{height:22px;border:2px solid #3d4a60;border-radius:10px;background:#0a0f17;position:relative;overflow:hidden;margin:12px 0}.timing .perfect-zone{position:absolute;left:43%;width:14%;top:0;bottom:0;background:rgba(110,201,150,.28)}.timing .cursor{position:absolute;top:0;bottom:0;width:4px;background:#f5dfa4;left:0}.turn-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.notice{font-size:11px;color:#94a4ba;line-height:1.4}.campaign-stage{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-bottom:1px solid #263047}.campaign-stage:last-child{border-bottom:none}.stars{color:#d6b965;letter-spacing:1px}
+.home-scene{position:absolute;inset:0;overflow:hidden;pointer-events:none}.castle{position:absolute;left:8%;right:8%;bottom:0;height:42%;background:linear-gradient(#101929,#090f19);clip-path:polygon(0 100%,0 75%,7% 75%,7% 58%,12% 58%,12% 32%,16% 32%,16% 68%,22% 68%,22% 45%,29% 45%,29% 18%,32% 18%,32% 45%,38% 45%,38% 63%,45% 63%,45% 36%,49% 36%,49% 10%,52% 10%,52% 37%,58% 37%,58% 65%,64% 65%,64% 48%,71% 48%,71% 27%,74% 27%,74% 49%,82% 49%,82% 64%,88% 64%,88% 44%,92% 44%,92% 72%,100% 72%,100% 100%)}
+.moon{position:absolute;width:92px;height:92px;border-radius:50%;background:#e7e0bd;box-shadow:0 0 50px rgba(231,224,189,.3);right:12%;top:10%}.fog{position:absolute;left:-10%;right:-10%;bottom:34%;height:90px;background:linear-gradient(transparent,rgba(115,133,158,.09),transparent);animation:fog 16s linear infinite}@keyframes fog{from{transform:translateX(-4%)}to{transform:translateX(4%)}}
+@media (orientation:portrait){#battleScreen.active~.rotate,.rotate{display:flex}#app>.screen:not(#battleScreen){padding:14px}.spell-grid{grid-template-columns:1fr}.hud-bottom{grid-template-columns:80px 1fr 80px}.battle-btn{min-height:54px}.battle-btn .bname{font-size:9px}}
+@media (max-height:520px){.hud-top{gap:8px}.fighter-panel{padding:5px}.bar{height:10px}.hud-bottom{grid-template-columns:92px 1fr 92px}.battle-btn{min-height:52px;padding:5px}.battle-btn .bname{font-size:10px}.battle-btn .bmeta{display:none}.mode-badge{top:52px}}
+.skill-card{text-align:center}.skill-level{font-size:34px;color:#f0d17d;margin:10px}.collector-card{min-height:150px;text-align:center;display:flex;flex-direction:column;justify-content:center}.collector-card.locked{filter:grayscale(1);opacity:.38}@media(max-width:760px){#skillsGrid{grid-template-columns:1fr!important}}
+
+</style>
+</head>
+<body>
+<div id="app">
+  <section id="homeScreen" class="screen active center">
+    <div class="home-scene"><div class="moon"></div><div class="fog"></div><div class="castle"></div></div>
+    <div style="position:relative;z-index:2;width:100%;display:flex;align-items:center;justify-content:center;flex-direction:column">
+      <h1 class="pixel-title">ГАРРИ ПОТТЕР<br><span style="font-size:.55em">ПИКСЕЛЬНЫЕ ДУЭЛИ</span></h1>
+      <div class="subtitle">Фанатская пиксельная дуэльная игра · iPhone</div>
+      <div class="menu panel">
+        <button id="continueBtn" class="btn primary">Продолжить</button>
+        <button id="campaignBtn" class="btn">Кампания</button>
+        <button id="duelBtn" class="btn">Свободная дуэль</button>
+        <button id="spellBtn" class="btn">Книга заклинаний</button>
+        <button id="skillsBtn" class="btn">Развитие Гарри</button>
+        <button id="endlessBtn" class="btn">Бесконечная дуэль</button>
+        <button id="collectionBtn" class="btn">Коллекция</button>
+        <button id="achieveBtn" class="btn">Достижения</button>
+        <button id="settingsBtn" class="btn">Настройки</button>
+        <button id="newGameBtn" class="btn small danger">Новая игра</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="campaignScreen" class="screen">
+    <div style="width:100%">
+      <div class="topbar"><button class="btn small backHome">← Меню</button><h2>Кампания</h2><button id="unlockDemoBtn" class="btn small">Открыть демо-контент</button></div>
+      <div id="campaignYears" class="grid years"></div>
+    </div>
+  </section>
+
+  <section id="spellScreen" class="screen">
+    <div style="width:100%">
+      <div class="topbar"><button class="btn small backHome">← Меню</button><h2>Книга заклинаний</h2><div class="notice">В бою: <span id="loadoutText"></span></div></div>
+      <div class="panel" style="margin-bottom:12px"><b>Набор на дуэль</b><div class="notice">Выберите до четырёх боевых заклинаний. Протего и уклонение всегда доступны отдельно. Когда выбирается пятое заклинание, самое старое автоматически убирается.</div></div>
+      <div id="spellGrid" class="spell-grid"></div>
+    </div>
+  </section>
+
+  <section id="duelScreen" class="screen center">
+    <div class="panel" style="width:min(620px,96vw)">
+      <div class="topbar" style="position:static"><button class="btn small backHome">← Меню</button><h2>Свободная дуэль</h2><span></span></div>
+      <div class="settings-row"><span>Противник</span><select id="enemySelect"></select></div>
+      <div class="settings-row"><span>Режим боя</span><select id="duelModeSelect"><option value="realtime">Реальное время</option><option value="turnbased">Пошаговый</option></select></div>
+      <button id="duelStart" class="btn primary" style="width:100%;margin-top:14px">Начать дуэль</button>
+      <p class="notice">Свободная дуэль не блокируется сюжетом. Это режим для демонстрации и тренировки всех противников.</p>
+    </div>
+  </section>
+
+  <section id="skillsScreen" class="screen center">
+    <div class="panel" style="width:min(760px,96vw)">
+      <div class="topbar" style="position:static"><button class="btn small backHome">← Меню</button><h2>Развитие Гарри</h2><span id="skillPointsText"></span></div>
+      <div id="skillsGrid" class="grid" style="grid-template-columns:repeat(3,1fr)"></div>
+    </div>
+  </section>
+
+  <section id="endlessScreen" class="screen center">
+    <div class="panel" style="width:min(620px,96vw)">
+      <div class="topbar" style="position:static"><button class="btn small backHome">← Меню</button><h2>Бесконечная дуэль</h2><span></span></div>
+      <p>Противники идут один за другим. После победы восстанавливается только часть здоровья. Чем дальше — тем опаснее соперник.</p>
+      <div class="settings-row"><span>Режим боя</span><select id="endlessMode"><option value="realtime">Реальное время</option><option value="turnbased">Пошаговый</option></select></div>
+      <div id="endlessBest" class="notice" style="padding:12px 0"></div>
+      <button id="endlessStart" class="btn primary" style="width:100%">Начать серию</button>
+    </div>
+  </section>
+
+  <section id="collectionScreen" class="screen">
+    <div style="width:100%">
+      <div class="topbar"><button class="btn small backHome">← Меню</button><h2>Коллекция волшебных карточек</h2><span></span></div>
+      <div id="collectionGrid" class="grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))"></div>
+    </div>
+  </section>
+
+  <section id="achieveScreen" class="screen">
+    <div style="width:100%">
+      <div class="topbar"><button class="btn small backHome">← Меню</button><h2>Достижения</h2><span></span></div>
+      <div id="achievementList" class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))"></div>
+    </div>
+  </section>
+
+  <section id="settingsScreen" class="screen center">
+    <div class="panel" style="width:min(640px,96vw)">
+      <div class="topbar" style="position:static"><button class="btn small backHome">← Меню</button><h2>Настройки</h2><span></span></div>
+      <div class="settings-row"><span>Режим кампании по умолчанию</span><select id="settingMode"><option value="realtime">Реальное время</option><option value="turnbased">Пошаговый</option></select></div>
+      <div class="settings-row"><span>Сложность</span><select id="settingDifficulty"><option value="student">Ученик</option><option value="wizard">Волшебник</option><option value="auror">Мракоборец</option></select></div>
+      <div class="settings-row"><span>Звуковые эффекты</span><input id="settingSound" type="checkbox"/></div>
+      <div class="settings-row"><span>8-битная фоновая музыка</span><input id="settingMusic" type="checkbox"/></div>
+      <div class="settings-row"><span>Открыть Тёмные искусства для свободной дуэли</span><input id="secretToggle" type="checkbox"/></div>
+      <div id="saveInfo" class="notice" style="padding:14px 0"></div>
+      <button id="resetBtn" class="btn danger" style="width:100%">Удалить локальный прогресс</button>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="screen">
+    <canvas id="battleCanvas"></canvas>
+    <div id="battleHUD">
+      <div>
+        <div class="hud-top">
+          <div class="fighter-panel"><div id="playerName" class="fighter-name">Гарри Поттер</div><div class="bar hp"><span id="playerHp"></span></div><div class="bar focus"><span id="playerFocus"></span></div><div id="playerStatus" class="status-line"></div></div>
+          <div class="fighter-panel enemy"><div id="enemyName" class="fighter-name">Противник</div><div class="bar hp"><span id="enemyHp"></span></div><div class="bar focus"><span id="enemyFocus"></span></div><div id="enemyStatus" class="status-line"></div></div>
+        </div>
+        <div id="modeBadge" class="mode-badge">РЕАЛЬНОЕ ВРЕМЯ</div>
+      </div>
+      <div class="hud-center"><div id="battleMessage" class="battle-message"></div></div>
+      <div class="hud-bottom">
+        <div class="defense-stack"><button id="dodgeBtn" class="battle-btn"><div class="bname">УКЛОНЕНИЕ</div><div class="bmeta">тайминг</div></button></div>
+        <div id="spellButtons" class="spell-buttons"></div>
+        <div class="defense-stack"><button id="protegoBtn" class="battle-btn"><div class="bname">ПРОТЕГО</div><div class="bmeta">8 конц.</div></button><button id="battleExit" class="battle-btn"><div class="bname">ВЫХОД</div></button></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rotate"><div><strong>Поверните iPhone</strong>Игра рассчитана на горизонтальную ориентацию.</div></div>
+
+  <div id="preBattleModal" class="modal">
+    <div class="modal-card"><h2 id="preBattleTitle">Противник</h2><div id="preBattleDesc" class="notice" style="font-size:13px"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px"><button id="preBattleCancel" class="btn">Назад</button><button id="preBattleStart" class="btn primary">В бой</button></div></div>
+  </div>
+
+  <div id="resultModal" class="modal">
+    <div class="modal-card"><h2 id="resultTitle">ДУЭЛЬ ЗАВЕРШЕНА</h2><div id="resultRank" class="rank">A</div><div id="resultStats" class="result-grid"></div><div id="resultNew" style="color:#f2d991;text-align:center;min-height:24px"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button id="resultRetry" class="btn">Повторить</button><button id="resultContinue" class="btn primary">Продолжить</button></div></div>
+  </div>
+
+  <div id="timingModal" class="modal">
+    <div class="modal-card" style="max-width:520px"><h2 id="timingName">Заклинание</h2><div class="notice">Остановите указатель как можно ближе к зелёной зоне.</div><div class="timing"><div class="perfect-zone"></div><div id="timingCursor" class="cursor"></div></div><button id="timingStop" class="btn primary" style="width:100%">КАСТОВАТЬ</button></div>
+  </div>
+
+  <div id="clashModal" class="modal" style="background:rgba(0,0,0,.25)">
+    <div class="modal-card" style="max-width:540px;text-align:center"><h2>СТОЛКНОВЕНИЕ ЗАКЛИНАНИЙ</h2><div class="notice">Нажимайте быстро, чтобы продавить луч противника.</div><div class="progress" style="height:24px;margin:14px 0"><span id="clashFill" style="width:50%"></span></div><button id="clashTap" class="btn primary" style="width:100%;min-height:70px">ДАВИ!</button></div>
+  </div>
+</div>
+<script>
+(() => {
+'use strict';
+
+const $ = (q, root=document) => root.querySelector(q);
+const $$ = (q, root=document) => [...root.querySelectorAll(q)];
+const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+const now = ()=>performance.now();
+const rnd = (a,b)=>a+Math.random()*(b-a);
+const pick = a=>a[Math.floor(Math.random()*a.length)];
+
+const GAME_VERSION='1.0.0-fan';
+const SAVE_KEY='hp_pixel_duels_ru_v1';
+
+const STATUS_RU={
+  stun:'Оглушение', disarm:'Без палочки', root:'Обездвижен', slow:'Замедление', levitate:'В воздухе',
+  confuse:'Спутанность', burn:'Горение', silence:'Потеря концентрации', shield:'Защита', bleed:'Ранение', fear:'Страх'
+};
+
+const SPELLS=[
+  {id:'expelliarmus',name:'Экспеллиармус',type:'Контроль',desc:'Обезоруживает противника и прерывает подготовку заклинания.',damage:7,focus:14,cd:3000,speed:760,status:'disarm',dur:2300,color:'#e65a55',unlock:1,combat:true},
+  {id:'stupefy',name:'Остолбеней',type:'Атака',desc:'Красный оглушающий импульс. Надёжное боевое заклинание.',damage:14,focus:18,cd:4800,speed:700,status:'stun',dur:1100,color:'#f04c4c',unlock:1,combat:true},
+  {id:'protego',name:'Протего',type:'Защита',desc:'Создаёт щит, способный блокировать и при идеальном тайминге отражать атаку.',damage:0,focus:8,cd:1000,speed:0,status:'shield',dur:700,color:'#79b9ff',unlock:1,combat:false},
+  {id:'protego_maxima',name:'Протего Максима',type:'Защита',desc:'Усиленный щит. Дольше держится и лучше выдерживает тяжёлые атаки.',damage:0,focus:34,cd:12000,speed:0,status:'shield',dur:1900,color:'#a8d8ff',unlock:5,combat:true},
+  {id:'petrificus',name:'Петрификус Тоталус',type:'Контроль',desc:'На короткое время полностью обездвиживает цель.',damage:5,focus:28,cd:10000,speed:610,status:'root',dur:2200,color:'#cdd8e8',unlock:1,combat:true},
+  {id:'rictusempra',name:'Риктусемпра',type:'Контроль',desc:'Сбивает противника с ритма и хорошо прерывает атаку.',damage:9,focus:15,cd:3600,speed:760,status:'confuse',dur:1200,color:'#f3d36a',unlock:2,combat:true},
+  {id:'reducto',name:'Редукто',type:'Атака',desc:'Мощное разрушающее заклинание с сильным отбрасыванием.',damage:23,focus:34,cd:9000,speed:590,status:null,dur:0,color:'#f7a15b',unlock:5,combat:true,heavy:true},
+  {id:'bombarda',name:'Бомбарда',type:'Атака',desc:'Взрывной заряд. Наносит высокий урон и сбивает защиту.',damage:20,focus:31,cd:8200,speed:560,status:'stun',dur:500,color:'#ff9a52',unlock:4,combat:true,heavy:true},
+  {id:'bombarda_maxima',name:'Бомбарда Максима',type:'Атака',desc:'Очень мощный взрыв. Дорогое и медленное, но разрушительное заклинание.',damage:34,focus:52,cd:15000,speed:500,status:'stun',dur:900,color:'#ff7b3e',unlock:6,combat:true,heavy:true},
+  {id:'confringo',name:'Конфринго',type:'Атака',desc:'Взрывающее заклинание, оставляющее цель под эффектом горения.',damage:21,focus:35,cd:9000,speed:590,status:'burn',dur:3200,color:'#ff6847',unlock:7,combat:true,heavy:true},
+  {id:'incendio',name:'Инсендио',type:'Стихия',desc:'Поджигает цель. Горение наносит дополнительный урон со временем.',damage:9,focus:20,cd:6000,speed:640,status:'burn',dur:4200,color:'#ff873c',unlock:4,combat:true},
+  {id:'accio',name:'Акцио',type:'Окружение',desc:'Притягивает объект арены. Усиливает следующий бросок или атаку окружением.',damage:5,focus:16,cd:5000,speed:700,status:'slow',dur:800,color:'#a9cdf8',unlock:4,combat:true},
+  {id:'wingardium',name:'Вингардиум Левиоса',type:'Окружение',desc:'Поднимает предмет и направляет его в противника.',damage:12,focus:22,cd:7000,speed:540,status:'levitate',dur:1000,color:'#d7e7ff',unlock:1,combat:true},
+  {id:'impedimenta',name:'Импедимента',type:'Контроль',desc:'Сильно замедляет реакцию и скорость противника.',damage:6,focus:18,cd:5200,speed:720,status:'slow',dur:3000,color:'#7fc9ff',unlock:5,combat:true},
+  {id:'incarcerous',name:'Инкарцеро',type:'Контроль',desc:'Магические верёвки связывают противника.',damage:3,focus:27,cd:9500,speed:600,status:'root',dur:2600,color:'#c2b58f',unlock:5,combat:true},
+  {id:'patronus',name:'Экспекто Патронум',type:'Особое',desc:'Создаёт Патронуса. Крайне эффективно против дементоров.',damage:12,focus:48,cd:18000,speed:620,status:'fear',dur:3000,color:'#d6f2ff',unlock:3,combat:true,special:'patronus'},
+  {id:'riddikulus',name:'Риддикулус',type:'Особое',desc:'Нейтрализует боггарта. Против обычных врагов сбивает концентрацию.',damage:4,focus:12,cd:4000,speed:760,status:'confuse',dur:1900,color:'#e9b7ff',unlock:3,combat:true,special:'boggart'},
+  {id:'confundus',name:'Конфундус',type:'Контроль',desc:'Дезориентирует противника и снижает точность его следующей атаки.',damage:4,focus:17,cd:5800,speed:720,status:'confuse',dur:2800,color:'#cba9ff',unlock:4,combat:true},
+  {id:'oppugno',name:'Оппуньо',type:'Окружение',desc:'Направляет стаю мелких объектов в цель.',damage:15,focus:25,cd:7200,speed:670,status:null,dur:0,color:'#cabd85',unlock:6,combat:true},
+  {id:'arresto',name:'Аресто Моментум',type:'Контроль',desc:'Резко замедляет движение цели и летящих объектов.',damage:2,focus:21,cd:8000,speed:680,status:'slow',dur:3900,color:'#94d1e8',unlock:6,combat:true},
+  {id:'lumos',name:'Люмос',type:'Служебное',desc:'Создаёт свет на конце палочки. Нужен в тёмных исследовательских сценах.',damage:0,focus:2,cd:500,speed:0,status:null,dur:0,color:'#f8efb8',unlock:1,combat:false},
+  {id:'lumos_maxima',name:'Люмос Максима',type:'Особое',desc:'Мощная вспышка света. Ослабляет тёмных существ и сбивает атаку.',damage:7,focus:22,cd:7000,speed:900,status:'stun',dur:800,color:'#fff8c9',unlock:3,combat:true},
+  {id:'nox',name:'Нокс',type:'Служебное',desc:'Гасит свет от Люмоса.',damage:0,focus:0,cd:0,speed:0,status:null,dur:0,color:'#8892a3',unlock:1,combat:false},
+  {id:'alohomora',name:'Алохомора',type:'Служебное',desc:'Открывает запертые двери на исследовательских уровнях.',damage:0,focus:4,cd:0,speed:0,status:null,dur:0,color:'#c4d1a3',unlock:1,combat:false},
+  {id:'reparo',name:'Репаро',type:'Служебное',desc:'Восстанавливает разрушенные предметы и элементы арены.',damage:0,focus:8,cd:0,speed:0,status:null,dur:0,color:'#a8dfc1',unlock:1,combat:false},
+  {id:'obliviate',name:'Обливиэйт',type:'Особое',desc:'Стирает воспоминания. Используется в специальных сюжетных сценах.',damage:0,focus:40,cd:20000,speed:650,status:'confuse',dur:5000,color:'#d9ccff',unlock:7,combat:false},
+  {id:'finite',name:'Фините Инкантатем',type:'Контрзаклинание',desc:'Снимает некоторые активные магические эффекты.',damage:0,focus:16,cd:6500,speed:820,status:null,dur:0,color:'#e4e4e4',unlock:2,combat:true,special:'cleanse'},
+  {id:'episkey',name:'Эпискей',type:'Лечение',desc:'Восстанавливает небольшую часть здоровья.',damage:-13,focus:32,cd:14000,speed:0,status:null,dur:0,color:'#84d7ab',unlock:5,combat:true,special:'heal'},
+  {id:'sectumsempra',name:'Сектумсемпра',type:'Тёмные искусства',desc:'Крайне опасное режущее заклинание. Наносит высокий урон и кровотечение.',damage:32,focus:48,cd:13500,speed:760,status:'bleed',dur:4200,color:'#8f2037',unlock:6,combat:true,heavy:true,dark:true},
+  {id:'vulnera',name:'Вулнера Санентур',type:'Лечение',desc:'Лечит тяжёлые магические раны и снимает кровотечение.',damage:-24,focus:48,cd:18000,speed:0,status:null,dur:0,color:'#69c798',unlock:6,combat:true,special:'majorHeal'},
+  {id:'crucio',name:'Круцио',type:'Тёмные искусства',desc:'Непростительное заклятие. Сильно оглушает и наносит урон.',damage:24,focus:58,cd:17000,speed:760,status:'stun',dur:2600,color:'#58aa54',unlock:7,combat:true,dark:true,secret:true},
+  {id:'imperio',name:'Империо',type:'Тёмные искусства',desc:'Непростительное заклятие. На время резко снижает агрессивность противника.',damage:4,focus:62,cd:22000,speed:680,status:'confuse',dur:5500,color:'#69c16b',unlock:7,combat:true,dark:true,secret:true},
+  {id:'avada',name:'Авада Кедавра',type:'Тёмные искусства',desc:'Непростительное заклятие. В свободной дуэли наносит колоссальный урон.',damage:80,focus:100,cd:30000,speed:720,status:null,dur:0,color:'#59e55c',unlock:7,combat:true,dark:true,secret:true,heavy:true},
+  {id:'serpensortia',name:'Серпенсортия',type:'Призыв',desc:'Вызывает змею, которая атакует и отвлекает противника.',damage:12,focus:24,cd:8000,speed:580,status:'fear',dur:1500,color:'#79ad5e',unlock:2,combat:true},
+  {id:'vipera',name:'Випера Эванеска',type:'Контрзаклинание',desc:'Уничтожает вызванную змею. Особенно эффективно против Серпенсортии.',damage:4,focus:12,cd:4000,speed:820,status:null,dur:0,color:'#b7e3c2',unlock:2,combat:true,special:'snakeCounter'},
+  {id:'aranea',name:'Аранеа Экземи',type:'Особое',desc:'Отбрасывает пауков. Очень эффективно против акромантулов.',damage:18,focus:20,cd:5000,speed:760,status:'fear',dur:1800,color:'#dfe2ba',unlock:2,combat:true,special:'spider'},
+  {id:'aguamenti',name:'Агуаменти',type:'Стихия',desc:'Создаёт поток воды. Снимает горение и контрит огненные атаки.',damage:8,focus:18,cd:5200,speed:760,status:'slow',dur:900,color:'#65b8ef',unlock:6,combat:true,special:'water'},
+  {id:'piertotum',name:'Пиертотум Локомотор',type:'Особое',desc:'Оживляет статуи и защитные конструкции арены.',damage:28,focus:60,cd:22000,speed:420,status:'stun',dur:900,color:'#a7a7a7',unlock:7,combat:true,heavy:true},
+  {id:'repello',name:'Репелло Инимикум',type:'Защита',desc:'Создаёт сильный защитный барьер, который некоторое время снижает входящий урон.',damage:0,focus:46,cd:18000,speed:0,status:'shield',dur:4200,color:'#a8dcff',unlock:7,combat:true,special:'barrier'},
+  {id:'levicorpus',name:'Левикорпус',type:'Контроль',desc:'Подвешивает противника в воздухе и открывает окно для комбинации.',damage:7,focus:22,cd:7500,speed:720,status:'levitate',dur:1800,color:'#d6c8ff',unlock:6,combat:true}
+];
+
+const spellById=id=>SPELLS.find(s=>s.id===id);
+
+const ENEMIES={
+  dummy:{name:'Тренировочный манекен',hp:70,aggro:.3,def:.05,counter:.02,speed:.55,spells:['stupefy'],arena:'Зал практики',year:1},
+  peeves:{name:'Пивз',hp:76,aggro:.55,def:.12,counter:.08,speed:.82,spells:['rictusempra','wingardium'],arena:'Коридор Хогвартса',year:1},
+  troll:{name:'Горный тролль',hp:135,aggro:.7,def:.02,counter:0,speed:.35,spells:['bombarda'],arena:'Туалет Хогвартса',year:1,creature:'troll'},
+  quirrell:{name:'Профессор Квиррелл',hp:120,aggro:.7,def:.36,counter:.28,speed:.64,spells:['stupefy','incendio','impedimenta'],arena:'Подземелья',year:1,boss:true},
+  slytherin:{name:'Ученик Слизерина',hp:88,aggro:.55,def:.23,counter:.12,speed:.65,spells:['stupefy','rictusempra','expelliarmus'],arena:'Дуэльный клуб',year:2},
+  crabbe:{name:'Крэбб',hp:96,aggro:.68,def:.12,counter:.07,speed:.48,spells:['stupefy','rictusempra'],arena:'Дуэльный клуб',year:2},
+  goyle:{name:'Гойл',hp:100,aggro:.66,def:.11,counter:.06,speed:.46,spells:['stupefy','wingardium'],arena:'Дуэльный клуб',year:2},
+  draco:{name:'Драко Малфой',hp:110,aggro:.72,def:.34,counter:.32,speed:.83,spells:['rictusempra','expelliarmus','serpensortia','stupefy'],arena:'Дуэльный клуб',year:2,boss:true,signature:'serpensortia'},
+  aragog:{name:'Арагог',hp:150,aggro:.76,def:.05,counter:0,speed:.56,spells:['incarcerous','oppugno'],arena:'Запретный лес',year:2,boss:true,creature:'spider'},
+  riddle:{name:'Том Реддл',hp:135,aggro:.72,def:.47,counter:.42,speed:.78,spells:['stupefy','expelliarmus','impedimenta','incendio'],arena:'Тайная комната',year:2,boss:true},
+  basilisk:{name:'Василиск',hp:210,aggro:.82,def:.02,counter:0,speed:.48,spells:['stupefy','incarcerous'],arena:'Тайная комната',year:2,boss:true,creature:'basilisk'},
+  boggart:{name:'Боггарт',hp:95,aggro:.65,def:.2,counter:.05,speed:.66,spells:['confundus','impedimenta'],arena:'Класс защиты',year:3,creature:'boggart'},
+  dementor:{name:'Дементор',hp:120,aggro:.7,def:.15,counter:0,speed:.58,spells:['impedimenta','confundus'],arena:'Берег озера',year:3,creature:'dementor'},
+  dementors:{name:'Дементоры у озера',hp:190,aggro:.84,def:.2,counter:0,speed:.62,spells:['impedimenta','confundus','incarcerous'],arena:'Берег озера',year:3,boss:true,creature:'dementor'},
+  werewolf:{name:'Оборотень',hp:150,aggro:.9,def:.04,counter:0,speed:.87,spells:['stupefy'],arena:'Запретный лес',year:3,creature:'werewolf'},
+  dragon:{name:'Венгерская хвосторога',hp:210,aggro:.92,def:.08,counter:0,speed:.55,spells:['incendio','confringo'],arena:'Арена Турнира',year:4,boss:true,creature:'dragon'},
+  pettigrew:{name:'Питер Петтигрю',hp:105,aggro:.58,def:.25,counter:.21,speed:.67,spells:['stupefy','incarcerous','expelliarmus'],arena:'Кладбище',year:4},
+  voldemort1:{name:'Волан-де-Морт',hp:180,aggro:.92,def:.65,counter:.65,speed:.92,spells:['crucio','stupefy','confringo','expelliarmus'],arena:'Кладбище',year:4,boss:true,survival:true},
+  lucius:{name:'Люциус Малфой',hp:125,aggro:.68,def:.52,counter:.46,speed:.74,spells:['stupefy','expelliarmus','incarcerous','impedimenta'],arena:'Отдел тайн',year:5},
+  dolohov:{name:'Антонин Долохов',hp:138,aggro:.8,def:.42,counter:.37,speed:.78,spells:['stupefy','confringo','impedimenta'],arena:'Отдел тайн',year:5},
+  bellatrix:{name:'Беллатриса Лестрейндж',hp:150,aggro:.98,def:.38,counter:.5,speed:.96,spells:['crucio','confringo','stupefy','expelliarmus'],arena:'Отдел тайн',year:5,boss:true},
+  greyback:{name:'Фенрир Сивый',hp:165,aggro:.98,def:.12,counter:.04,speed:.92,spells:['stupefy','incarcerous'],arena:'Хогвартс ночью',year:6,creature:'werewolf'},
+  draco6:{name:'Драко Малфой',hp:145,aggro:.7,def:.55,counter:.48,speed:.88,spells:['expelliarmus','stupefy','impedimenta','sectumsempra'],arena:'Туалет Хогвартса',year:6,boss:true},
+  snape:{name:'Северус Снегг',hp:175,aggro:.52,def:.88,counter:.96,speed:.9,spells:['expelliarmus','stupefy','impedimenta','sectumsempra','protego_maxima'],arena:'Астрономическая башня',year:6,boss:true,adaptive:true},
+  scabior:{name:'Скабиор',hp:125,aggro:.77,def:.3,counter:.2,speed:.75,spells:['stupefy','incarcerous','expelliarmus'],arena:'Лес',year:7},
+  yaxley:{name:'Яксли',hp:140,aggro:.78,def:.46,counter:.4,speed:.75,spells:['stupefy','confringo','impedimenta'],arena:'Министерство магии',year:7},
+  bellatrix7:{name:'Беллатриса Лестрейндж',hp:180,aggro:1,def:.48,counter:.58,speed:.98,spells:['crucio','confringo','sectumsempra','stupefy'],arena:'Поместье Малфоев',year:7,boss:true},
+  nagini:{name:'Нагайна',hp:180,aggro:.96,def:.06,counter:0,speed:.95,spells:['incarcerous','stupefy'],arena:'Хогвартс',year:7,boss:true,creature:'snake'},
+  voldemort2:{name:'Волан-де-Морт',hp:245,aggro:.98,def:.72,counter:.72,speed:.98,spells:['avada','crucio','confringo','stupefy','expelliarmus'],arena:'Разрушенный Хогвартс',year:7,boss:true,adaptive:true,phases:3},
+  armour:{name:'Заколдованные доспехи',hp:82,aggro:.52,def:.12,counter:0,speed:.42,spells:['wingardium','stupefy'],arena:'Коридор Хогвартса',year:1,creature:'armour'},
+  devilsnare:{name:'Дьявольские силки',hp:105,aggro:.62,def:.02,counter:0,speed:.30,spells:['incarcerous','impedimenta'],arena:'Подземелья',year:1,creature:'plant'},
+  pixies:{name:'Корнуэльские пикси',hp:92,aggro:.82,def:.08,counter:0,speed:.96,spells:['wingardium','rictusempra'],arena:'Класс защиты',year:2,creature:'pixies'},
+  acromantula:{name:'Акромантул',hp:118,aggro:.82,def:.03,counter:0,speed:.76,spells:['incarcerous','oppugno'],arena:'Запретный лес',year:2,creature:'spider'},
+  dementor_train:{name:'Дементор в поезде',hp:108,aggro:.72,def:.10,counter:0,speed:.55,spells:['confundus','impedimenta'],arena:'Хогвартс-экспресс',year:3,creature:'dementor'},
+  dementor_patrol:{name:'Дементор у Хогвартса',hp:125,aggro:.74,def:.14,counter:0,speed:.60,spells:['confundus','impedimenta'],arena:'Территория Хогвартса',year:3,creature:'dementor'},
+  durmstrang:{name:'Ученик Дурмстранга',hp:112,aggro:.68,def:.34,counter:.28,speed:.72,spells:['stupefy','expelliarmus','impedimenta'],arena:'Зал Турнира',year:4},
+  grindylow:{name:'Гриндилоу',hp:120,aggro:.84,def:.02,counter:0,speed:.78,spells:['incarcerous','impedimenta'],arena:'Чёрное озеро',year:4,creature:'water'},
+  maze:{name:'Существо лабиринта',hp:138,aggro:.81,def:.12,counter:.02,speed:.68,spells:['incarcerous','confundus','impedimenta'],arena:'Лабиринт Турнира',year:4,creature:'maze'},
+  death4:{name:'Пожиратель смерти',hp:128,aggro:.78,def:.35,counter:.31,speed:.76,spells:['stupefy','expelliarmus','confringo'],arena:'Кладбище',year:4},
+  inquisitorial:{name:'Инспекционная дружина',hp:112,aggro:.62,def:.30,counter:.22,speed:.69,spells:['stupefy','expelliarmus','impedimenta'],arena:'Коридор Хогвартса',year:5},
+  slytherin5:{name:'Слизеринский дуэлянт',hp:122,aggro:.72,def:.40,counter:.33,speed:.76,spells:['stupefy','expelliarmus','incarcerous'],arena:'Комната требований',year:5},
+  death5:{name:'Пожиратель смерти',hp:135,aggro:.82,def:.40,counter:.34,speed:.81,spells:['stupefy','confringo','impedimenta'],arena:'Отдел тайн',year:5},
+  inferius:{name:'Инфернал',hp:145,aggro:.88,def:.03,counter:0,speed:.54,spells:['incarcerous','stupefy'],arena:'Пещера',year:6,creature:'inferius'},
+  death6:{name:'Пожиратель смерти',hp:145,aggro:.83,def:.43,counter:.38,speed:.82,spells:['stupefy','confringo','sectumsempra'],arena:'Хогвартс ночью',year:6},
+  amycus:{name:'Амикус Кэрроу',hp:142,aggro:.85,def:.39,counter:.34,speed:.78,spells:['crucio','stupefy','incarcerous'],arena:'Астрономическая башня',year:6},
+  alecto:{name:'Алекто Кэрроу',hp:138,aggro:.80,def:.42,counter:.36,speed:.81,spells:['stupefy','confringo','impedimenta'],arena:'Астрономическая башня',year:6},
+  snatcher:{name:'Егерь',hp:128,aggro:.80,def:.28,counter:.22,speed:.79,spells:['stupefy','incarcerous','expelliarmus'],arena:'Лес',year:7},
+  death7:{name:'Пожиратель смерти',hp:150,aggro:.87,def:.47,counter:.41,speed:.85,spells:['stupefy','confringo','crucio'],arena:'Битва за Хогвартс',year:7},
+  greyback7:{name:'Фенрир Сивый',hp:185,aggro:1,def:.14,counter:.04,speed:.98,spells:['stupefy','incarcerous'],arena:'Битва за Хогвартс',year:7,creature:'werewolf'},
+  dolohov7:{name:'Антонин Долохов',hp:165,aggro:.88,def:.48,counter:.43,speed:.86,spells:['stupefy','confringo','sectumsempra'],arena:'Битва за Хогвартс',year:7},
+  lucius7:{name:'Люциус Малфой',hp:155,aggro:.70,def:.55,counter:.50,speed:.79,spells:['stupefy','expelliarmus','impedimenta','incarcerous'],arena:'Поместье Малфоев',year:7},
+  hermione:{name:'Гермиона Грейндж',hp:130,aggro:.58,def:.68,counter:.72,speed:.86,spells:['stupefy','expelliarmus','impedimenta','finite','protego_maxima'],arena:'Комната требований',year:5,boss:true,bonus:true},
+  ron:{name:'Рон Уизли',hp:125,aggro:.72,def:.40,counter:.34,speed:.69,spells:['stupefy','expelliarmus','rictusempra','wingardium'],arena:'Комната требований',year:5,bonus:true},
+  sirius:{name:'Сириус Блэк',hp:155,aggro:.78,def:.62,counter:.66,speed:.88,spells:['stupefy','expelliarmus','impedimenta','confringo'],arena:'Площадь Гриммо',year:5,boss:true,bonus:true},
+  mcgonagall:{name:'Минерва Макгонагалл',hp:180,aggro:.64,def:.82,counter:.78,speed:.89,spells:['stupefy','piertotum','protego_maxima','impedimenta','oppugno'],arena:'Большой зал',year:7,boss:true,bonus:true},
+  dumbledore:{name:'Альбус Дамблдор',hp:220,aggro:.60,def:.92,counter:.94,speed:.94,spells:['stupefy','protego_maxima','arresto','incendio','aguamenti','piertotum'],arena:'Большой зал',year:7,boss:true,adaptive:true,bonus:true}
+};
+
+const CAMPAIGN=[
+ {year:1,title:'Философский камень',stages:[['dummy','Практика заклинаний'],['peeves','Коридор с Пивзом'],['armour','Заколдованные доспехи'],['troll','Горный тролль'],['devilsnare','Дьявольские силки'],['quirrell','Профессор Квиррелл']]},
+ {year:2,title:'Тайная комната',stages:[['slytherin','Ученик Слизерина'],['pixies','Корнуэльские пикси'],['crabbe','Крэбб'],['goyle','Гойл'],['draco','Дуэльный клуб: Драко'],['acromantula','Акромантул'],['aragog','Арагог'],['riddle','Том Реддл'],['basilisk','Василиск']]},
+ {year:3,title:'Узник Азкабана',stages:[['dementor_train','Дементор в Хогвартс-экспрессе'],['boggart','Боггарт'],['dementor','Первый урок против дементора'],['dementor_patrol','Дементор у Хогвартса'],['werewolf','Оборотень'],['dementors','Дементоры у озера']]},
+ {year:4,title:'Кубок огня',stages:[['durmstrang','Ученик Дурмстранга'],['dragon','Венгерская хвосторога'],['grindylow','Гриндилоу'],['maze','Существо лабиринта'],['death4','Пожиратель смерти'],['pettigrew','Питер Петтигрю'],['voldemort1','Кладбище: Волан-де-Морт']]},
+ {year:5,title:'Орден Феникса',stages:[['inquisitorial','Инспекционная дружина'],['death5','Пожиратель смерти'],['lucius','Люциус Малфой'],['dolohov','Антонин Долохов'],['bellatrix','Беллатриса Лестрейндж']]},
+ {year:6,title:'Принц-полукровка',stages:[['inferius','Инфернал'],['death6','Пожиратель смерти'],['greyback','Фенрир Сивый'],['amycus','Амикус Кэрроу'],['alecto','Алекто Кэрроу'],['draco6','Драко: туалет Хогвартса'],['snape','Северус Снегг']]},
+ {year:7,title:'Дары Смерти',stages:[['snatcher','Егерь'],['scabior','Скабиор'],['yaxley','Яксли'],['lucius7','Люциус Малфой'],['bellatrix7','Беллатриса: поместье Малфоев'],['death7','Пожиратель смерти'],['greyback7','Фенрир Сивый'],['dolohov7','Антонин Долохов'],['nagini','Нагайна'],['voldemort2','Финал: Волан-де-Морт']]}
+];
+
+const DEFAULT_SAVE={
+  version:GAME_VERSION,
+  xp:0, playerLevel:1, skillPoints:0,
+  unlockedYear:1, unlockedStages:{1:1,2:1,3:1,4:1,5:1,6:1,7:1},
+  unlockedSpells:['expelliarmus','stupefy','petrificus','rictusempra','wingardium','finite','serpensortia','vipera','aranea','incendio'],
+  secretSpells:false,
+  spellLevel:{}, spellMastery:{},
+  loadout:['expelliarmus','stupefy','rictusempra','petrificus'],
+  settings:{mode:'realtime',difficulty:'wizard',sound:true,music:false,orientation:'landscape'},
+  skills:{dueling:0,defense:0,knowledge:0},
+  cards:[], endlessBest:0,
+  ranks:{},
+  achievements:{firstWin:false,perfect5:false,combo4:false,noDamage:false,collector:false,patronus:false},
+  stats:{wins:0,losses:0,bestCombo:0,perfects:0,casts:0},
+  selectedEnemy:'draco'
+};
+let save=loadSave();
+function loadSave(){try{const v=JSON.parse(localStorage.getItem(SAVE_KEY)); return deepMerge(structuredClone(DEFAULT_SAVE),v||{});}catch(e){return structuredClone(DEFAULT_SAVE)}}
+function deepMerge(a,b){for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==='object')deepMerge(a[k],b[k]);else a[k]=b[k]}return a}
+function persist(){localStorage.setItem(SAVE_KEY,JSON.stringify(save))}
+function resetSave(){save=structuredClone(DEFAULT_SAVE);persist();renderAll();showScreen('homeScreen')}
+
+const screens=['homeScreen','campaignScreen','spellScreen','duelScreen','skillsScreen','endlessScreen','collectionScreen','achieveScreen','settingsScreen','battleScreen'];
+function showScreen(id){screens.forEach(x=>$('#'+x)?.classList.toggle('active',x===id)); if(id==='campaignScreen')renderCampaign(); if(id==='spellScreen')renderSpells(); if(id==='duelScreen')renderDuelMenu(); if(id==='skillsScreen')renderSkills(); if(id==='endlessScreen')renderEndless(); if(id==='collectionScreen')renderCollection(); if(id==='achieveScreen')renderAchievements(); if(id==='settingsScreen')renderSettings();}
+
+function rankStars(r){return r==='S'?'★★★★':r==='A'?'★★★':r==='B'?'★★':'★'}
+function stageKey(y,i){return `${y}-${i}`}
+
+function renderCampaign(){
+ const root=$('#campaignYears'); root.innerHTML='';
+ CAMPAIGN.forEach(y=>{
+   const locked=y.year>save.unlockedYear;
+   const done=y.stages.filter((_,i)=>save.ranks[stageKey(y.year,i)]).length;
+   const card=document.createElement('div'); card.className='card'+(locked?' locked':'');
+   card.innerHTML=`<h3>${y.year}-й год — ${y.title}</h3><p>${done} из ${y.stages.length} испытаний пройдено</p><div class="progress"><span style="width:${done/y.stages.length*100}%"></span></div><div class="stageList"></div>`;
+   const list=$('.stageList',card);
+   y.stages.forEach((st,i)=>{
+     const unlocked=!locked && i < (save.unlockedStages[y.year]||1);
+     const rank=save.ranks[stageKey(y.year,i)]||'';
+     const row=document.createElement('div'); row.className='campaign-stage';
+     row.innerHTML=`<div><b>${i+1}. ${st[1]}</b><div class="notice">${ENEMIES[st[0]].arena}</div></div><div>${rank?`<span class="stars">${rankStars(rank)}</span>`:''} <button class="btn small" ${unlocked?'':'disabled'}>${unlocked?'В бой':'Закрыто'}</button></div>`;
+     $('button',row).onclick=()=>{save.selectedEnemy=st[0];persist();openPreBattle(st[0],{campaign:{year:y.year,index:i}})};
+     list.appendChild(row);
+   });
+   root.appendChild(card);
+ });
+}
+
+function isSpellUnlocked(s){return save.unlockedSpells.includes(s.id) || (s.secret&&save.secretSpells)}
+function spellLevel(id){return save.spellLevel[id]||1}
+function effectiveSpell(s){const lv=spellLevel(s.id), bonus=1+(lv-1)*.08;return {...s,damage:s.damage>0?Math.round(s.damage*bonus):s.damage<0?Math.round(s.damage*(1+(lv-1)*.1)):0,dur:Math.round(s.dur*(1+(lv-1)*.08)),cd:Math.max(500,Math.round(s.cd*(1-(lv-1)*.04)))} }
+function renderSpells(){
+ const root=$('#spellGrid');root.innerHTML='';
+ SPELLS.forEach(s=>{
+   const unlocked=isSpellUnlocked(s), equipped=save.loadout.includes(s.id),lv=spellLevel(s.id),master=save.spellMastery[s.id]||0;
+   const d=document.createElement('div');d.className='spell-card'+(equipped?' equipped':'')+(unlocked?'':' locked');
+   d.innerHTML=`<div class="spell-name">${s.name}</div><div class="spell-type">${s.type}${s.dark?' · Тёмное':''}</div><div class="spell-desc">${s.desc}</div><div><span class="tag">Уровень ${lv}/5</span>${s.combat?`<span class="tag">${s.focus} конц.</span>`:'<span class="tag">сюжетное</span>'}</div><div class="spell-meta"><span>Мастерство ${master}%</span><span>${unlocked?'Открыто':`Год ${s.unlock}`}</span></div><div style="display:flex;gap:6px;margin-top:9px"><button class="btn small equip" ${(!unlocked||!s.combat)?'disabled':''}>${equipped?'Убрать':'Выбрать'}</button><button class="btn small upgrade" ${(lv>=5||master<100)?'disabled':''}>Улучшить</button></div>`;
+   $('.equip',d).onclick=()=>toggleEquip(s.id);
+   $('.upgrade',d).onclick=()=>{if(master>=100&&lv<5){save.spellLevel[s.id]=lv+1;save.spellMastery[s.id]=0;persist();renderSpells();}};
+   root.appendChild(d);
+ });
+ $('#loadoutText').textContent=save.loadout.map(id=>spellById(id)?.name).join(' · ');
+}
+function toggleEquip(id){
+ const idx=save.loadout.indexOf(id);
+ if(idx>=0){if(save.loadout.length<=1)return;save.loadout.splice(idx,1)}
+ else {if(save.loadout.length>=4)save.loadout.shift();save.loadout.push(id)}
+ persist();renderSpells();
+}
+
+function renderDuelMenu(){
+ const select=$('#enemySelect');select.innerHTML='';
+ Object.entries(ENEMIES).forEach(([id,e])=>{const o=document.createElement('option');o.value=id;o.textContent=e.name+(e.boss?' ★':'');if(save.selectedEnemy===id)o.selected=true;select.appendChild(o)});
+ $('#duelModeSelect').value=save.settings.mode;
+}
+function renderAchievements(){
+ const data=[
+ ['firstWin','Первая победа','Выиграть первую дуэль.','✦'],['perfect5','Безупречная защита','Сделать 5 идеальных защит за один бой.','◆'],['combo4','Комбинатор','Достичь комбо ×4.','×4'],['noDamage','Неуловимый','Победить, не получив урона.','○'],['collector','Коллекционер чар','Открыть 20 боевых заклинаний.','⌘'],['patronus','Свет во тьме','Победить дементора с помощью Патронуса.','☄']
+ ];
+ const root=$('#achievementList');root.innerHTML='';data.forEach(([id,n,d,ico])=>{const el=document.createElement('div');el.className='achievement'+(save.achievements[id]?' done':'');el.innerHTML=`<div class="badge-icon">${ico}</div><div><b>${n}</b><div class="notice">${d}</div></div><div style="margin-left:auto">${save.achievements[id]?'✓':''}</div>`;root.appendChild(el)});
+}
+function renderSettings(){
+ $('#settingMode').value=save.settings.mode;$('#settingDifficulty').value=save.settings.difficulty;$('#settingSound').checked=save.settings.sound;$('#settingMusic').checked=save.settings.music;$('#secretToggle').checked=save.secretSpells;
+ $('#saveInfo').textContent=`Уровень Гарри: ${save.playerLevel} · Опыт: ${save.xp} · Победы: ${save.stats.wins} · Версия: ${GAME_VERSION}`;
+}
+const CARD_POOL=['Альбус Дамблдор','Минерва Макгонагалл','Сириус Блэк','Римус Люпин','Рубеус Хагрид','Северус Снегг','Гермиона Грейндж','Рон Уизли','Невилл Долгопупс','Фред и Джордж Уизли','Добби','Фоукс'];
+function renderSkills(){
+  const defs={dueling:['ДУЭЛИ','Быстрее восстанавливает концентрацию и сокращает перезарядку.'],defense:['ЗАЩИТА','Расширяет окно идеального Протего и уклонения, снижает входящий урон.'],knowledge:['МАГИЧЕСКИЕ ЗНАНИЯ','Усиливает длительность состояний и мастерство заклинаний.']};
+  $('#skillPointsText').textContent=`Очки развития: ${save.skillPoints}`;const root=$('#skillsGrid');root.innerHTML='';
+  for(const [id,[name,desc]] of Object.entries(defs)){const lv=save.skills[id]||0,d=document.createElement('div');d.className='card skill-card';d.innerHTML=`<h3>${name}</h3><div class="skill-level">${lv}/5</div><p>${desc}</p><button class="btn small" ${save.skillPoints<=0||lv>=5?'disabled':''}>Улучшить</button>`;$('button',d).onclick=()=>{if(save.skillPoints>0&&lv<5){save.skillPoints--;save.skills[id]=lv+1;persist();renderSkills()}};root.appendChild(d)}
+}
+function renderEndless(){$('#endlessMode').value=save.settings.mode;$('#endlessBest').textContent=`Лучший результат: ${save.endlessBest||0} побед подряд`;}
+function renderCollection(){const root=$('#collectionGrid');root.innerHTML='';CARD_POOL.forEach((name,i)=>{const own=save.cards.includes(name),d=document.createElement('div');d.className='card collector-card'+(own?'':' locked');d.innerHTML=`<div style="font-size:34px">${own?'✦':'?'}</div><h3>${own?name:'Неизвестная карточка'}</h3><p>${own?'Получена за победы над сильными противниками.':'Побеждайте боссов кампании.'}</p>`;root.appendChild(d)});}
+function awardCard(){const left=CARD_POOL.filter(c=>!save.cards.includes(c));if(!left.length)return null;const c=pick(left);save.cards.push(c);return c;}
+function renderAll(){renderCampaign();renderSpells();renderDuelMenu();renderSkills();renderEndless();renderCollection();renderAchievements();renderSettings();}
+
+function openPreBattle(enemyId,extra={}){
+ const e=ENEMIES[enemyId]; if(!e)return;
+ $('#preBattleTitle').textContent=e.name;
+ $('#preBattleDesc').innerHTML=`<b>Арена:</b> ${e.arena}<br><b>Здоровье:</b> ${e.hp}${e.boss?' · БОСС':''}<br><b>Стиль:</b> ${e.adaptive?'читает повторяющиеся действия':e.aggro>.85?'крайне агрессивный':e.def>.55?'защитный':'сбалансированный'}<br><br><b>Ваши заклинания:</b><br>${save.loadout.map(x=>'• '+spellById(x).name).join('<br>')}`;
+ const modal=$('#preBattleModal');modal.dataset.enemy=enemyId;modal._extra=extra;modal.classList.add('show');
+}
+
+// ---- AUDIO ----
+let audioCtx=null;
+function tone(freq=440,dur=.08,type='square',vol=.035){if(!save.settings.sound)return;try{audioCtx ||= new (window.AudioContext||window.webkitAudioContext)(); const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.value=vol;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur);}catch(e){}}
+function sfx(kind){if(kind==='cast'){tone(620,.05);setTimeout(()=>tone(820,.05),35)}else if(kind==='hit'){tone(120,.1,'square',.05)}else if(kind==='perfect'){tone(900,.07);setTimeout(()=>tone(1250,.1),55)}else if(kind==='shield'){tone(430,.08,'triangle');tone(680,.1,'triangle')}else if(kind==='win'){tone(523,.12);setTimeout(()=>tone(659,.12),130);setTimeout(()=>tone(784,.2),260)}else if(kind==='lose'){tone(240,.15);setTimeout(()=>tone(180,.2),150)}}
+function haptic(ms=20){try{navigator.vibrate?.(ms)}catch(e){}}
+let musicTimer=null,musicStep=0;
+function startMusic(){if(!save.settings.music||musicTimer)return;const seq=[261.6,329.6,392,523.2,392,329.6,293.7,349.2];musicTimer=setInterval(()=>{tone(seq[musicStep++%seq.length],.16,'triangle',.012)},330)}
+function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null}}
+const ENDLESS_POOL=['slytherin','draco','dementor','dragon','lucius','dolohov','bellatrix','greyback','snape','bellatrix7','voldemort2'];
+function startEndless(mode){const id=ENDLESS_POOL[0];startBattle(id,{endless:true,streak:0,mode,startHp:100})}
+function startNextEndless(prev){const streak=(prev.extra.streak||0)+1;const idx=Math.min(ENDLESS_POOL.length-1,Math.floor(streak/2));const id=Math.random()<.35&&idx>0?ENDLESS_POOL[Math.floor(Math.random()*(idx+1))]:ENDLESS_POOL[idx];startBattle(id,{endless:true,streak,mode:prev.mode,startHp:prev._endlessCarry??Math.min(100,prev.player.hp+18)})}
+
+class BattleEngine{
+ constructor(enemyId,mode='realtime',extra={}){
+   this.enemyId=enemyId; this.enemy=structuredClone(ENEMIES[enemyId]); this.mode=mode; this.extra=extra;
+   this.canvas=$('#battleCanvas');this.ctx=this.canvas.getContext('2d');this.ctx.imageSmoothingEnabled=false;
+   const diff=save.settings.difficulty==='student'?{dmg:.82,ai:.82,def:.82}:save.settings.difficulty==='auror'?{dmg:1.24,ai:1.18,def:1.16}:{dmg:1,ai:1,def:1};
+   this.diff=diff;this.enemy.aggro=clamp(this.enemy.aggro*diff.ai,0,1);this.enemy.def=clamp(this.enemy.def*diff.def,0,.98);this.enemy.speed=clamp(this.enemy.speed*diff.ai,.25,1.25);this.enemy.counter=clamp((this.enemy.counter||0)*diff.def,0,.98);
+   this.player={name:'Гарри Поттер',hp:extra.startHp??100,maxHp:100,focus:extra.startFocus??100,statuses:{},shieldUntil:0,dodgeUntil:0,barrierUntil:0,lastSpell:null};
+   this.foe={name:this.enemy.name,hp:this.enemy.hp,maxHp:this.enemy.hp,focus:100,statuses:{},shieldUntil:0,dodgeUntil:0,barrierUntil:0,lastSpell:null};
+   this.cooldowns={};this.enemyCooldowns={};this.projectiles=[];this.particles=[];this.floating=[];this.running=false;this.last=0;this.startTime=0;
+   this.enemyNext=0;this.messageUntil=0;this.combo=0;this.bestCombo=0;this.lastHitAt=0;this.perfects=0;this.damageTaken=0;this.damageDone=0;this.casts=0;this.usedSpells=new Set();this.playerHistory=[];
+   this.clash=null;this.turn='player';this.turnLocked=false;this.timing=null;this.pendingTurnSpell=null;this.specialTimer=0;this.phase=1;this.screenShake=0;this.flash=0;this.foeIntent=null;this._survivalTriggered=false;
+   this.loadout=save.loadout.map(id=>effectiveSpell(spellById(id))).filter(Boolean).slice(0,4);
+   while(this.loadout.length<4){const add=SPELLS.find(s=>s.combat&&isSpellUnlocked(s)&&!this.loadout.some(x=>x.id===s.id));if(!add)break;this.loadout.push(effectiveSpell(add))}
+ }
+ start(){
+   showScreen('battleScreen');this.resize();window.addEventListener('resize',this._resize=()=>this.resize());
+   this.bindHUD();this.running=true;this.startTime=now();this.last=this.startTime;this.enemyNext=this.startTime+1200;
+   this.message(`${this.enemy.name} — ${this.enemy.arena}`,1600);
+   if(this.mode==='turnbased'){this.setupTurnMode()}else{this.loop(this.last)}
+ }
+ resize(){const dpr=Math.min(devicePixelRatio||1,2),rect=this.canvas.getBoundingClientRect();this.canvas.width=Math.max(640,Math.round(rect.width*dpr));this.canvas.height=Math.max(360,Math.round(rect.height*dpr));this.W=this.canvas.width;this.H=this.canvas.height;this.scale=dpr;}
+ bindHUD(){
+   $('#modeBadge').textContent=this.mode==='realtime'?'РЕАЛЬНОЕ ВРЕМЯ':'ПОШАГОВЫЙ БОЙ';
+   $('#playerName').textContent='Гарри Поттер';$('#enemyName').textContent=this.enemy.name;
+   const root=$('#spellButtons');root.innerHTML='';this.loadout.forEach((s,i)=>{const b=document.createElement('button');b.className='battle-btn ready';b.innerHTML=`<div class="bname">${s.name}</div><div class="bmeta">${s.focus} концентрации</div><div class="cooldown-mask"></div>`;b.onclick=()=>this.playerCast(s.id,b);root.appendChild(b)});
+   $('#dodgeBtn').onclick=()=>this.dodge();$('#protegoBtn').onclick=()=>this.protego();$('#battleExit').onclick=()=>this.abort();
+   this.updateHUD();
+ }
+ setupTurnMode(){
+   this.enemyNext=Infinity;this.prepareEnemyIntent();this.message(this.intentMessage(),1200);this.startTurnTimingLoop();this.draw();
+ }
+ startTurnTimingLoop(){const tick=()=>{if(!this.running||this.mode!=='turnbased')return;this.updateHUD();this.draw();if(this.timing){const elapsed=(now()-this.timing.start)%1200;this.timing.value=Math.abs((elapsed/600)%2-1)}requestAnimationFrame(tick)};requestAnimationFrame(tick)}
+ updateHUD(){
+   $('#playerHp').style.width=`${100*this.player.hp/this.player.maxHp}%`;$('#enemyHp').style.width=`${100*this.foe.hp/this.foe.maxHp}%`;$('#playerFocus').style.width=`${this.player.focus}%`;$('#enemyFocus').style.width=`${this.foe.focus}%`;
+   $('#playerStatus').textContent=this.statusText(this.player);$('#enemyStatus').textContent=this.statusText(this.foe);
+   const t=now();$$('#spellButtons .battle-btn').forEach((b,i)=>{const s=this.loadout[i],rem=Math.max(0,(this.cooldowns[s.id]||0)-t),pct=s.cd?rem/s.cd*100:0;$('.cooldown-mask',b).style.height=pct+'%';b.disabled=!this.canPlayerAct()||rem>0||this.player.focus<s.focus;b.classList.toggle('ready',!b.disabled)});
+   $('#dodgeBtn').disabled=!this.canPlayerAct()||this.mode==='turnbased'&&this.turn!=='player';$('#protegoBtn').disabled=!this.canPlayerAct()||this.player.focus<8||this.mode==='turnbased'&&this.turn!=='player';
+ }
+ statusText(c){const t=now();return Object.entries(c.statuses).filter(([_,until])=>until>t).map(([k])=>STATUS_RU[k]||k).join(' · ')}
+ hasStatus(c,s){return (c.statuses[s]||0)>now()}
+ addStatus(c,s,dur){if(!s||dur<=0)return;c.statuses[s]=Math.max(c.statuses[s]||0,now()+dur)}
+ canPlayerAct(){return this.running&&!this.hasStatus(this.player,'stun')&&!this.hasStatus(this.player,'root')&&!this.hasStatus(this.player,'levitate')&&!this.hasStatus(this.player,'disarm')&&!this.clash&&!this.turnLocked}
+ canFoeAct(){return this.running&&!this.hasStatus(this.foe,'stun')&&!this.hasStatus(this.foe,'root')&&!this.hasStatus(this.foe,'levitate')&&!this.hasStatus(this.foe,'disarm')&&!this.clash}
+ dodge(){
+   if(!this.canPlayerAct())return;
+   const t=now();this.player.dodgeUntil=t+520;this.message('УКЛОНЕНИЕ',420);tone(260,.04,'triangle');
+   if(this.mode==='turnbased'){this.turnLocked=true;setTimeout(()=>{this.enemyTurn(true)},350)}
+ }
+ protego(){
+   if(!this.canPlayerAct()||this.player.focus<8)return;this.player.focus-=8;this.player.shieldUntil=now()+720;this.message('ПРОТЕГО!',500);sfx('shield');
+   if(this.mode==='turnbased'){this.turnLocked=true;setTimeout(()=>{this.enemyTurn(false,true)},350)}
+ }
+ playerCast(id,button){
+   if(!this.canPlayerAct())return;const s=effectiveSpell(spellById(id));const t=now();if(!s||this.player.focus<s.focus||(this.cooldowns[id]||0)>t)return;
+   if(this.mode==='turnbased'){this.pendingTurnSpell=s;this.timing={start:t,value:0};$('#timingModal').classList.add('show');$('#timingName').textContent=s.name;return}
+   this.executePlayerSpell(s,1);
+ }
+ confirmTiming(){
+   if(!this.timing||!this.pendingTurnSpell)return;const v=this.timing.value,dist=Math.abs(v-.5);let mult=1,label='ХОРОШО';if(dist<.08){mult=1.2;label='ИДЕАЛЬНО'}else if(dist>.43){mult=.0;label='ПРОМАХ'}else if(dist>.3){mult=.7;label='СЛАБО'}this.message(label,700);$('#timingModal').classList.remove('show');const s=this.pendingTurnSpell;this.timing=null;this.pendingTurnSpell=null;this.turnLocked=true;if(mult===0){this.player.focus=Math.max(0,this.player.focus-s.focus*.5);this.cooldowns[s.id]=now()+s.cd*.5;setTimeout(()=>this.enemyTurn(),550)}else{this.executePlayerSpell(s,mult,true)}
+ }
+ executePlayerSpell(s,mult=1,turnMode=false){
+   const t=now();this.player.focus-=s.focus;this.cooldowns[s.id]=t+s.cd*(1-(save.skills.dueling||0)*.035);this.casts++;this.usedSpells.add(s.id);this.player.lastSpell=s.id;this.player.castUntil=t+330;this.playerHistory.push(s.id);if(this.playerHistory.length>6)this.playerHistory.shift();
+   if(s.special==='heal'||s.special==='majorHeal'){const heal=Math.abs(s.damage)*mult;this.player.hp=clamp(this.player.hp+heal,0,this.player.maxHp);delete this.player.statuses.bleed;this.floatText(this.W*.22,this.H*.48,'+'+Math.round(heal),'#7be1a5');this.message(s.name,650);sfx('cast');if(turnMode)setTimeout(()=>this.enemyTurn(),650);return}
+   if(s.special==='cleanse'){this.player.statuses={};this.message('Фините Инкантатем — эффекты сняты',750);if(turnMode)setTimeout(()=>this.enemyTurn(),650);return}
+   if(s.special==='barrier'){this.player.barrierUntil=t+s.dur;this.message(s.name,650);sfx('shield');if(turnMode)setTimeout(()=>this.enemyTurn(),650);return}
+   if(s.id==='protego_maxima'){this.player.shieldUntil=t+s.dur;this.message(s.name,650);sfx('shield');if(turnMode)setTimeout(()=>this.enemyTurn(),650);return}
+   sfx('cast');this.message(s.name.toUpperCase()+'!',500);
+   const effective={...s,damage:Math.round(s.damage*mult),dur:Math.round(s.dur*mult)};
+   if(this.shouldStartClash(effective)){this.startClash(effective,{...effectiveSpell(spellById(pick(this.enemy.spells))),damage:Math.max(12,effective.damage)});return}
+   if(turnMode){setTimeout(()=>{this.resolveHit(this.player,this.foe,effective,'player');setTimeout(()=>{if(this.running)this.enemyTurn()},650)},250)}
+   else this.spawnProjectile(this.player,this.foe,effective,'player');
+ }
+ shouldStartClash(s){return this.enemy.boss&&s.damage>=14&&this.foe.focus>20&&Math.random()<.10+(this.enemyId.includes('voldemort')?.18:0)}
+ prepareEnemyIntent(){
+   if(this.mode!=='turnbased')return;this.foeIntent=this.chooseEnemySpell(true);
+ }
+ intentMessage(){if(!this.foeIntent)return 'Ваш ход';const s=this.foeIntent;return s.heavy?`${this.enemy.name} готовит мощное заклинание…`:`${this.enemy.name} готовит ${s.type.toLowerCase()}…`}
+ enemyTurn(playerDodged=false,playerShielded=false){
+   if(!this.running)return;this.turn='enemy';
+   const s=this.foeIntent||this.chooseEnemySpell();this.foeIntent=null;if(!s){setTimeout(()=>this.finishEnemyTurn(),500);return}
+   if(s._preview){delete s._preview;this.foe.focus-=s.focus;this.enemyCooldowns[s.id]=now()+s.cd*rnd(.8,1.15);this.foe.lastSpell=s.id}
+   this.message(`${this.enemy.name}: ${s.name}!`,700);sfx('cast');
+   setTimeout(()=>{this.resolveHit(this.foe,this.player,s,'enemy',playerDodged,playerShielded);setTimeout(()=>this.finishEnemyTurn(),650)},400)
+ }
+ finishEnemyTurn(){if(!this.running)return;this.turn='player';this.turnLocked=false;this.player.focus=clamp(this.player.focus+18,0,100);this.foe.focus=clamp(this.foe.focus+16,0,100);this.prepareEnemyIntent();this.message(this.intentMessage(),900);this.updateHUD()}
+ chooseEnemySpell(preview=false){
+   let pool=this.enemy.spells.map(spellById).filter(Boolean).map(effectiveSpell).filter(s=>(this.enemyCooldowns[s.id]||0)<=now()&&this.foe.focus>=s.focus);
+   if(!pool.length)return null;
+   if(this.enemy.adaptive&&this.playerHistory.length>=3){const counts={};this.playerHistory.forEach(x=>counts[x]=(counts[x]||0)+1);const spam=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];if(spam&&spam[1]>=3&&Math.random()<.55){this.foe.shieldUntil=now()+800;this.message(`${this.enemy.name}: Протего!`,450)}}
+   const s=pick(pool);if(preview)return {...s,_preview:true};this.foe.focus-=s.focus;this.enemyCooldowns[s.id]=now()+s.cd*rnd(.8,1.15);this.foe.lastSpell=s.id;this.foe.castUntil=now()+330;return s
+ }
+ enemyRealtime(t){
+   if(t<this.enemyNext||!this.canFoeAct())return;
+   const slow=this.hasStatus(this.foe,'slow')?1.65:1;this.enemyNext=t+rnd(1300,2400)*slow/(this.enemy.speed||.7);
+   if(Math.random()<this.enemy.def && this.player.lastSpell){this.foe.shieldUntil=t+650;this.message(`${this.enemy.name}: Протего!`,450);sfx('shield');return}
+   const s=this.chooseEnemySpell();if(!s)return;
+   this.message(`${this.enemy.name}: ${s.name}!`,600);sfx('cast');setTimeout(()=>{if(this.running)this.spawnProjectile(this.foe,this.player,s,'enemy')},rnd(120,300));
+ }
+ spawnProjectile(from,to,s,owner){
+   const x=owner==='player'?this.W*.26:this.W*.74,y=this.H*.52;const tx=owner==='player'?this.W*.74:this.W*.26;const dir=Math.sign(tx-x);this.projectiles.push({x,y,vx:dir*s.speed*this.scale,spell:s,owner,r:Math.max(5,7*this.scale),born:now()});
+ }
+ resolveHit(from,to,s,owner,forceDodge=false,forceShield=false){
+   const t=now();
+   // special creature counters
+   let dmg=s.damage;
+   if(this.enemy.creature==='dementor'&&owner==='player'){if(s.id==='patronus'){dmg=Math.max(38,dmg*3);save.achievements.patronus=true}else if(!['lumos_maxima'].includes(s.id))dmg=Math.round(dmg*.25)}
+   if(this.enemy.creature==='spider'&&owner==='player'&&s.id==='aranea')dmg=Math.max(36,dmg*2);
+   if(this.enemy.creature==='boggart'&&owner==='player'&&s.id==='riddikulus')dmg=Math.max(45,dmg*4);
+   if(owner==='player'&&s.id==='vipera'&&this.foe.lastSpell==='serpensortia')dmg=28;
+   if(owner==='player'&&s.id==='aguamenti'&&this.hasStatus(this.player,'burn')){delete this.player.statuses.burn;this.message('Агуаменти тушит огонь!',700)}
+   const dodging=forceDodge || to.dodgeUntil>t;
+   const shielded=forceShield || to.shieldUntil>t;
+   if(dodging){const perfect=Math.abs((to.dodgeUntil-520)-t)<170+(save.skills.defense||0)*22;if(perfect){this.perfects++;this.message('ИДЕАЛЬНОЕ УКЛОНЕНИЕ',650);sfx('perfect');this.player.focus=clamp(this.player.focus+8,0,100)}else this.message('Уклонение!',400);return}
+   if(shielded){const perfect=Math.abs((to.shieldUntil-720)-t)<190+(save.skills.defense||0)*22;if(perfect&&owner==='enemy'){this.perfects++;this.message('ИДЕАЛЬНОЕ ПРОТЕГО',650);sfx('perfect');this.foe.hp=clamp(this.foe.hp-Math.max(4,Math.round(dmg*.55)),0,this.foe.maxHp);this.floatText(this.W*.73,this.H*.45,'ОТРАЖЕНО','#9ed7ff');this.checkEnd();return}else{this.message('ПРОТЕГО',420);sfx('shield');return}}
+   if(to.barrierUntil>t)dmg=Math.round(dmg*.45);
+   if(owner==='enemy')dmg=Math.round(dmg*this.diff.dmg*(1-(save.skills.defense||0)*.035));
+   if(owner==='player'&&s.status)s={...s,dur:Math.round(s.dur*(1+(save.skills.knowledge||0)*.08))};
+   if(s.damage<0){to.hp=clamp(to.hp+Math.abs(dmg),0,to.maxHp);return}
+   to.hp=clamp(to.hp-dmg,0,to.maxHp);
+   if(owner==='enemy'){this.damageTaken+=dmg;this.combo=0}else{this.damageDone+=dmg;const gap=t-this.lastHitAt;this.combo=gap<2800?this.combo+1:1;this.lastHitAt=t;this.bestCombo=Math.max(this.bestCombo,this.combo);if(this.combo>=2)this.message(`КОМБО ×${this.combo}`,500)}
+   if(s.status)this.addStatus(to,s.status,s.dur);
+   this.screenShake=Math.min(18,(s.heavy?14:7)*this.scale);this.flash=s.heavy?.18:.08;sfx('hit');haptic(s.heavy?45:18);
+   const fx=owner==='player'?this.W*.73:this.W*.27;this.floatText(fx,this.H*.42,'-'+dmg,s.color||'#fff');
+   for(let i=0;i<(s.heavy?26:14);i++)this.particles.push({x:fx,y:this.H*.52,vx:rnd(-170,170)*this.scale,vy:rnd(-200,40)*this.scale,life:rnd(.35,.7),color:s.color||'#fff'});
+   // basilisk gaze pulse
+   this.checkEnd();
+ }
+ applyDots(dt){
+   const t=now();for(const c of [this.player,this.foe]){for(const st of ['burn','bleed'])if(this.hasStatus(c,st)){c._dot=(c._dot||0)+dt;if(c._dot>900){c._dot=0;const dmg=st==='bleed'?3:2;c.hp=clamp(c.hp-dmg,0,c.maxHp);if(c===this.player)this.damageTaken+=dmg;else this.damageDone+=dmg;this.floatText(c===this.player?this.W*.27:this.W*.73,this.H*.4,'-'+dmg,st==='bleed'?'#c44962':'#ff8b47')}}}
+   if(this.enemy.creature==='dementor'){this.specialTimer+=dt;if(this.specialTimer>1800){this.specialTimer=0;this.player.focus=clamp(this.player.focus-5,0,100)}}
+   if(this.enemy.creature==='basilisk'){this.specialTimer+=dt;if(this.specialTimer>6500){this.specialTimer=0;this.message('ВАСИЛИСК СМОТРИТ — УКЛОНИСЬ!',900);setTimeout(()=>{if(this.running&&this.player.dodgeUntil<now()){this.addStatus(this.player,'root',2600);this.player.hp=clamp(this.player.hp-18,0,100);this.damageTaken+=18;this.message('ОКАМЕНЕНИЕ!',900);this.checkEnd()}},900)}}
+ }
+ startClash(ps,es){
+   this.clash={value:.5,start:now(),playerSpell:ps,enemySpell:es,lastTap:now()};this.message('СТОЛКНОВЕНИЕ ЗАКЛИНАНИЙ!',900);$('#clashModal').classList.add('show');$('#clashTap').onclick=()=>{if(this.clash){this.clash.value=clamp(this.clash.value+.055,0,1);this.clash.lastTap=now();tone(760,.03)}};
+ }
+ updateClash(dt){if(!this.clash)return;const c=this.clash;c.value-=dt*.000025*(1+(this.enemy.aggro||.6));c.value=clamp(c.value,0,1);$('#clashFill').style.width=(c.value*100)+'%';if(c.value>=.99){$('#clashModal').classList.remove('show');const cdmg=c.survivalFinal?this.foe.hp:28;this.foe.hp=clamp(this.foe.hp-cdmg,0,this.foe.maxHp);this.damageDone+=cdmg;this.message('ВЫ ПОБЕДИЛИ В СТОЛКНОВЕНИИ!',900);this.clash=null;this.checkEnd()}else if(c.value<=.01){$('#clashModal').classList.remove('show');this.player.hp=clamp(this.player.hp-24,0,100);this.damageTaken+=24;this.message('ВОЛНА ОТБРОСИЛА ГАРРИ!',900);this.clash=null;this.checkEnd()}}
+ floatText(x,y,text,color){this.floating.push({x,y,text,color,life:1})}
+ message(text,dur=600){const el=$('#battleMessage');el.textContent=text;el.classList.add('show');clearTimeout(this._msgTimer);this._msgTimer=setTimeout(()=>el.classList.remove('show'),dur)}
+ loop(t){if(!this.running)return;const dt=Math.min(40,t-this.last);this.last=t;this.update(dt,t);this.draw();requestAnimationFrame(x=>this.loop(x))}
+ update(dt,t){
+   this.player.focus=clamp(this.player.focus+dt*.007*(1+(save.skills.dueling||0)*.10),0,100);this.foe.focus=clamp(this.foe.focus+dt*.006,0,100);this.enemyRealtime(t);this.applyDots(dt);this.updateClash(dt);this.updateBossPhase();
+   if(this.enemy.survival&&!this._survivalTriggered&&(t-this.startTime)>45000&&!this.clash){this._survivalTriggered=true;this.message('ФИНАЛЬНОЕ СТОЛКНОВЕНИЕ!',1200);const ps=effectiveSpell(spellById('expelliarmus')),es=effectiveSpell(spellById('avada'));this.startClash(ps,es);this.clash.survivalFinal=true;}
+   for(const p of this.projectiles){p.x+=p.vx*dt/1000;const hit=p.owner==='player'?p.x>=this.W*.70:p.x<=this.W*.30;if(hit&&!p.dead){p.dead=true;this.resolveHit(p.owner==='player'?this.player:this.foe,p.owner==='player'?this.foe:this.player,p.spell,p.owner)}}this.projectiles=this.projectiles.filter(p=>!p.dead&&t-p.born<4000);
+   for(const p of this.particles){p.x+=p.vx*dt/1000;p.y+=p.vy*dt/1000;p.vy+=340*this.scale*dt/1000;p.life-=dt/1000}this.particles=this.particles.filter(p=>p.life>0);
+   for(const f of this.floating){f.y-=26*this.scale*dt/1000;f.life-=dt/900}this.floating=this.floating.filter(f=>f.life>0);
+   this.screenShake*=.86;this.flash*=.82;this.updateHUD();
+ }
+ updateBossPhase(){
+   if(!this.enemy.phases||this.enemy.phases<2)return;const ratio=this.foe.hp/this.foe.maxHp;let next=ratio<=.33?3:ratio<=.66?2:1;if(next>this.phase){this.phase=next;this.enemy.aggro=clamp(this.enemy.aggro+.08,0,1);this.enemy.speed=clamp(this.enemy.speed+.08,0,1.25);this.screenShake=20*this.scale;this.flash=.28;this.message(`ФАЗА ${this.phase}: ВОЛАН-ДЕ-МОРТ УСИЛИВАЕТСЯ`,1300);}}
+ draw(){
+   const c=this.ctx,W=this.W,H=this.H;const sx=rnd(-this.screenShake,this.screenShake),sy=rnd(-this.screenShake,this.screenShake);c.save();c.translate(sx,sy);
+   this.drawArena(c,W,H);this.drawFighter(c,W*.24,H*.58,true,this.player);this.drawFighter(c,W*.76,H*.58,false,this.foe);
+   this.projectiles.forEach(p=>this.drawProjectile(c,p));this.particles.forEach(p=>{c.globalAlpha=clamp(p.life*2,0,1);c.fillStyle=p.color;c.fillRect(Math.round(p.x),Math.round(p.y),5*this.scale,5*this.scale)});c.globalAlpha=1;
+   this.floating.forEach(f=>{c.globalAlpha=clamp(f.life,0,1);c.fillStyle=f.color;c.font=`bold ${16*this.scale}px monospace`;c.textAlign='center';c.fillText(f.text,f.x,f.y)});c.globalAlpha=1;
+   if(this.enemy.creature==='dementor'){c.fillStyle='rgba(2,5,12,.18)';c.fillRect(0,0,W,H)}if(this.enemyId==='voldemort2'&&this.phase>1){c.strokeStyle='rgba(255,255,255,.14)';c.lineWidth=2*this.scale;for(let i=0;i<this.phase*5;i++){c.beginPath();c.moveTo(W*rnd(.2,.8),H*.7);c.lineTo(W*rnd(.15,.85),H*rnd(.25,.65));c.stroke()}}if(this.flash>0){c.fillStyle=`rgba(255,255,255,${this.flash})`;c.fillRect(0,0,W,H)}c.restore();
+   if(this.timing){$('#timingCursor').style.left=(this.timing.value*100)+'%'}
+ }
+ drawArena(c,W,H){
+   const name=this.enemy.arena;c.fillStyle='#111827';c.fillRect(0,0,W,H);
+   // wall gradient strips
+   c.fillStyle='#1b2433';c.fillRect(0,H*.16,W,H*.54);c.fillStyle='#232d3c';for(let y=H*.18;y<H*.68;y+=34*this.scale)c.fillRect(0,y,W,2*this.scale);
+   if(name.includes('Дуэльный')){c.fillStyle='#361922';for(let x=0;x<W;x+=90*this.scale)c.fillRect(x,H*.18,42*this.scale,H*.35);c.fillStyle='#c3a158';for(let x=22*this.scale;x<W;x+=90*this.scale)c.fillRect(x,H*.24,12*this.scale,24*this.scale)}
+   if(name.includes('Тайная')){c.fillStyle='#17302f';for(let x=0;x<W;x+=120*this.scale){c.fillRect(x,H*.18,38*this.scale,H*.38);c.fillStyle='#2d5349';c.fillRect(x+10*this.scale,H*.26,6*this.scale,70*this.scale);c.fillStyle='#17302f'}}
+   if(name.includes('лес')||name.includes('Лес')){c.fillStyle='#12251a';c.fillRect(0,H*.12,W,H*.58);c.fillStyle='#243a26';for(let x=0;x<W;x+=75*this.scale)c.fillRect(x,H*.18,18*this.scale,H*.5)}
+   if(name.includes('Кладбище')){c.fillStyle='#20232a';for(let x=40*this.scale;x<W;x+=110*this.scale){c.fillRect(x,H*.42,32*this.scale,52*this.scale);c.fillRect(x-8*this.scale,H*.42,48*this.scale,8*this.scale)}}
+   c.fillStyle='#4a3a2d';c.fillRect(0,H*.70,W,H*.30);c.fillStyle='#69503a';c.fillRect(0,H*.70,W,6*this.scale);for(let x=0;x<W;x+=28*this.scale){c.fillStyle=(x/(28*this.scale))%2?'#4f3d30':'#584232';c.fillRect(x,H*.72,26*this.scale,H*.28)}
+   c.fillStyle='rgba(0,0,0,.35)';c.fillRect(W*.12,H*.69,W*.76,6*this.scale);
+   c.fillStyle='rgba(255,255,255,.18)';c.font=`${10*this.scale}px monospace`;c.textAlign='center';c.fillText(name,W/2,H*.12);
+ }
+ drawFighter(c,x,y,left,who){
+   const s=this.scale,enemyId=who===this.foe?this.enemyId:'harry';const creature=who===this.foe?this.enemy.creature:null;const rooted=this.hasStatus(who,'root'),lev=this.hasStatus(who,'levitate');if(lev)y-=24*s;const flip=left?1:-1;const bob=Math.sin(performance.now()/260+(left?0:1.4))*1.2*s;
+   c.fillStyle='rgba(0,0,0,.38)';c.fillRect(x-24*s,y+45*s,48*s,7*s);
+   c.save();c.translate(x,y+bob);c.scale(flip,1);
+   if(creature==='basilisk'||creature==='snake'){c.fillStyle=creature==='basilisk'?'#315e3d':'#477a49';for(let i=0;i<6;i++)c.fillRect((-38+i*12)*s,(12+Math.sin(i)*7)*s,20*s,10*s);c.fillRect(18*s,-8*s,34*s,22*s);c.fillStyle='#e6d15a';c.fillRect(40*s,-3*s,5*s,5*s);c.fillStyle='#d8e6d1';c.fillRect(50*s,6*s,16*s,3*s);c.restore();return}
+   if(creature==='spider'){c.fillStyle='#29231f';c.fillRect(-20*s,-8*s,40*s,28*s);c.fillRect(8*s,-20*s,24*s,22*s);c.strokeStyle='#493e35';c.lineWidth=4*s;for(let i=-1;i<=1;i+=2)for(let k=0;k<4;k++){c.beginPath();c.moveTo(i*14*s,(k-1)*5*s);c.lineTo(i*(32+k*6)*s,(k-2)*9*s);c.stroke()}c.fillStyle='#d94d4d';c.fillRect(20*s,-13*s,4*s,4*s);c.restore();return}
+   if(creature==='dementor'){c.fillStyle='#11151b';c.fillRect(-17*s,-31*s,34*s,53*s);c.fillStyle='#080a0e';c.fillRect(-12*s,-44*s,24*s,17*s);c.globalAlpha=.45;c.fillStyle='#232a33';c.fillRect(-27*s,10*s,54*s,34*s);c.globalAlpha=1;c.restore();return}
+   if(creature==='dragon'){c.fillStyle='#58382f';c.fillRect(-26*s,-12*s,52*s,28*s);c.fillRect(14*s,-27*s,38*s,24*s);c.fillStyle='#7e5141';c.beginPath();c.moveTo(-18*s,-8*s);c.lineTo(-48*s,-38*s);c.lineTo(-36*s,2*s);c.fill();c.fillStyle='#e7c45a';c.fillRect(40*s,-20*s,5*s,5*s);c.restore();return}
+   if(creature==='troll'||creature==='werewolf'){c.fillStyle=creature==='troll'?'#6d7666':'#53483e';c.fillRect(-18*s,-20*s,36*s,50*s);c.fillRect(-13*s,-39*s,26*s,22*s);c.fillStyle='#d2b390';c.fillRect(-7*s,-31*s,4*s,4*s);c.fillRect(5*s,-31*s,4*s,4*s);c.restore();return}
+   const palette={harry:['#1d1b19','#561e27','#d3a078'],draco:['#d8d0b8','#1e2c25','#d8a77d'],draco6:['#d8d0b8','#222b27','#d8a77d'],snape:['#171516','#101014','#c99d7d'],bellatrix:['#171317','#24151f','#c99579'],bellatrix7:['#171317','#24151f','#c99579'],voldemort1:['#e2e0d7','#253328','#d8d5c9'],voldemort2:['#e2e0d7','#253328','#d8d5c9'],dumbledore:['#d9d7cf','#5e496b','#d0a27f'],mcgonagall:['#3b332c','#24412f','#cc9f79'],hermione:['#5d3929','#4c2630','#d5a17e'],ron:['#9b5d36','#4c2630','#d5a17e']};const pal=palette[enemyId]||['#3a2a20','#252f3a','#d3a078'];
+   c.fillStyle=pal[1];c.fillRect(-13*s,-13*s,26*s,43*s);c.fillStyle=enemyId==='harry'?'#5a2028':pal[1];c.fillRect(-16*s,15*s,32*s,23*s);c.fillStyle=pal[2];c.fillRect(-9*s,-35*s,18*s,18*s);c.fillStyle=pal[0];c.fillRect(-12*s,-41*s,24*s,9*s);
+   if(enemyId==='harry'){c.fillStyle='#171717';c.fillRect(-8*s,-37*s,5*s,4*s);c.fillRect(3*s,-37*s,5*s,4*s);c.strokeStyle='#555';c.lineWidth=1*s;c.strokeRect?.(-9*s,-38*s,7*s,6*s);c.strokeRect?.(2*s,-38*s,7*s,6*s);c.fillStyle='#d9c3ad';c.fillRect(0,-34*s,2*s,4*s)}
+   if(enemyId.includes('voldemort')){c.fillStyle='#1f2421';c.fillRect(-1*s,-31*s,3*s,2*s);c.fillStyle='#a24c42';c.fillRect(-1*s,-25*s,3*s,2*s)}
+   const cast=(who.castUntil||0)>now();c.fillStyle=pal[2];c.fillRect(10*s,(cast?-18:-10)*s,12*s,6*s);c.fillStyle='#6b4a30';c.fillRect(20*s,(cast?-22:-12)*s,28*s,3*s);
+   if(rooted){c.fillStyle='#b8c8d8';c.globalAlpha=.48;c.fillRect(-19*s,-22*s,38*s,63*s);c.globalAlpha=1}
+   if(who.shieldUntil>now()||who.barrierUntil>now()){c.strokeStyle='#83c5ff';c.lineWidth=3*s;c.globalAlpha=.7;c.beginPath();c.arc(4*s,-2*s,40*s,-Math.PI/2,Math.PI/2);c.stroke();c.globalAlpha=1}
+   c.restore();
+ }
+ drawProjectile(c,p){const s=this.scale,dir=Math.sign(p.vx);c.globalAlpha=.25;c.fillStyle=p.spell.color;for(let i=1;i<=5;i++)c.fillRect(p.x-dir*i*8*s,p.y-rnd(2,5)*s,Math.max(2,(7-i))*s,4*s);c.beginPath();c.arc(p.x,p.y,p.r*2.5,0,Math.PI*2);c.fill();c.globalAlpha=1;c.fillStyle=p.spell.color;c.fillRect(p.x-p.r,p.y-p.r,p.r*2,p.r*2);c.fillStyle='#fff';c.fillRect(p.x-p.r*.3,p.y-p.r*.3,p.r*.6,p.r*.6)}
+ checkEnd(){if(this.player.hp<=0)this.end(false);else if(this.foe.hp<=0)this.end(true)}
+ end(win){
+   if(!this.running)return;this.running=false;window.removeEventListener('resize',this._resize);$('#clashModal').classList.remove('show');$('#timingModal').classList.remove('show');
+   win?sfx('win'):sfx('lose');win?save.stats.wins++:save.stats.losses++;save.stats.bestCombo=Math.max(save.stats.bestCombo,this.bestCombo);save.stats.perfects+=this.perfects;save.stats.casts+=this.casts;
+   if(win){save.achievements.firstWin=true;if(this.perfects>=5)save.achievements.perfect5=true;if(this.bestCombo>=4)save.achievements.combo4=true;if(this.damageTaken===0)save.achievements.noDamage=true;const xp=30+(this.enemy.boss?35:0)+Math.round(this.foe.maxHp/10);save.xp+=xp;const next=save.playerLevel*140;if(save.xp>=next){save.xp-=next;save.playerLevel++;save.skillPoints++}
+     this.usedSpells.forEach(id=>{save.spellMastery[id]=clamp((save.spellMastery[id]||0)+12+(this.enemy.boss?5:0)+(save.skills.knowledge||0)*2,0,100)});
+     if(this.enemy.boss&&Math.random()<.72){const card=awardCard();if(card)this._newCard=card}
+     this.unlockAfterWin();
+   }
+   if(this.extra.endless&&win){save.endlessBest=Math.max(save.endlessBest||0,(this.extra.streak||0)+1);this._endlessCarry=Math.min(100,this.player.hp+18)}
+   if(SPELLS.filter(s=>isSpellUnlocked(s)&&s.combat).length>=20)save.achievements.collector=true;
+   const elapsed=Math.max(1,(now()-this.startTime)/1000);const rank=this.calcRank(win,elapsed);if(win&&this.extra.campaign){const k=stageKey(this.extra.campaign.year,this.extra.campaign.index),old=save.ranks[k],score={C:1,B:2,A:3,S:4};if(!old||score[rank]>score[old])save.ranks[k]=rank}
+   persist();this.showResults(win,rank,elapsed);
+ }
+ unlockAfterWin(){
+   if(this.extra.campaign){const {year,index}=this.extra.campaign;save.unlockedStages[year]=Math.max(save.unlockedStages[year]||1,index+2);if(index>=CAMPAIGN[year-1].stages.length-1&&year<7)save.unlockedYear=Math.max(save.unlockedYear,year+1)}
+   const unlockable=SPELLS.filter(s=>s.unlock<=save.unlockedYear&&s.combat&&!s.secret&&!save.unlockedSpells.includes(s.id));if(unlockable.length){const s=unlockable[0];save.unlockedSpells.push(s.id);this._newSpell=s.name}
+ }
+ calcRank(win,elapsed){if(!win)return 'C';let score=100;score-=this.damageTaken*.55;score+=this.perfects*4+this.bestCombo*3;score-=Math.max(0,elapsed-70)*.12;if(score>=105)return'S';if(score>=82)return'A';if(score>=58)return'B';return'C'}
+ showResults(win,rank,elapsed){
+   $('#resultTitle').textContent=win?'ДУЭЛЬ ЗАВЕРШЕНА':'ПОРАЖЕНИЕ';$('#resultRank').textContent=rank;$('#resultStats').innerHTML=`<div class="stat">Время<b>${Math.floor(elapsed/60)}:${String(Math.floor(elapsed%60)).padStart(2,'0')}</b></div><div class="stat">Получено урона<b>${this.damageTaken}</b></div><div class="stat">Идеальных защит<b>${this.perfects}</b></div><div class="stat">Лучшее комбо<b>×${this.bestCombo}</b></div>`;$('#resultNew').textContent=[this._newSpell?`Новое заклинание: ${this._newSpell}`:'',this._newCard?`Карточка: ${this._newCard}`:'',this.extra.endless&&win?`Серия побед: ${(this.extra.streak||0)+1}`:''].filter(Boolean).join(' · ');$('#resultContinue').textContent=this.extra.endless&&win?'Следующий противник':'Продолжить';$('#resultModal').classList.add('show');
+ }
+ abort(){if(confirm('Выйти из дуэли? Прогресс боя не сохранится.')){this.running=false;window.removeEventListener('resize',this._resize);$('#resultModal').classList.remove('show');$('#clashModal').classList.remove('show');$('#timingModal').classList.remove('show');showScreen('homeScreen')}}
+}
+
+let battle=null;
+function startBattle(enemyId,extra={}){const mode=extra.mode||save.settings.mode;battle=new BattleEngine(enemyId,mode,extra);battle.start()}
+
+// UI wiring
+function initUI(){
+ $('#continueBtn').onclick=()=>showScreen('campaignScreen');$('#newGameBtn').onclick=()=>{if(confirm('Начать новую игру и удалить текущий локальный прогресс?'))resetSave()};$('#campaignBtn').onclick=()=>showScreen('campaignScreen');$('#spellBtn').onclick=()=>showScreen('spellScreen');$('#skillsBtn').onclick=()=>showScreen('skillsScreen');$('#endlessBtn').onclick=()=>showScreen('endlessScreen');$('#collectionBtn').onclick=()=>showScreen('collectionScreen');$('#duelBtn').onclick=()=>showScreen('duelScreen');$('#achieveBtn').onclick=()=>showScreen('achieveScreen');$('#settingsBtn').onclick=()=>showScreen('settingsScreen');
+ $$('.backHome').forEach(b=>b.onclick=()=>showScreen('homeScreen'));
+ $('#duelStart').onclick=()=>{save.selectedEnemy=$('#enemySelect').value;save.settings.mode=$('#duelModeSelect').value;persist();openPreBattle(save.selectedEnemy,{mode:save.settings.mode})};
+ $('#endlessStart').onclick=()=>{save.settings.mode=$('#endlessMode').value;persist();startEndless(save.settings.mode)};
+ $('#preBattleCancel').onclick=()=>$('#preBattleModal').classList.remove('show');$('#preBattleStart').onclick=()=>{const m=$('#preBattleModal'),id=m.dataset.enemy,extra=m._extra||{};m.classList.remove('show');startBattle(id,extra)};
+ $('#resultContinue').onclick=()=>{$('#resultModal').classList.remove('show');if(battle?.extra?.endless&&battle.player.hp>0&&battle.foe.hp<=0){startNextEndless(battle)}else showScreen(battle?.extra?.campaign?'campaignScreen':battle?.extra?.endless?'endlessScreen':'duelScreen')};$('#resultRetry').onclick=()=>{const id=battle.enemyId,ex=battle.extra;$('#resultModal').classList.remove('show');startBattle(id,ex)};
+ $('#timingStop').onclick=()=>battle?.confirmTiming();
+ $('#settingMode').onchange=e=>{save.settings.mode=e.target.value;persist()};$('#settingDifficulty').onchange=e=>{save.settings.difficulty=e.target.value;persist()};$('#settingSound').onchange=e=>{save.settings.sound=e.target.checked;persist()};$('#settingMusic').onchange=e=>{save.settings.music=e.target.checked;persist();save.settings.music?startMusic():stopMusic()};$('#secretToggle').onchange=e=>{save.secretSpells=e.target.checked;persist();renderSpells()};$('#resetBtn').onclick=()=>{if(confirm('Точно удалить весь локальный прогресс?'))resetSave()};
+ $('#unlockDemoBtn').onclick=()=>{save.unlockedYear=7;for(let y=1;y<=7;y++)save.unlockedStages[y]=99;SPELLS.filter(s=>!s.secret).forEach(s=>{if(!save.unlockedSpells.includes(s.id))save.unlockedSpells.push(s.id)});persist();renderAll();alert('Для демонстрации открыты все годы и обычные заклинания.')};
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&battle?.running&&battle.mode==='realtime')battle.message('ПАУЗА',1000)});
+}
+
+function applyDifficulty(){/* reserved: battle engine reads save difficulty in future balancing */}
+
+window.HPD={SPELLS,ENEMIES,CAMPAIGN,BattleEngine,getSave:()=>save,reset:resetSave,startBattle};
+window.addEventListener('DOMContentLoaded',()=>{initUI();renderAll();showScreen('homeScreen');});
+})();
+
+</script>
+</body>
+</html>
