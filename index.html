@@ -148,6 +148,81 @@ html,body,#app{width:100%;height:100%;overflow:hidden}
   .defense-stack{gap:5px!important}
 }
 </style>
+
+<style id="v7-polish">
+#battleLog{display:none!important}
+#battleHUD{gap:10px}
+.battle-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px}
+.battle-stat{min-height:60px;padding:8px 10px;background:rgba(6,10,18,.76);border:1px solid rgba(121,145,184,.18);border-radius:14px;backdrop-filter:blur(6px)}
+.battle-stat span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9fb1cf}
+.battle-stat b{display:block;font-size:clamp(18px,2vw,30px);color:#f0d17d;line-height:1.05;margin-top:2px}
+.battle-stat small{display:block;font-size:11px;line-height:1.2;color:#d6deef;margin-top:2px}
+#battleObjective{margin-top:8px;padding:9px 12px;border-radius:14px;background:rgba(8,13,22,.76);border:1px solid rgba(120,150,196,.16);font-size:12px}
+.fighter-panel{padding:10px 12px;border-radius:14px;border-color:#4a5d80;background:linear-gradient(180deg,rgba(7,11,19,.88),rgba(8,13,23,.75));box-shadow:0 10px 22px rgba(0,0,0,.22)}
+.fighter-name{font-size:clamp(14px,1.8vw,22px)}
+.bar{height:14px;border-radius:999px}
+.status-line{font-size:11px;height:18px}
+.mode-badge{border-radius:999px;padding:6px 12px;background:rgba(7,11,18,.7);backdrop-filter:blur(6px)}
+.hud-bottom{grid-template-columns:minmax(0,1fr) 128px;gap:12px;align-items:end}
+.spell-buttons{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.battle-btn{min-height:78px;border-radius:16px;background:linear-gradient(180deg,rgba(27,38,59,.96),rgba(12,18,29,.96));border-color:#59709b;box-shadow:0 6px 18px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.05)}
+.battle-btn .glyph{font-size:24px;line-height:1;margin-bottom:4px}
+.battle-btn .bname{font-size:12px;line-height:1.05}
+.battle-btn .bmeta{font-size:10px}
+.defense-stack .battle-btn{min-height:72px}
+.spell-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;min-height:0;overflow:hidden}
+.spell-card{min-height:0;border-radius:16px;padding:12px;background:linear-gradient(180deg,rgba(18,26,41,.98),rgba(11,17,28,.98));border:1px solid rgba(115,145,193,.24);box-shadow:0 12px 24px rgba(0,0,0,.18)}
+.spell-card .spell-name{font-size:clamp(15px,2vw,24px);line-height:1.05}
+.spell-card .spell-desc{font-size:12px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.spell-card .btn.small{min-height:42px;border-radius:12px}
+.collection-grid-v2{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:10px;min-height:0;overflow:hidden}
+.collector-card{position:relative;overflow:hidden;text-align:left;padding:12px;gap:6px;background:linear-gradient(180deg,rgba(18,25,38,.98),rgba(10,16,28,.98));border:1px solid rgba(115,145,193,.18);border-radius:16px;box-shadow:0 12px 24px rgba(0,0,0,.16)}
+.collector-card.locked{opacity:.55;filter:saturate(.65) grayscale(.25)}
+.collector-card .collector-art{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;background:radial-gradient(circle at 25% 30%,rgba(240,209,125,.22),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:14px;margin-bottom:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.collector-card .collector-icon{font-size:30px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.18))}
+.collector-card .collector-house{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#d7e2f2;background:rgba(255,255,255,.05);padding:4px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.06)}
+.collector-card .collector-rarity{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#aebad1}
+.collector-card h3{margin:0;font-size:clamp(14px,1.7vw,20px);line-height:1.05;color:#f4df9f}
+.collector-card p{margin:0;font-size:11px;line-height:1.25;color:#d4dceb;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.collector-card .collector-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:4px}
+.collector-card .collector-tag{font-size:10px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);color:#dbe3f3}
+.collector-card .collector-index{font-size:10px;color:#8fa1bf}
+.collection-shell,.spell-shell{flex:1;min-height:0}
+#collectionGrid,#spellGrid,#achievementList,#skillsGrid{min-height:0}
+@media (max-width: 980px){
+  .battle-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .spell-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .collection-grid-v2{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr))}
+}
+</style>
+
+
+<style id="v8-pass">
+.screen{overflow:hidden}
+.full-layout,.panel{overflow:hidden}
+.topbar{padding:10px 2px 14px;border-bottom:1px solid rgba(111,134,170,.22)}
+.topbar h2{font-size:clamp(20px,2.4vw,30px);letter-spacing:.03em;color:#f6e8bb}
+.panel,.card,.campaign-meta,.stage-hero,.spell-card,.collector-card,.achievement,.skill-card{box-shadow:0 14px 28px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.04)}
+#homeScreen .screen-shell{grid-template-rows:auto auto auto 1fr;gap:6px}
+#homeScreen .panel.menu{display:grid;grid-template-columns:repeat(2,minmax(240px,1fr));gap:12px;padding:14px;background:linear-gradient(180deg,rgba(17,24,39,.88),rgba(9,13,22,.92));border-color:#425577;border-radius:18px;backdrop-filter:blur(10px)}
+#homeScreen .menu .btn{border-radius:14px;min-height:54px;box-shadow:0 8px 0 #080b10, inset 0 1px 0 rgba(255,255,255,.04)}
+#homeScreen .menu .btn.primary{background:linear-gradient(180deg,#3e3018,#2a210f);border-color:#c2a05a;color:#ffefbe}
+.home-dashboard{width:min(980px,96vw);display:grid;grid-template-columns:1.3fr .9fr;gap:10px;margin:4px 0 8px}
+.summary-hero{display:flex;flex-direction:column;gap:10px;background:linear-gradient(160deg,rgba(18,27,43,.92),rgba(10,16,27,.92));border:2px solid #415374;border-radius:18px;padding:14px;backdrop-filter:blur(8px)}
+.summary-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#e1c57b}
+.summary-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.summary-title{font-size:clamp(20px,2.6vw,34px);line-height:1.04;color:#f5e4ab;font-weight:800}.summary-copy{font-size:13px;line-height:1.4;color:#cbd5e6;max-width:38ch}
+.summary-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.summary-mini{padding:10px;border-radius:14px;border:1px solid rgba(109,132,170,.18);background:rgba(4,9,16,.36)}
+.summary-mini span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#96abc9}.summary-mini b{display:block;font-size:20px;color:#f5d98a;margin:4px 0 2px}.summary-mini small{display:block;font-size:11px;color:#c5d0e2;line-height:1.25}
+.summary-side{display:grid;gap:10px}.summary-pill{padding:12px;border-radius:16px;border:1px solid rgba(112,134,173,.18);background:linear-gradient(180deg,rgba(16,23,38,.94),rgba(10,15,25,.92))}
+.summary-pill span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#96abc9}.summary-pill b{display:block;font-size:clamp(18px,2.2vw,30px);color:#f0d17d;margin-top:2px}.summary-pill small{display:block;font-size:11px;line-height:1.25;color:#ced8e8;margin-top:4px}
+.summary-actions{display:flex;gap:8px;flex-wrap:wrap}.summary-actions .tag{margin:0;padding:6px 10px;font-size:10px;background:rgba(255,255,255,.05)}
+.campaign-meta,.stage-hero{border-radius:16px}.screen-kpis{gap:10px}.kpi-card{border-radius:14px;background:rgba(6,12,20,.42);border:1px solid rgba(120,149,195,.14)}
+.stage-preview,.spell-card,.collector-card,.achievement,.skill-card,.fighter-panel,.battle-btn{border-radius:16px}.spell-head{align-items:flex-start;gap:10px}.spell-icon{width:54px;height:54px;border-radius:16px}.progress-track,.surge-meter,.stagger-wrap{background:rgba(255,255,255,.06)}
+.collection-grid-v2,.spell-grid.paged{gap:10px}#battleHUD{padding:10px}.hud-top{gap:10px}.fighter-panel{padding:10px 12px;background:linear-gradient(180deg,rgba(4,9,15,.80),rgba(8,13,22,.72))}.battle-message{font-size:clamp(16px,2vw,26px);padding:8px 16px;border-radius:999px;background:rgba(7,11,17,.52);backdrop-filter:blur(10px)}
+.mode-badge{border:1px solid rgba(109,138,183,.26);box-shadow:0 10px 25px rgba(0,0,0,.2)}.battle-btn.ready{transform:translateY(-1px);box-shadow:0 12px 22px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05)}.battle-btn.tempo-ready{box-shadow:0 0 0 1px rgba(240,209,125,.42) inset,0 0 22px rgba(240,209,125,.14),0 10px 22px rgba(0,0,0,.28)}
+@media (max-width:980px){.home-dashboard{grid-template-columns:1fr}}
+</style>
+
 </head>
 <body>
 <div id="app">
@@ -283,7 +358,7 @@ const rnd = (a,b)=>a+Math.random()*(b-a);
 const pick = a=>a[Math.floor(Math.random()*a.length)];
 const weightedPick=(arr,weightFn)=>{let total=0,weights=arr.map(x=>{const w=Math.max(.01,weightFn(x));total+=w;return w});let r=Math.random()*total;for(let i=0;i<arr.length;i++){r-=weights[i];if(r<=0)return arr[i]}return arr[arr.length-1]};
 
-const GAME_VERSION='6.1.0-fan';
+const GAME_VERSION='8.0.0-fan';
 const SAVE_KEY='hp_pixel_duels_ru_v3';
 
 const STATUS_RU={
@@ -478,52 +553,34 @@ function arenaKey(name=''){
 }
 
 function drawArenaBackdrop(c,W,H,name,scale=1,time=0){
- const key=arenaKey(name), s=scale, floorY=H*.70;
- const fill=(col,x,y,w,h)=>{c.fillStyle=col;c.fillRect(x,y,w,h)};
- let sky='#111827',wall='#1c2738',floor='#49392d',accent='#6a513a';
- if(['forest','lake','grounds','astronomy','nighthogwarts','graveyard','battlehogwarts'].includes(key)){sky='#07111d';wall='#111a25'}
- if(key==='chamber'){sky='#071311';wall='#16352f';floor='#1e302c';accent='#38594f'}
- if(key==='underwater'){sky='#071a27';wall='#0b2a3a';floor='#123542';accent='#1e5162'}
- if(key==='ministry'){sky='#091514';wall='#17322e';floor='#1f322e';accent='#36554f'}
- if(key==='manor'||key==='grimmauld'){sky='#0c0d12';wall='#1b1820';floor='#332827';accent='#51403c'}
- if(key==='greathall'){sky='#0b1020';wall='#312819';floor='#4a3826';accent='#785b31'}
- fill(sky,0,0,W,H); fill(wall,0,H*.12,W,H*.58);
- // unique background language
- if(key==='duel'){fill('#3a1821',0,H*.17,W,H*.42);for(let x=0;x<W;x+=W/7){fill('#531d28',x,H*.18,W/14,H*.34);fill('#d1b25c',x+W/45,H*.25,W/85,H*.06)}fill('#1e2633',0,H*.58,W,H*.12);for(let i=0;i<12;i++){fill('#080b10',W*(.05+i*.08),H*.52,W*.025,H*.08)}}
- else if(key==='chamber'){for(let x=0;x<W;x+=W/6){fill('#21473e',x,H*.16,W*.05,H*.44);fill('#497568',x+W*.013,H*.23,W*.008,H*.15)}c.strokeStyle='#5e8a70';c.lineWidth=3*s;for(let i=0;i<3;i++){c.beginPath();c.arc(W*(.2+i*.3),H*.42,H*.12,0,Math.PI*2);c.stroke()}fill('#0a1b17',W*.40,H*.24,W*.20,H*.36);fill('#436455',W*.47,H*.28,W*.06,H*.16)}
- else if(key==='forest'){fill('#0b2118',0,H*.10,W,H*.60);for(let i=0;i<13;i++){let x=W*(i/12);fill(i%2?'#1b3526':'#142d20',x,H*.12,W*.035,H*.58);fill('#203c28',x-W*.035,H*.18,W*.10,H*.05)}fill('rgba(136,165,162,.10)',Math.sin(time/1400)*18*s,H*.45,W,H*.18)}
- else if(key==='graveyard'){fill('#11151f',0,H*.12,W,H*.58);for(let i=0;i<9;i++){let x=W*(.05+i*.11);fill('#34363b',x,H*.44,W*.035,H*.16);fill('#484a4f',x-W*.008,H*.43,W*.052,H*.018)}fill('rgba(160,165,180,.08)',Math.sin(time/1700)*20*s,H*.46,W,H*.20)}
- else if(key==='lake'){fill('#081522',0,0,W,H*.49);fill('#0a2633',0,H*.49,W,H*.21);c.fillStyle='rgba(170,205,220,.15)';for(let i=0;i<7;i++)c.fillRect(0,H*(.50+i*.022),W,2*s);fill('#111826',W*.68,H*.20,W*.25,H*.29);fill('#d9d2a9',W*.12,H*.15,H*.12,H*.12)}
- else if(key==='train'){fill('#4a2520',0,H*.14,W,H*.55);for(let i=0;i<4;i++){let x=W*(.08+i*.24);fill('#111826',x,H*.22,W*.16,H*.24);fill('#6f7f8f',x+W*.012,H*.24,W*.136,H*.19)}fill('#6a332b',0,H*.55,W,H*.14);for(let i=0;i<5;i++)fill('#b38b56',W*(.06+i*.21),H*.18,W*.008,H*.36)}
- else if(key==='bathroom'){fill('#223442',0,H*.14,W,H*.56);for(let y=H*.14;y<H*.66;y+=H*.07){fill('#536775',0,y,W,2*s)}for(let x=0;x<W;x+=W*.08)fill('#536775',x,H*.14,2*s,H*.52);for(let i=0;i<7;i++){let x=W*(.1+i*.12);fill('#b9c6cc',x,H*.52,W*.07,H*.04);fill('#7f929d',x+W*.027,H*.44,W*.015,H*.08)}}
- else if(key==='dungeon'){fill('#101921',0,H*.12,W,H*.58);for(let x=0;x<W;x+=W*.12){fill('#26323a',x,H*.16,W*.07,H*.45);fill('#43504f',x,H*.16,W*.07,3*s)}for(let i=0;i<5;i++){let x=W*(.12+i*.19);fill('#73a45c',x,H*.30,W*.008,H*.10);fill('#b9d46f',x-W*.005,H*.28,W*.018,H*.03)}}
- else if(key==='classroom'){fill('#26232b',0,H*.13,W,H*.57);for(let i=0;i<4;i++){let x=W*(.06+i*.24);fill('#4b3f35',x,H*.22,W*.17,H*.34);for(let k=0;k<4;k++)fill('#887257',x+W*.012,H*(.26+k*.065),W*.145,2*s)}fill('#d8c890',W*.46,H*.31,W*.07,H*.08)}
- else if(key==='tournament'){fill('#2d2520',0,H*.18,W,H*.52);for(let i=0;i<8;i++){let x=W*(i/8);fill(i%2?'#5e2a2d':'#1c3b2a',x,H*.18,W*.125,H*.17)}fill('#8c7149',0,H*.35,W,H*.08);for(let i=0;i<18;i++)fill('#111318',W*(.02+i*.055),H*.28,W*.018,H*.06)}
- else if(key==='underwater'){for(let i=0;i<8;i++){let x=W*(i/8);fill(i%2?'#0e3546':'#0b2c3c',x,H*.16,W*.10,H*.50)}for(let i=0;i<18;i++){let x=W*((i*73)%100)/100,y=H*(.18+((i*37)%45)/100);c.strokeStyle='#2c7185';c.lineWidth=2*s;c.beginPath();c.moveTo(x,H*.70);c.quadraticCurveTo(x+8*s,y,x+2*s,y-20*s);c.stroke()}}
- else if(key==='maze'){fill('#102317',0,H*.12,W,H*.58);for(let i=0;i<7;i++){let x=W*(i/7);fill('#1d452a',x,H*.18,W*.10,H*.52);fill('#2e5b38',x+W*.015,H*.20,W*.07,H*.48)}}
- else if(key==='mysteries'){fill('#080a10',0,H*.12,W,H*.58);for(let i=0;i<5;i++){let x=W*(.1+i*.19);c.strokeStyle='#4c5364';c.lineWidth=5*s;c.beginPath();c.arc(x,H*.38,H*.17,Math.PI,0);c.stroke();fill('#151822',x-H*.17,H*.38,H*.34,H*.27)}for(let i=0;i<8;i++){fill('#39445a',W*(.05+i*.12),H*.20,W*.035,H*.035)}}
- else if(key==='ministry'){fill('#0c211d',0,H*.13,W,H*.57);for(let i=0;i<6;i++){let x=W*(.05+i*.17);fill('#1e4b41',x,H*.20,W*.10,H*.34);fill('#5b8e7d',x+W*.012,H*.22,W*.076,H*.03)}fill('#27423d',0,H*.54,W,H*.16)}
- else if(key==='cave'){fill('#0b1017',0,H*.10,W,H*.60);for(let i=0;i<9;i++){let x=W*(i/8);c.fillStyle=i%2?'#29303a':'#1f252d';c.beginPath();c.moveTo(x,H*.10);c.lineTo(x+W*.06,H*.44);c.lineTo(x+W*.12,H*.10);c.fill()}fill('#111d27',0,H*.49,W,H*.21)}
- else if(key==='astronomy'){fill('#08101e',0,H*.05,W,H*.65);for(let i=0;i<24;i++)fill('#d9e4ff',W*((i*41)%100)/100,H*(.08+((i*67)%35)/100),2*s,2*s);fill('#303747',W*.10,H*.36,W*.12,H*.34);fill('#3b4558',W*.42,H*.25,W*.16,H*.45);fill('#2b3342',W*.75,H*.40,W*.10,H*.30)}
- else if(key==='manor'){fill('#16141b',0,H*.12,W,H*.58);for(let i=0;i<5;i++){let x=W*(.05+i*.2);fill('#3a3138',x,H*.18,W*.14,H*.42);fill('#796457',x+W*.055,H*.24,W*.025,H*.15)}fill('#231e24',0,H*.52,W,H*.18)}
- else if(key==='battlehogwarts'){fill('#11141a',0,H*.10,W,H*.60);for(let i=0;i<6;i++){let x=W*(.04+i*.18);fill('#3b3b3d',x,H*(.25+(i%2)*.06),W*.12,H*.45);fill('#18191e',x+W*.03,H*.42,W*.05,H*.22)}for(let i=0;i<6;i++){let x=W*(.12+i*.15),f=(Math.sin(time/120+i)+1)*.006*H;fill('#ff7b3d',x,H*.46-f,W*.02,H*.08+f);fill('#ffc35c',x+W*.004,H*.47-f,W*.012,H*.05+f)}}
- else if(key==='greathall'){fill('#30261a',0,H*.12,W,H*.58);for(let i=0;i<8;i++){let x=W*(.04+i*.12);fill('#c4a35d',x,H*.18,3*s,H*.32);fill('#ffe172',x-3*s,H*.16,9*s,8*s)}for(let i=0;i<3;i++){fill('#5b4027',W*.08,H*(.48+i*.07),W*.84,H*.035)}}
- else if(key==='requirement'){fill('#24212a',0,H*.12,W,H*.58);for(let i=0;i<7;i++){let x=W*(.05+i*.14);fill('#4c4036',x,H*.22,W*.09,H*.33);fill('#8c775b',x+W*.012,H*.25,W*.066,H*.02)}for(let i=0;i<5;i++)fill('#58667a',W*(.1+i*.18),H*.52,W*.05,H*.12)}
- else if(key==='grimmauld'){fill('#1c1920',0,H*.12,W,H*.58);fill('#4a4038',W*.12,H*.19,W*.20,H*.39);fill('#17131a',W*.19,H*.25,W*.06,H*.25);for(let i=0;i<4;i++)fill('#5a4a3f',W*(.42+i*.12),H*.24,W*.06,H*.28)}
- else if(key==='nighthogwarts'||key==='grounds'){fill('#091221',0,H*.08,W,H*.62);fill('#202b38',W*.60,H*.24,W*.30,H*.46);fill('#2f3c4d',W*.67,H*.13,W*.07,H*.57);for(let i=0;i<6;i++)fill('#f2d991',W*(.65+i*.04),H*(.30+(i%2)*.06),W*.012,H*.025)}
- else if(key==='corridor'){fill('#2a2b31',0,H*.12,W,H*.58);for(let i=0;i<7;i++){let x=W*(.04+i*.145);fill('#47464b',x,H*.16,W*.10,H*.42);c.fillStyle='#11141c';c.beginPath();c.arc(x+W*.05,H*.31,W*.035,Math.PI,0);c.fillRect(x+W*.015,H*.31,W*.07,H*.20);c.fill()}for(let i=0;i<5;i++){fill('#ffcf72',W*(.1+i*.2),H*.29,W*.01,H*.06)}}
- else if(key==='practice'){fill('#1f2632',0,H*.12,W,H*.58);for(let i=0;i<5;i++){let x=W*(.08+i*.2);fill('#3b4654',x,H*.22,W*.12,H*.32);fill('#b79457',x+W*.052,H*.28,W*.016,H*.10)}fill('#5d472f',W*.10,H*.53,W*.80,H*.06)}
- else{fill('#1b2635',0,H*.12,W,H*.58);for(let i=0;i<6;i++){let x=W*(.05+i*.17);fill('#364558',x,H*.20,W*.10,H*.36)}}
- // floor
- fill(floor,0,floorY,W,H-floorY);fill(accent,0,floorY,W,5*s);for(let x=0;x<W;x+=28*s){c.fillStyle=((x/(28*s))%2)?floor:accent;c.globalAlpha=.25;c.fillRect(x,floorY+6*s,26*s,H-floorY);c.globalAlpha=1}
- c.fillStyle='rgba(0,0,0,.30)';c.fillRect(W*.10,floorY-3*s,W*.80,6*s);
- // animated foreground atmosphere and light shafts
- c.save();
- for(let i=0;i<14;i++){const px=((i*97+(time*.018))%(W+80))-40,py=H*(.18+((i*43)%47)/100);c.globalAlpha=.05+((i%4)*.018);c.fillStyle=['#d8e7ff','#f2d991','#b7d8cf'][i%3];c.fillRect(px,py,(i%3+1)*s,(i%3+1)*s)}
- if(['forest','graveyard','lake','chamber','underwater'].includes(key)){c.globalAlpha=.08;c.fillStyle=key==='underwater'?'#68c8df':'#b4c7cc';for(let i=0;i<4;i++){const yy=H*(.34+i*.07),xx=((time*.015*(i+1))%(W*1.2))-W*.15;c.fillRect(xx,yy,W*.45,H*.025)}}
- if(['duel','greathall','corridor','practice','battlehogwarts'].includes(key)){for(let i=0;i<7;i++){const x=W*(.08+i*.14),f=1+Math.sin(time/90+i)*.25;c.globalAlpha=.18;c.fillStyle='#ffd77b';c.beginPath();c.arc(x,H*.26,6*s*f,0,Math.PI*2);c.fill()}}
- c.restore();
+ const key=arenaKey(name), s=scale, floorY=H*.71;
+ const rect=(x,y,w,h,col,a=1)=>{c.globalAlpha=a;c.fillStyle=col;c.fillRect(x,y,w,h);c.globalAlpha=1};
+ const grad=(y0,y1,a,b)=>{const g=c.createLinearGradient(0,y0,0,y1);g.addColorStop(0,a);g.addColorStop(1,b);return g};
+ let sky1='#10182a',sky2='#070b12',wall1='#1b2637',wall2='#101722',floor1='#544133',floor2='#2d221d',glow='#d7bc75';
+ if(['forest','grounds','nighthogwarts'].includes(key)){sky1='#08161f';sky2='#03070b';wall1='#10271d';wall2='#091912';floor1='#2f3828';floor2='#171c14';glow='#9fd2b2'}
+ if(key==='graveyard'){sky1='#111421';sky2='#06080d';wall1='#222631';wall2='#0f121a';floor1='#4f4d52';floor2='#262328';glow='#cfd6eb'}
+ if(key==='chamber'){sky1='#0a1714';sky2='#040907';wall1='#17352f';wall2='#0d1d1a';floor1='#29433d';floor2='#13211e';glow='#8ac0a4'}
+ if(key==='underwater'||key==='lake'){sky1='#082233';sky2='#04111a';wall1='#0f3347';wall2='#081d28';floor1='#19455b';floor2='#0d2431';glow='#97dfff'}
+ if(key==='greathall'){sky1='#12192f';sky2='#070b12';wall1='#362814';wall2='#1a1410';floor1='#674a27';floor2='#342515';glow='#f2dba2'}
+ if(key==='ministry'){sky1='#081717';sky2='#030909';wall1='#17352f';wall2='#0b1a18';floor1='#31524b';floor2='#162825';glow='#79d4bf'}
+ if(key==='manor'||key==='grimmauld'){sky1='#131219';sky2='#08080b';wall1='#241f28';wall2='#100f13';floor1='#4b3733';floor2='#241917';glow='#d3c0a2'}
+ c.fillStyle=grad(0,H,sky1,sky2); c.fillRect(0,0,W,H);
+ c.fillStyle=grad(H*.1,floorY,wall1,wall2); c.fillRect(0,H*.08,W,floorY-H*.08);
+ c.fillStyle=grad(floorY,H,floor1,floor2); c.fillRect(0,floorY,W,H-floorY);
+ for(let i=0;i<18;i++){const x=(i/17)*W+Math.sin(time/1200+i)*8*s; rect(x,H*.13+((i%5)*H*.02),2*s,2*s,'rgba(255,255,255,.16)',.4)}
+ rect(0,floorY-2*s,W,2*s,'rgba(255,255,255,.08)');
+ if(key==='duel'||key==='classroom'||key==='practicehall'){for(let i=0;i<6;i++){const x=W*(.07+i*.155); rect(x,H*.18,W*.035,H*.44,'#263447'); rect(x+W*.012,H*.26,W*.009,H*.11,glow,.75); rect(x-W*.024,H*.56,W*.085,H*.022,'#423424')}}
+ if(key==='forest'){for(let i=0;i<14;i++){const x=W*(i/13); rect(x,H*.12,W*.028,H*.56,i%2?'#14281e':'#0e2119'); rect(x-W*.03,H*.16,W*.09,H*.04,'#1d3a2d')} rect(Math.sin(time/1500)*24*s,H*.48,W,H*.18,'rgba(174,210,198,.06)')}
+ if(key==='graveyard'){for(let i=0;i<9;i++){const x=W*(.05+i*.11); rect(x,H*.46,W*.035,H*.14,'#44464b'); rect(x-W*.006,H*.45,W*.047,H*.016,'#676a6f')} rect(Math.sin(time/1700)*22*s,H*.44,W,H*.22,'rgba(214,220,233,.06)')}
+ if(key==='lake'){for(let i=0;i<6;i++)rect(0,H*(.50+i*.022),W,2*s,'rgba(180,225,255,.16)'); rect(W*.68,H*.18,W*.22,H*.28,'#152033'); rect(W*.12,H*.15,H*.11,H*.11,'#e5ddaf')}
+ if(key==='underwater'){for(let i=0;i<10;i++){const x=W*(i/9); c.strokeStyle='rgba(111,213,245,.16)'; c.lineWidth=3*s; c.beginPath(); c.moveTo(x,H); c.quadraticCurveTo(x+18*s,H*.7,x-8*s,H*.36); c.stroke()}}
+ if(key==='chamber'){for(let i=0;i<5;i++){const x=W*(.1+i*.18); rect(x,H*.16,W*.05,H*.42,'#21473e'); rect(x+W*.018,H*.24,W*.012,H*.13,'#6b8d73')} c.strokeStyle='rgba(110,167,142,.28)'; c.lineWidth=3*s; for(let i=0;i<3;i++){c.beginPath(); c.arc(W*(.22+i*.28),H*.39,H*.11,0,Math.PI*2); c.stroke()}}
+ if(key==='greathall'){for(let i=0;i<5;i++){const x=W*(.12+i*.17); rect(x,H*.16,W*.03,H*.48,'#5a4121'); rect(x-W*.014,H*.20,W*.06,H*.025,'#a28247'); rect(x+W*.008,H*.27,W*.008,H*.08,'#f0da96',.75)}}
+ if(key==='ministry'){for(let i=0;i<7;i++){const x=W*(.06+i*.13); rect(x,H*.16,W*.04,H*.42,'#214840'); rect(x+W*.012,H*.24,W*.012,H*.11,'#7ce2cb',.55)}}
+ if(key==='manor'||key==='grimmauld'){for(let i=0;i<4;i++){const x=W*(.1+i*.23); rect(x,H*.18,W*.07,H*.28,'#17131b'); rect(x+W*.012,H*.23,W*.046,H*.17,'#5d5564'); rect(x+W*.024,H*.25,W*.022,H*.13,'#d4c39a',.38)}}
+ for(let i=0;i<10;i++)rect(W*(i/10),floorY,W*.004,H-floorY,'rgba(0,0,0,.08)'); rect(0,floorY,W,H*.02,'rgba(255,255,255,.05)');
 }
+
 
 function getCurrentCampaign(){
  const year=Math.max(1,Math.min(7,save.unlockedYear||1)), y=CAMPAIGN[year-1];
@@ -588,7 +645,17 @@ function rankStars(r){return r==='S'?'★★★★':r==='A'?'★★★':r==='B'?
 function stageKey(y,i){return `${y}-${i}`}
 function spellGlyph(s){const id=s?.id||s;const map={expelliarmus:'⚡',stupefy:'✦',protego:'🛡',protego_maxima:'🛡',petrificus:'⛓',rictusempra:'✨',reducto:'💥',bombarda:'💣',bombarda_maxima:'☄',confringo:'🔥',incendio:'🔥',accio:'🪄',wingardium:'📦',impedimenta:'❄',incarcerous:'🪢',patronus:'🦌',riddikulus:'🎭',confundus:'🌀',oppugno:'🪶',arresto:'⏳',lumos_maxima:'💡',finite:'✖',episkey:'➕',sectumsempra:'🩸',vulnera:'💚',crucio:'☠',imperio:'👁',avada:'💚',serpensortia:'🐍',vipera:'✂',aranea:'🕷',aguamenti:'💧',piertotum:'🗿',repello:'🧿',levicorpus:'⬆'};return map[id]||'✧'}
 function winRate(){const total=(save.stats.wins||0)+(save.stats.losses||0);return total?Math.round((save.stats.wins||0)/total*100):0}
-function renderHome(){const root=$('#homeSummary');if(!root)return;const totalStages=CAMPAIGN.reduce((n,y)=>n+y.stages.length,0);const cleared=Object.keys(save.ranks||{}).length;const combatUnlocked=SPELLS.filter(s=>s.combat&&isSpellUnlocked(s)).length;const year=Math.max(1,Math.min(7,save.unlockedYear||1));root.innerHTML=`<div class="summary-pill"><span>Прогресс</span><b>${cleared}/${totalStages}</b><small>${year}-й учебный год · ${Math.round(cleared/totalStages*100)||0}% кампании</small></div><div class="summary-pill"><span>Арсенал</span><b>${combatUnlocked}</b><small>боевых заклинаний открыто</small></div><div class="summary-pill"><span>Уровень Гарри</span><b>${save.playerLevel}</b><small>${save.skillPoints||0} очк. развития · XP ${save.xp}</small></div><div class="summary-pill"><span>Статистика</span><b>${winRate()}%</b><small>${save.stats.wins||0} побед · комбо ×${save.stats.bestCombo||0}</small></div>`}
+function renderHome(){
+ const root=$('#homeSummary');if(!root)return;
+ const totalStages=CAMPAIGN.reduce((n,y)=>n+y.stages.length,0);
+ const cleared=Object.keys(save.ranks||{}).length;
+ const combatUnlocked=SPELLS.filter(s=>s.combat&&isSpellUnlocked(s)).length;
+ const year=Math.max(1,Math.min(7,save.unlockedYear||1));
+ const {stage}=getCurrentCampaign(); const enemy=ENEMIES[stage[0]];
+ const nextSpellId=STAGE_UNLOCKS[stageKey(year,Math.max(0,(save.unlockedStages?.[year]||1)-1))];
+ const teasedSpell=nextSpellId?(spellById(nextSpellId)?.name||nextSpellId):'Новое сюжетное заклинание';
+ root.innerHTML=`<div class="home-dashboard"><div class="summary-hero"><div class="summary-kicker">Версия ${GAME_VERSION} · готово к следующей дуэли</div><div class="summary-head"><div><div class="summary-title">${enemy.name}</div><div class="summary-copy">Текущая сюжетная сцена проходит на арене «${enemy.arena}». Следующее испытание скрыто до победы, а награды и противники открываются строго поэтапно — как в полноценной мобильной кампании.</div></div><div class="summary-actions"><span class="tag">${year}-й год</span><span class="tag">${enemy.boss?'Босс':'Сцена'}</span><span class="tag">HP ${enemy.hp}</span></div></div><div class="summary-stats"><div class="summary-mini"><span>Кампания</span><b>${cleared}/${totalStages}</b><small>${Math.round(cleared/totalStages*100)||0}% общего прогресса</small></div><div class="summary-mini"><span>Арсенал</span><b>${combatUnlocked}</b><small>боевых заклинаний уже открыто</small></div><div class="summary-mini"><span>Гарри</span><b>ур. ${save.playerLevel}</b><small>${save.skillPoints||0} очк. развития · XP ${save.xp}</small></div></div></div><div class="summary-side"><div class="summary-pill"><span>Следующая награда</span><b>${teasedSpell}</b><small>Откроется после ключевой сюжетной победы текущего этапа.</small></div><div class="summary-pill"><span>Статистика дуэлей</span><b>${winRate()}%</b><small>${save.stats.wins||0} побед · ${save.stats.losses||0} поражений · лучшее комбо ×${save.stats.bestCombo||0}</small></div><div class="summary-pill"><span>Боевой стиль</span><b>${save.settings.mode==='turnbased'?'Пошаговый':'Real-time'}</b><small>${save.settings.difficulty==='hard'?'Сложный':save.settings.difficulty==='easy'?'Лёгкий':'Нормальный'} режим · готовьтесь к чтению намерений врага и таймингу Протего.</small></div></div></div>`}
+
 
 function renderCampaign(){
  const root=$('#campaignShell'); if(!root)return; root.innerHTML='';
@@ -616,71 +683,68 @@ function drawPreviewFighter(c,x,y,left,id,who,s,enemy=ENEMIES[id]){
  drawHumanPixel(c,s,spec,id,{cast:false,hit:false,rooted:false,shield:false,statuses:{}});c.restore();
 }
 function drawHumanPixel(c,s,sp,id,state){
- sp=sp||CHARACTER_SPECS.slytherin;const skin=sp.skin||'#c99574',robe=sp.robe||'#262c35',acc=sp.accent||'#66717f',hair=sp.hair||'#2c2724';
- const time=performance.now(),hit=state.hit,cast=state.cast,breath=Math.sin(time/260)*1.1*s,cloak=Math.sin(time/210+(id.length%5))*.9*s,castKick=cast?Math.sin(Math.min(1,((state.castUntil||time)-time+330)/330)*Math.PI)*3*s:0;
- c.save();c.translate(castKick,breath*.25);if(hit)c.rotate(-.12);
- // ground contact + legs
- c.fillStyle='#0a0b0e';c.fillRect(-13*s,49*s,28*s,4*s);c.fillStyle='#17191f';c.fillRect(-11*s,28*s,9*s,22*s);c.fillRect(2*s,28*s,9*s,22*s);c.fillStyle='#08090c';c.fillRect(-13*s,48*s,12*s,5*s);c.fillRect(1*s,48*s,12*s,5*s);
- // cloak silhouette, split hem and folds
- c.fillStyle=robe;c.fillRect(-18*s,-5*s,36*s,36*s);c.beginPath();c.moveTo(-18*s,27*s);c.lineTo((-15+cloak)*s/s,42*s);c.lineTo(-3*s,34*s);c.lineTo(0,45*s);c.lineTo(4*s,34*s);c.lineTo((16-cloak)*s/s,42*s);c.lineTo(18*s,27*s);c.fill();
- c.fillStyle=acc;c.fillRect(-18*s,17*s,36*s,5*s);c.fillStyle='rgba(255,255,255,.08)';c.fillRect(-9*s,-1*s,3*s,29*s);c.fillRect(5*s,-1*s,3*s,29*s);c.fillStyle='rgba(0,0,0,.13)';c.fillRect(-1*s,-2*s,2*s,34*s);
- // house tie / scarf
- c.fillStyle=acc;c.fillRect(-5*s,-6*s,10*s,17*s);if(id==='harry'||id==='hermione'||id==='ron'){c.fillStyle='#d4bd78';c.fillRect(-5*s,-1*s,10*s,3*s);c.fillRect(-5*s,6*s,10*s,3*s)}
- // neck + head with small jaw shading
- c.fillStyle=skin;c.fillRect(-5*s,-9*s,10*s,6*s);c.fillRect(-11*s,-30*s,22*s,24*s);c.fillStyle='rgba(105,63,50,.25)';c.fillRect(-9*s,-8*s,18*s,3*s);c.fillStyle='#8e5c49';c.fillRect(-4*s,-13*s,8*s,2*s);
- // eyes/eyebrows
- c.fillStyle='#171a20';c.fillRect(-7*s,-21*s,3*s,3*s);c.fillRect(4*s,-21*s,3*s,3*s);c.fillStyle='rgba(40,28,25,.7)';c.fillRect(-8*s,-24*s,5*s,1.4*s);c.fillRect(3*s,-24*s,5*s,1.4*s);
- // hair
- c.fillStyle=hair;
- if(sp.hairStyle==='bald'){c.fillStyle=skin;c.fillRect(-10*s,-34*s,20*s,6*s)}
- else if(sp.hairStyle==='turban'){c.fillRect(-14*s,-39*s,28*s,13*s);c.fillStyle=acc;c.fillRect(-12*s,-37*s,24*s,3*s);c.fillRect(-9*s,-31*s,18*s,3*s)}
- else if(sp.hairStyle==='hat'){c.fillRect(-13*s,-35*s,26*s,8*s);c.fillRect(-20*s,-31*s,40*s,4*s);c.beginPath();c.moveTo(-9*s,-35*s);c.lineTo(0,-51*s);c.lineTo(9*s,-35*s);c.fill()}
- else if(sp.hairStyle==='beard'){c.fillRect(-13*s,-37*s,26*s,9*s);c.fillStyle='#d8d4ca';c.fillRect(-13*s,-14*s,26*s,28*s);c.fillRect(-18*s,-5*s,36*s,20*s);c.fillStyle='rgba(255,255,255,.16)';c.fillRect(-8*s,-5*s,4*s,15*s)}
- else if(sp.hairStyle==='long'){c.fillRect(-14*s,-36*s,28*s,10*s);c.fillRect((-15+cloak*.18/s)*s,-31*s,6*s,29*s);c.fillRect((9+cloak*.18/s)*s,-31*s,6*s,29*s)}
- else if(sp.hairStyle==='wild'||sp.hairStyle==='bushy'){for(let i=-2;i<=2;i++)for(let j=0;j<3;j++)c.fillRect((i*7-5+Math.sin(time/260+i+j)*.7)*s,(-38+j*5+((i+j)%2)*2)*s,11*s,8*s)}
- else if(sp.hairStyle==='slick'){c.fillRect(-13*s,-36*s,26*s,8*s);c.fillRect(2*s,-34*s,11*s,6*s)}
- else if(sp.hairStyle==='hood'){c.fillStyle='#111318';c.fillRect(-16*s,-38*s,32*s,15*s);c.fillRect(-18*s,-31*s,6*s,25*s);c.fillRect(12*s,-31*s,6*s,25*s)}
- else if(sp.hairStyle==='thin'){c.fillRect(-10*s,-36*s,20*s,5*s);c.fillRect(-12*s,-33*s,5*s,7*s)}
- else if(sp.hairStyle==='messy'){for(let i=0;i<5;i++)c.fillRect((-14+i*7+Math.sin(time/190+i)*.5)*s,(-39+(i%2)*4)*s,10*s,10*s)}
- else{c.fillRect(-13*s,-36*s,26*s,9*s)}
- // signature identifiers
- if(sp.glasses){c.strokeStyle='#34383d';c.lineWidth=1.5*s;c.strokeRect(-10*s,-24*s,8*s,7*s);c.strokeRect(2*s,-24*s,8*s,7*s);c.beginPath();c.moveTo(-2*s,-21*s);c.lineTo(2*s,-21*s);c.stroke()}
- if(sp.scar){c.strokeStyle='#b04b41';c.lineWidth=1*s;c.beginPath();c.moveTo(2*s,-29*s);c.lineTo(-1*s,-25*s);c.lineTo(3*s,-25*s);c.stroke()}
- if(sp.mask){c.fillStyle='#c2c2bd';c.fillRect(-10*s,-28*s,20*s,18*s);c.fillStyle='#25262b';c.fillRect(-7*s,-22*s,4*s,3*s);c.fillRect(3*s,-22*s,4*s,3*s);c.fillRect(-2*s,-15*s,4*s,5*s)}
- if(id.startsWith('voldemort')){c.fillStyle='#541f22';c.fillRect(-7*s,-21*s,3*s,2*s);c.fillRect(4*s,-21*s,3*s,2*s);c.fillStyle='#807a70';c.fillRect(-1*s,-17*s,2*s,2*s)}
- if(id==='snape'){c.fillStyle='#0a0b0e';c.fillRect(-20*s,-1*s,5*s,33*s);c.fillRect(15*s,-1*s,5*s,33*s)}
- if(id==='bellatrix'||id==='bellatrix7'){c.fillStyle='#7a3153';c.fillRect(-8*s,3*s,16*s,3*s);c.fillRect(-6*s,10*s,12*s,2*s)}
- if(id==='draco'||id==='draco6'||id==='lucius'||id==='lucius7'){c.fillStyle='rgba(255,255,255,.16)';c.fillRect(-9*s,-34*s,17*s,2*s)}
- // arms and animated wand pose
- c.fillStyle=robe;c.fillRect(-23*s,0,8*s,27*s);c.fillRect(15*s,0,8*s,27*s);c.fillStyle=skin;
- if(cast){const recoil=Math.sin(time/85)*1.5*s;c.fillRect(17*s,(-8+recoil/s)*s,14*s,7*s);c.fillStyle='#5f402a';c.fillRect(28*s,(-10+recoil/s)*s,36*s,3*s);c.fillStyle='#fff4c8';c.globalAlpha=.75+.25*Math.sin(time/60);c.fillRect(63*s,(-12+recoil/s)*s,4*s,4*s);c.globalAlpha=1}else{c.fillRect(17*s,22*s,9*s,7*s);c.fillStyle='#5f402a';c.fillRect(24*s,21*s,28*s,3*s)}
+ sp=sp||CHARACTER_SPECS.slytherin;
+ const skin=sp.skin||'#c99574', robe=sp.robe||'#262c35', acc=sp.accent||'#66717f', hair=sp.hair||'#2c2724';
+ const time=performance.now(), hit=state.hit, cast=state.cast, breath=Math.sin(time/260)*1.15*s, sway=Math.sin(time/210+(id.length%7))*1.1*s, castKick=cast?Math.sin(Math.min(1,((state.castUntil||time)-time+320)/320)*Math.PI)*3.4*s:0;
+ const px=(x,y,w,h,col,a=1)=>{c.globalAlpha=a;c.fillStyle=col;c.fillRect(x*s,y*s,w*s,h*s);c.globalAlpha=1};
+ c.save(); c.translate(castKick,breath*.25); if(hit)c.rotate(-.09);
+ px(-18,50,36,4,'rgba(0,0,0,.42)'); px(-11,28,8,22,'#1b1d23'); px(3,28,8,22,'#1b1d23'); px(-13,49,12,5,'#08090c'); px(1,49,12,5,'#08090c');
+ px(-20,-4,40,34,robe); px(-22,28,44,6,'rgba(0,0,0,.18)'); c.fillStyle=robe; c.beginPath(); c.moveTo(-20*s,26*s); c.lineTo((-18+sway*.18/s)*s,44*s); c.lineTo(-4*s,36*s); c.lineTo(0,47*s); c.lineTo(4*s,36*s); c.lineTo((18-sway*.18/s)*s,44*s); c.lineTo(20*s,26*s); c.fill();
+ px(-18,0,5,28,'rgba(255,255,255,.05)'); px(13,0,5,28,'rgba(255,255,255,.05)'); px(-2,-1,4,34,'rgba(0,0,0,.15)'); px(-18,16,36,5,acc);
+ px(-8,-6,16,18,'#f1ead1'); px(-4,-6,8,18,acc); if(id==='harry'||id==='hermione'||id==='ron'){px(-4,-2,8,2,'#cda35c'); px(-4,4,8,2,'#cda35c')} px(-7,10,14,9,'rgba(0,0,0,.07)');
+ px(-24,0,8,26,robe); px(16,0,8,26,robe); px(-24,0,2,26,'rgba(255,255,255,.05)'); px(22,0,2,26,'rgba(0,0,0,.15)');
+ if(cast){px(17,-6,13,7,skin); px(29,-8,35,3,'#6d4931'); px(63,-10,5,5,'#fff1be',.9)} else {px(17,21,9,7,skin); px(24,21,28,3,'#6d4931')} px(-25,20,9,7,skin);
+ px(-5,-10,10,6,skin); px(-12,-32,24,25,skin); px(-10,-8,20,3,'rgba(107,64,48,.22)'); px(-13,-24,2,7,skin); px(11,-24,2,7,skin); px(-9,-9,18,2,'#8a5b47',.55);
+ px(-7,-22,3,3,'#171a20'); px(4,-22,3,3,'#171a20'); px(-8,-25,5,1.4,'rgba(39,31,29,.72)'); px(3,-25,5,1.4,'rgba(39,31,29,.72)'); px(-2,-17,4,2,'#8d644f'); px(-3,-12,6,1.6,'#8e5c49',.7);
+ if(sp.hairStyle==='bald'){px(-11,-35,22,5,skin)} else if(sp.hairStyle==='turban'){px(-15,-40,30,13,hair); px(-13,-38,26,3,acc); px(-10,-32,20,3,acc)} else if(sp.hairStyle==='hat'){px(-14,-36,28,8,hair); px(-21,-32,42,4,hair); c.fillStyle=hair; c.beginPath(); c.moveTo(-9*s,-36*s); c.lineTo(0,-52*s); c.lineTo(9*s,-36*s); c.fill()} else if(sp.hairStyle==='beard'){px(-13,-38,26,9,hair); px(-14,-14,28,30,'#d6d3ca'); px(-18,-6,36,20,'#d6d3ca'); px(-8,-5,4,16,'rgba(255,255,255,.16)')} else if(sp.hairStyle==='long'){px(-15,-37,30,10,hair); px(-15,-31,6,29,hair); px(9,-31,6,29,hair)} else if(sp.hairStyle==='wild'||sp.hairStyle==='bushy'){for(let i=-2;i<=2;i++)for(let j=0;j<3;j++)px(i*6-6+Math.sin(time/240+i+j)*.6,-39+j*5+((i+j)%2)*2,11,8,hair)} else if(sp.hairStyle==='slick'){px(-13,-37,26,8,hair); px(2,-35,11,6,'rgba(255,255,255,.12)')} else if(sp.hairStyle==='hood'){px(-16,-39,32,15,'#12141a'); px(-18,-32,6,25,'#12141a'); px(12,-32,6,25,'#12141a')} else if(sp.hairStyle==='thin'){px(-10,-37,20,5,hair); px(-12,-34,5,7,hair)} else if(sp.hairStyle==='messy'){for(let i=0;i<5;i++)px(-14+i*7+Math.sin(time/180+i)*.5,-40+(i%2)*4,10,10,hair)} else {px(-13,-37,26,9,hair)}
+ if(sp.glasses){c.strokeStyle='#353a40'; c.lineWidth=1.5*s; c.strokeRect(-10*s,-25*s,8*s,7*s); c.strokeRect(2*s,-25*s,8*s,7*s); c.beginPath(); c.moveTo(-2*s,-22*s); c.lineTo(2*s,-22*s); c.stroke()} if(sp.scar){c.strokeStyle='#b24b43'; c.lineWidth=1*s; c.beginPath(); c.moveTo(3*s,-30*s); c.lineTo(-1*s,-26*s); c.lineTo(4*s,-26*s); c.stroke()} if(id.startsWith('voldemort')){px(-1,-18,2,2,'#858178'); px(-7,-21,3,1.8,'#5a1f23'); px(4,-21,3,1.8,'#5a1f23')} if(id==='snape'){px(-20,-1,5,33,'#0a0b0e'); px(15,-1,5,33,'#0a0b0e')} if(id==='bellatrix'||id==='bellatrix7'){px(-8,3,16,3,'#7a3153'); px(-6,10,12,2,'#7a3153')} if(id==='draco'||id==='draco6'||id==='lucius'||id==='lucius7'){px(-9,-34,18,2,'rgba(255,255,255,.16)')} if(sp.mask){px(-10,-28,20,18,'#cac9c2'); px(-7,-22,4,3,'#25262b'); px(3,-22,4,3,'#25262b'); px(-2,-15,4,5,'#25262b')}
+ if(cast){c.fillStyle='#fff4c8'; c.globalAlpha=.55+.35*Math.sin(time/60); c.fillRect(60*s,-12*s,4*s,4*s); c.fillRect(67*s,-10*s,2*s,2*s); c.globalAlpha=1}
  c.restore();
 }
 
+
 function drawCreaturePixel(c,creature,s){
- const time=performance.now(),pulse=Math.sin(time/210),floatY=Math.sin(time/360)*2*s;c.save();c.translate(0,floatY);
- if(creature==='basilisk'||creature==='snake'){c.fillStyle=creature==='basilisk'?'#315e3d':'#477a49';for(let i=0;i<7;i++)c.fillRect((-42+i*12)*s,(12+Math.sin(i)*7)*s,20*s,10*s);c.fillRect(22*s,-8*s,38*s,23*s);c.fillStyle='#e6d15a';c.fillRect(48*s,-2*s,5*s,5*s);c.fillStyle='#d8e6d1';c.fillRect(58*s,6*s,18*s,3*s);c.restore();return}
- if(creature==='spider'){c.fillStyle='#29231f';c.fillRect(-23*s,-10*s,46*s,31*s);c.fillRect(10*s,-23*s,27*s,24*s);c.strokeStyle='#493e35';c.lineWidth=4*s;for(let side of [-1,1])for(let k=0;k<4;k++){c.beginPath();c.moveTo(side*14*s,(k-1)*5*s);c.lineTo(side*(35+k*7)*s,(k-2)*10*s);c.stroke()}c.fillStyle='#d94d4d';c.fillRect(23*s,-14*s,4*s,4*s);c.restore();return}
- if(creature==='dementor'){c.fillStyle='#10131a';c.fillRect(-20*s,-34*s,40*s,58*s);c.fillStyle='#06080c';c.fillRect(-14*s,-49*s,28*s,20*s);c.globalAlpha=.5;c.fillStyle='#222a34';c.fillRect(-31*s,12*s,62*s,36*s);c.globalAlpha=1;c.restore();return}
- if(creature==='dragon'){c.fillStyle='#6d4034';c.fillRect(-31*s,-14*s,60*s,32*s);c.fillRect(16*s,-31*s,43*s,26*s);c.fillStyle='#8a5847';c.beginPath();c.moveTo(-18*s,-10*s);c.lineTo(-55*s,-42*s);c.lineTo(-39*s,5*s);c.fill();c.fillStyle='#e7c45a';c.fillRect(45*s,-23*s,5*s,5*s);c.restore();return}
- if(creature==='troll'){c.fillStyle='#667264';c.fillRect(-22*s,-22*s,44*s,55*s);c.fillRect(-15*s,-45*s,30*s,26*s);c.fillStyle='#d2b390';c.fillRect(-8*s,-34*s,4*s,4*s);c.fillRect(6*s,-34*s,4*s,4*s);c.restore();return}
- if(creature==='werewolf'){c.fillStyle='#54483e';c.fillRect(-20*s,-17*s,40*s,47*s);c.fillRect(-14*s,-43*s,28*s,27*s);c.beginPath();c.moveTo(-12*s,-40*s);c.lineTo(-20*s,-54*s);c.lineTo(-4*s,-44*s);c.fill();c.beginPath();c.moveTo(12*s,-40*s);c.lineTo(20*s,-54*s);c.lineTo(4*s,-44*s);c.fill();c.restore();return}
- if(creature==='dummy'){c.fillStyle='#8f6f4f';c.fillRect(-10*s,-34*s,20*s,18*s);c.fillRect(-15*s,-16*s,30*s,46*s);c.fillStyle='#5f432e';c.fillRect(-4*s,30*s,8*s,22*s);c.fillRect(-27*s,-4*s,12*s,6*s);c.fillRect(15*s,-4*s,12*s,6*s);c.fillStyle='#b89566';c.fillRect(-8*s,-29*s,4*s,4*s);c.fillRect(4*s,-29*s,4*s,4*s);c.restore();return}
- if(creature==='ghost'){c.globalAlpha=.72;c.fillStyle='#8fd9e8';c.fillRect(-18*s,-16*s,36*s,42*s);c.fillRect(-12*s,-42*s,24*s,27*s);c.fillStyle='#d6fbff';c.fillRect(-7*s,-32*s,4*s,4*s);c.fillRect(4*s,-32*s,4*s,4*s);c.fillStyle='#4d8e9d';c.fillRect(-16*s,-48*s,32*s,8*s);c.globalAlpha=1;c.restore();return}
- if(creature==='armour'){c.fillStyle='#9199a4';c.fillRect(-19*s,-12*s,38*s,46*s);c.fillRect(-14*s,-40*s,28*s,26*s);c.fillStyle='#343b44';c.fillRect(-9*s,-30*s,18*s,4*s);c.fillStyle='#bcc3ca';c.fillRect(-26*s,-3*s,8*s,34*s);c.fillRect(18*s,-3*s,8*s,34*s);c.restore();return}
- if(creature==='plant'){c.strokeStyle='#3e7545';c.lineWidth=7*s;for(let i=-2;i<=2;i++){c.beginPath();c.moveTo(i*8*s,35*s);c.quadraticCurveTo((i*16+10)*s,0,(i*8-4)*s,-40*s);c.stroke()}c.fillStyle='#5a9a5f';for(let i=0;i<7;i++)c.fillRect((-25+i*8)*s,(-5-(i%3)*12)*s,12*s,6*s);c.restore();return}
- if(creature==='pixies'){for(let i=0;i<5;i++){let x=(-28+i*14)*s,y=(-20+(i%2)*18)*s;c.fillStyle='#4b8ed0';c.fillRect(x,y,8*s,13*s);c.fillStyle='#9fd8ff';c.fillRect(x-5*s,y+2*s,5*s,7*s);c.fillRect(x+8*s,y+2*s,5*s,7*s)}}
- else if(creature==='inferius'){c.fillStyle='#8f9c91';c.fillRect(-17*s,-12*s,34*s,46*s);c.fillStyle='#b4c0b4';c.fillRect(-11*s,-37*s,22*s,25*s);c.fillStyle='#243329';c.fillRect(-7*s,-28*s,3*s,3*s);c.fillRect(4*s,-28*s,3*s,3*s)}
- else if(creature==='water'){c.fillStyle='#477c78';c.fillRect(-18*s,-12*s,36*s,40*s);c.fillRect(-13*s,-37*s,26*s,27*s);c.fillStyle='#8fc8c0';c.fillRect(-7*s,-28*s,4*s,4*s);c.fillRect(4*s,-28*s,4*s,4*s);c.strokeStyle='#5eaaa1';c.lineWidth=3*s;for(let i=0;i<6;i++){c.beginPath();c.moveTo((-20+i*8)*s,22*s);c.lineTo((-30+i*10)*s,42*s);c.stroke()}}
- else if(creature==='maze'){c.fillStyle='#252631';c.fillRect(-22*s,-13*s,44*s,43*s);c.fillRect(-15*s,-40*s,30*s,29*s);c.fillStyle='#a6424d';c.fillRect(-8*s,-30*s,4*s,4*s);c.fillRect(5*s,-30*s,4*s,4*s);c.fillStyle='#4c4e61';c.beginPath();c.moveTo(-13*s,-38*s);c.lineTo(-24*s,-52*s);c.lineTo(-5*s,-41*s);c.fill();c.beginPath();c.moveTo(13*s,-38*s);c.lineTo(24*s,-52*s);c.lineTo(5*s,-41*s);c.fill()}
- else if(creature==='boggart'){c.globalAlpha=.8;c.fillStyle='#6d607b';for(let i=0;i<6;i++){c.beginPath();c.arc(Math.sin(i)*12*s,-i*7*s,18*s-i*s,0,Math.PI*2);c.fill()}c.globalAlpha=1}
+ const time=performance.now(), floatY=Math.sin(time/360)*2*s, px=(x,y,w,h,col,a=1)=>{c.globalAlpha=a;c.fillStyle=col;c.fillRect(x*s,y*s,w*s,h*s);c.globalAlpha=1};
+ c.save(); c.translate(0,floatY);
+ if(creature==='basilisk'||creature==='snake'){const body=creature==='basilisk'?'#315e3d':'#4a7f50'; for(let i=0;i<7;i++){px(-46+i*12,10+Math.sin(i*.9)*6,20,10,body); px(-43+i*12,13+Math.sin(i*.9)*6,14,3,'rgba(255,255,255,.08)')} px(22,-9,38,24,body); px(44,-5,11,6,'#e7d45f'); px(58,5,18,3,'#d8e6d1'); px(60,0,8,2,'#ffffff'); c.restore(); return}
+ if(creature==='spider'){px(-24,-8,48,32,'#26211d'); px(11,-22,29,24,'#2f2925'); c.strokeStyle='#4f433a'; c.lineWidth=4*s; for(let side of [-1,1])for(let k=0;k<4;k++){c.beginPath(); c.moveTo(side*14*s,(k-1)*5*s); c.lineTo(side*(35+k*7)*s,(k-2)*10*s); c.stroke()} px(23,-14,4,4,'#d94d4d'); px(29,-14,4,4,'#d94d4d'); c.restore(); return}
+ if(creature==='dementor'){px(-20,-35,40,59,'#11131a'); px(-14,-50,28,20,'#06080c'); px(-8,-30,16,10,'#223042'); c.globalAlpha=.55; px(-32,12,64,38,'#222a34'); c.globalAlpha=1; c.restore(); return}
+ if(creature==='dragon'){px(-33,-14,64,33,'#6b3f33'); px(16,-30,45,26,'#835142'); c.fillStyle='#835142'; c.beginPath(); c.moveTo(-18*s,-11*s); c.lineTo(-57*s,-43*s); c.lineTo(-38*s,5*s); c.fill(); c.beginPath(); c.moveTo(-2*s,-14*s); c.lineTo(-28*s,-36*s); c.lineTo(8*s,-12*s); c.fill(); px(45,-23,5,5,'#e9c95c'); px(-6,3,18,3,'#9a6a57'); c.restore(); return}
+ if(creature==='troll'){px(-24,-22,48,56,'#667264'); px(-16,-46,32,27,'#667264'); px(-9,-34,4,4,'#d2b390'); px(7,-34,4,4,'#d2b390'); px(18,-10,8,34,'#7d5e45'); c.restore(); return}
+ if(creature==='werewolf'){px(-21,-16,42,48,'#53473d'); px(-14,-43,28,28,'#53473d'); c.fillStyle='#53473d'; c.beginPath(); c.moveTo(-12*s,-40*s); c.lineTo(-20*s,-54*s); c.lineTo(-4*s,-44*s); c.fill(); c.beginPath(); c.moveTo(12*s,-40*s); c.lineTo(20*s,-54*s); c.lineTo(4*s,-44*s); c.fill(); px(-7,-29,4,4,'#d3b18f'); px(3,-29,4,4,'#d3b18f'); c.restore(); return}
+ if(creature==='dummy'){px(-10,-35,20,18,'#937150'); px(-15,-16,30,46,'#937150'); px(-4,30,8,22,'#60442f'); px(-28,-4,12,6,'#60442f'); px(16,-4,12,6,'#60442f'); px(-8,-29,4,4,'#b99666'); px(4,-29,4,4,'#b99666'); c.restore(); return}
+ if(creature==='ghost'){c.globalAlpha=.76; px(-18,-16,36,42,'#8fd9e8'); px(-12,-42,24,27,'#8fd9e8'); px(-7,-32,4,4,'#d6fbff'); px(4,-32,4,4,'#d6fbff'); px(-16,-48,32,8,'#4d8e9d'); c.globalAlpha=1; c.restore(); return}
+ if(creature==='armour'){px(-19,-12,38,46,'#9099a4'); px(-14,-40,28,26,'#9099a4'); px(-9,-30,18,4,'#343b44'); px(-26,-3,8,34,'#bcc3ca'); px(18,-3,8,34,'#bcc3ca'); c.restore(); return}
+ if(creature==='plant'){c.strokeStyle='#42784b'; c.lineWidth=7*s; for(let i=-2;i<=2;i++){c.beginPath(); c.moveTo(i*8*s,35*s); c.quadraticCurveTo((i*16+10)*s,0,(i*8-4)*s,-40*s); c.stroke()} for(let i=0;i<7;i++)px(-25+i*8,-5-(i%3)*12,12,6,'#5b9a5f'); c.restore(); return}
+ if(creature==='pixies'){for(let i=0;i<5;i++){let x=-28+i*14,y=-20+(i%2)*18; px(x,y,8,13,'#4b8ed0'); px(x-5,y+2,5,7,'#9fd8ff'); px(x+8,y+2,5,7,'#9fd8ff')} c.restore(); return}
+ if(creature==='inferius'){px(-17,-12,34,46,'#8f9c91'); px(-11,-37,22,25,'#b4c0b4'); px(-7,-28,3,3,'#243329'); px(4,-28,3,3,'#243329'); c.restore(); return}
+ if(creature==='water'){px(-18,-12,36,40,'#477c78'); px(-13,-37,26,27,'#477c78'); px(-7,-28,4,4,'#8fc8c0'); px(4,-28,4,4,'#8fc8c0'); c.strokeStyle='#5eaaa1'; c.lineWidth=3*s; for(let i=0;i<6;i++){c.beginPath(); c.moveTo((-20+i*8)*s,22*s); c.lineTo((-30+i*10)*s,42*s); c.stroke()} c.restore(); return}
+ if(creature==='maze'){px(-22,-13,44,43,'#252631'); px(-15,-40,30,29,'#252631'); px(-8,-30,4,4,'#a6424d'); px(5,-30,4,4,'#a6424d'); c.fillStyle='#4c4e61'; c.beginPath(); c.moveTo(-13*s,-38*s); c.lineTo(-24*s,-52*s); c.lineTo(-5*s,-41*s); c.fill(); c.beginPath(); c.moveTo(13*s,-38*s); c.lineTo(24*s,-52*s); c.lineTo(5*s,-41*s); c.fill(); c.restore(); return}
+ if(creature==='boggart'){c.globalAlpha=.82; c.fillStyle='#6d607b'; for(let i=0;i<6;i++){c.beginPath(); c.arc(Math.sin(i)*12*s,-i*7*s,18*s-i*s,0,Math.PI*2); c.fill()} c.globalAlpha=1; c.restore(); return}
  c.restore();
 }
+
 function renderSpells(){
- const unlocked=SPELLS.filter(s=>isSpellUnlocked(s)); const pageSize=8,total=Math.max(1,Math.ceil(unlocked.length/pageSize));spellPage=clamp(spellPage,0,total-1);
- const root=$('#spellGrid');root.innerHTML='';unlocked.slice(spellPage*pageSize,(spellPage+1)*pageSize).forEach(s=>{const equipped=save.loadout.includes(s.id),lv=spellLevel(s.id),master=save.spellMastery[s.id]||0,d=document.createElement('div');d.className='spell-card'+(equipped?' equipped':'');d.style.borderColor=equipped?(s.color||'#c5a45e'):'';d.innerHTML=`<div class="spell-head"><div class="spell-icon" style="box-shadow:inset 0 0 18px ${s.color||'#70809a'}22">${spellGlyph(s)}</div><div class="title-wrap"><div class="spell-name">${s.name}</div><div class="spell-type">${s.type}${s.dark?' · Тёмное':''}</div></div></div><div class="spell-desc">${s.desc}</div><div class="spell-tags"><span class="tag">Ур. ${lv}/5</span>${s.combat?`<span class="tag">${s.focus} конц.</span><span class="tag">${(s.cd/1000).toFixed(1)}с CD</span>`:'<span class="tag">сюжетное</span>'}${equipped?'<span class="tag">в наборе</span>':''}</div><div class="spell-meter"><div class="notice">Мастерство ${master}%</div><div class="progress-track"><div class="progress-fill" style="width:${master}%"></div></div></div><div style="display:flex;gap:5px;margin-top:auto"><button class="btn small equip" ${!s.combat?'disabled':''}>${equipped?'Убрать':'В набор'}</button><button class="btn small upgrade" ${(lv>=5||master<100)?'disabled':''}>↑ Улучшить</button></div>`;$('.equip',d).onclick=()=>toggleEquip(s.id);$('.upgrade',d).onclick=()=>{if(master>=100&&lv<5){save.spellLevel[s.id]=lv+1;save.spellMastery[s.id]=0;persist();renderSpells()}};root.appendChild(d)});
- const bar=$('#loadoutBar');bar.innerHTML='<span class="notice">Боевой набор:</span>'+save.loadout.map(id=>`<span class="loadout-chip">${spellGlyph(id)} ${spellById(id)?.name||''}</span>`).join('');
- $('#spellPageText').textContent=`${spellPage+1} / ${total} · открыто ${unlocked.length}`;$('#spellPrev').disabled=spellPage<=0;$('#spellNext').disabled=spellPage>=total-1;
+ const unlocked=SPELLS.filter(s=>isSpellUnlocked(s));
+ const pageSize=6,total=Math.max(1,Math.ceil(unlocked.length/pageSize));
+ spellPage=clamp(spellPage,0,total-1);
+ const root=$('#spellGrid');root.innerHTML='';
+ unlocked.slice(spellPage*pageSize,(spellPage+1)*pageSize).forEach(s=>{
+   const equipped=save.loadout.includes(s.id),lv=spellLevel(s.id),master=save.spellMastery[s.id]||0;
+   const d=document.createElement('div');
+   d.className='spell-card'+(equipped?' equipped':'');
+   d.style.borderColor=equipped?(s.color||'#c5a45e'):'';
+   d.style.boxShadow=equipped?`0 0 0 1px ${s.color||'#c5a45e'}33 inset,0 12px 24px rgba(0,0,0,.2)`:'';
+   d.innerHTML=`<div class="spell-head"><div class="spell-icon" style="box-shadow:inset 0 0 18px ${s.color||'#70809a'}22,0 6px 18px rgba(0,0,0,.18);border-color:${equipped?(s.color||'#70809a')+'55':'rgba(255,255,255,.10)'}">${spellGlyph(s)}</div><div class="title-wrap"><div class="spell-name">${s.name}</div><div class="spell-type">${s.type}${s.dark?' · Тёмное':''}</div></div></div><div class="spell-desc">${s.desc}</div><div class="spell-tags"><span class="tag">Ур. ${lv}/5</span>${s.combat?`<span class="tag">${s.focus} конц.</span><span class="tag">${(s.cd/1000).toFixed(1)}с CD</span>`:'<span class="tag">сюжетное</span>'}${equipped?'<span class="tag">в наборе</span>':''}${master>=100?'<span class="tag">готово к улучшению</span>':''}</div><div class="spell-meter"><div class="notice">Мастерство ${master}%</div><div class="progress-track"><div class="progress-fill" style="width:${master}%"></div></div></div><div style="display:flex;gap:6px;margin-top:auto"><button class="btn small equip" ${!s.combat?'disabled':''}>${equipped?'Убрать':'В набор'}</button><button class="btn small upgrade" ${(lv>=5||master<100)?'disabled':''}>↑ Улучшить</button></div>`;
+   $('.equip',d).onclick=()=>toggleEquip(s.id);
+   $('.upgrade',d).onclick=()=>{if(master>=100&&lv<5){save.spellLevel[s.id]=lv+1;save.spellMastery[s.id]=0;persist();renderSpells()}};
+   root.appendChild(d)
+ });
+ const bar=$('#loadoutBar');
+ bar.innerHTML='<span class="notice">Боевой набор:</span>'+save.loadout.map(id=>`<span class="loadout-chip">${spellGlyph(id)} ${spellById(id)?.name||''}</span>`).join('');
+ $('#spellPageText').textContent=`${spellPage+1} / ${total} · открыто ${unlocked.length}`;
+ $('#spellPrev').disabled=spellPage<=0;
+ $('#spellNext').disabled=spellPage>=total-1;
 }
 
 function toggleEquip(id){
@@ -705,13 +769,42 @@ function renderSettings(){
  $('#saveInfo').textContent=`Уровень Гарри: ${save.playerLevel} · Опыт: ${save.xp} · Победы: ${save.stats.wins} · Версия: ${GAME_VERSION}`;
 }
 const CARD_POOL=['Альбус Дамблдор','Минерва Макгонагалл','Сириус Блэк','Римус Люпин','Рубеус Хагрид','Северус Снегг','Гермиона Грейндж','Рон Уизли','Невилл Долгопупс','Фред и Джордж Уизли','Добби','Фоукс'];
+const CARD_META={
+'Альбус Дамблдор':{icon:'✦',house:'Хогвартс',tag:'легенда',desc:'Величайший волшебник школы. Карточка за ключевые сюжетные победы.'},
+'Минерва Макгонагалл':{icon:'♞',house:'Гриффиндор',tag:'стратег',desc:'Строгая наставница и мастер трансфигурации. Усиливает ощущение прогресса коллекции.'},
+'Сириус Блэк':{icon:'☾',house:'Орден',tag:'союзник',desc:'Быстрый и дерзкий боец. Карточка за серьёзные сюжетные дуэли.'},
+'Римус Люпин':{icon:'☽',house:'Орден',tag:'учитель',desc:'Опытный наставник со сдержанной силой и вниманием к защите.'},
+'Рубеус Хагрид':{icon:'🜁',house:'Хогвартс',tag:'хранитель',desc:'Верный друг, смотритель ключей и проводник в мир магических существ.'},
+'Северус Снегг':{icon:'☾',house:'Хогвартс',tag:'зельевар',desc:'Мрачный мастер зелий и окклюменции. Открывается через сюжетные испытания.'},
+'Гермиона Грейндж':{icon:'✧',house:'Гриффиндор',tag:'разум',desc:'Гениальная ученица. Символ тактики, подготовки и контроля боя.'},
+'Рон Уизли':{icon:'⚑',house:'Гриффиндор',tag:'команда',desc:'Верный товарищ Гарри и опора в опасных приключениях.'},
+'Невилл Долгопупс':{icon:'✿',house:'Гриффиндор',tag:'рост',desc:'Путь от неуверенности к храбрости. Отличная карточка середины кампании.'},
+'Фред и Джордж Уизли':{icon:'⚗',house:'Гриффиндор',tag:'хаос',desc:'Два короля розыгрышей. Придают коллекции юмор и характер.'},
+'Добби':{icon:'✪',house:'свободный',tag:'редкая',desc:'Свободный домовик и неожиданный герой. Редкий сюжетный трофей.'},
+'Фоукс':{icon:'🔥',house:'феникс',tag:'эпик',desc:'Пылающий феникс Дамблдора. Особая награда за важные победы.'}
+};
 function renderSkills(){
  const defs={dueling:['ДУЭЛЬ','Агрессивная ветка для темпа боя и более частых кастов.',['+10% восстановление концентрации','−3.5% перезарядка за уровень','усиление комбо и ритма боя']],defense:['ЗАЩИТА','Надёжная ветка выживания для Протего и контратак.',['шире идеальный тайминг','−3.5% входящего урона','сильнее отражение и защита']],knowledge:['МАГИЧЕСКОЕ МАСТЕРСТВО','Тактическая ветка для статусов, прокачки и контрзаклинаний.',['+8% длительность статусов','больше мастерства за бой','эффективнее контроль и контрмеры']]};
  $('#skillPointsText').textContent=`Очки развития: ${save.skillPoints}`;const root=$('#skillsGrid');root.innerHTML='';for(const [id,[name,desc,perks]] of Object.entries(defs)){const lv=save.skills[id]||0,d=document.createElement('div');d.className='card skill-card';d.innerHTML=`<div><h3>${name}</h3><div class="skill-level">${lv}/5</div><p>${desc}</p><div class="perk-list">${perks.map(x=>`<div class="perk-item">${x}</div>`).join('')}</div></div><button class="btn small" ${save.skillPoints<=0||lv>=5?'disabled':''}>Улучшить ветку</button>`;$('button',d).onclick=()=>{if(save.skillPoints>0&&lv<5){save.skillPoints--;save.skills[id]=lv+1;persist();renderSkills()}};root.appendChild(d)}
 }
 
 function renderEndless(){$('#endlessMode').value=save.settings.mode;$('#endlessBest').textContent=`Лучший результат: ${save.endlessBest||0} побед подряд`;}
-function renderCollection(){const pageSize=8,total=Math.max(1,Math.ceil(CARD_POOL.length/pageSize));collectionPage=clamp(collectionPage,0,total-1);const root=$('#collectionGrid');root.innerHTML='';CARD_POOL.slice(collectionPage*pageSize,(collectionPage+1)*pageSize).forEach(name=>{const own=save.cards.includes(name),d=document.createElement('div');d.className='card collector-card'+(own?'':' locked');d.innerHTML=`<div class="collector-art">${own?'✦':'?'}</div><div class="collector-rarity">${own?'Коллекционная карточка':'Скрыто'}</div><h3>${own?name:'Неизвестная карточка'}</h3><p>${own?'Получена за сюжетную победу или босса.':'Побеждайте сюжетных боссов и ключевых противников.'}</p>`;root.appendChild(d)});$('#collectionPageText').textContent=`${collectionPage+1} / ${total}`;$('#collectionPrev').disabled=collectionPage<=0;$('#collectionNext').disabled=collectionPage>=total-1;}
+function renderCollection(){
+ const pageSize=8,total=Math.max(1,Math.ceil(CARD_POOL.length/pageSize));
+ collectionPage=clamp(collectionPage,0,total-1);
+ const root=$('#collectionGrid');root.innerHTML='';
+ CARD_POOL.slice(collectionPage*pageSize,(collectionPage+1)*pageSize).forEach((name,offset)=>{
+   const own=save.cards.includes(name),meta=CARD_META[name]||{icon:'✦',house:'архив',tag:'награда',desc:'Коллекционная карточка за победы в кампании.'};
+   const idx=collectionPage*pageSize+offset+1;
+   const d=document.createElement('div');
+   d.className='card collector-card'+(own?'':' locked');
+   d.innerHTML=`<div class="collector-art"><div class="collector-icon">${own?meta.icon:'?'}</div><div class="collector-house">${own?meta.house:'неизвестно'}</div></div><div class="collector-rarity">${own?'Коллекционный портрет':'Скрытая карточка'}</div><h3>${own?name:'Неизвестная карточка'}</h3><p>${own?meta.desc:'Побеждайте сюжетных боссов и ключевых противников, чтобы постепенно открыть этот портрет.'}</p><div class="collector-footer"><span class="collector-tag">${own?meta.tag:'секрет'}</span><span class="collector-index">#${String(idx).padStart(2,'0')}</span></div>`;
+   root.appendChild(d)
+ });
+ $('#collectionPageText').textContent=`${collectionPage+1} / ${total}`;
+ $('#collectionPrev').disabled=collectionPage<=0;
+ $('#collectionNext').disabled=collectionPage>=total-1;
+}
 
 
 function openPreBattle(enemyId,extra={}){
@@ -755,11 +848,11 @@ class BattleEngine{
    this.message(`${this.enemy.name} — ${this.enemy.arena}`,1200);setTimeout(()=>{if(this.running)this.message(`ЦЕЛЬ: ${this.rule.objective}`,1400)},900);
    if(this.mode==='turnbased'){this.setupTurnMode()}else{this.loop(this.last)}
  }
- resize(){const dpr=Math.min(devicePixelRatio||1,2),rect=this.canvas.getBoundingClientRect();this.canvas.width=Math.max(640,Math.round(rect.width*dpr));this.canvas.height=Math.max(360,Math.round(rect.height*dpr));this.W=this.canvas.width;this.H=this.canvas.height;this.scale=dpr;}
+ resize(){const dpr=Math.min(devicePixelRatio||1,2),rect=this.canvas.getBoundingClientRect();this.canvas.width=Math.max(640,Math.round(rect.width*dpr));this.canvas.height=Math.max(360,Math.round(rect.height*dpr));this.W=this.canvas.width;this.H=this.canvas.height;const presentation=Math.min(rect.width/960,rect.height/540);this.scale=dpr*Math.max(1.08,Math.min(1.75,presentation*1.52));}
  bindHUD(){
    $('#modeBadge').textContent=this.mode==='realtime'?'РЕАЛЬНОЕ ВРЕМЯ':'ПОШАГОВЫЙ БОЙ';
    $('#playerName').textContent='Гарри Поттер';$('#enemyName').textContent=this.enemy.name;
-   const root=$('#spellButtons');root.innerHTML='';this.loadout.forEach((s,i)=>{const b=document.createElement('button');b.className='battle-btn ready';b.innerHTML=`<div class="glyph">${spellGlyph(s)}</div><div class="bname">${s.name}</div><div class="bmeta">${s.type} · ${s.focus} конц.</div><div class="cooldown-mask"></div>`;b.onclick=()=>this.playerCast(s.id,b);root.appendChild(b)});
+   const root=$('#spellButtons');root.innerHTML='';this.loadout.forEach((s,i)=>{const b=document.createElement('button');b.className='battle-btn ready';b.innerHTML=`<div class="glyph">${spellGlyph(s)}</div><div class="bname">${s.name}</div><div class="bmeta">${s.type} · ${s.focus} конц.</div><div class="cooldown-mask"></div>`;b.style.borderColor=(s.color||'#59709b')+'88';b.style.boxShadow=`inset 0 0 0 1px ${(s.color||'#59709b')}33,0 6px 18px rgba(0,0,0,.24)`;b.onclick=()=>this.playerCast(s.id,b);root.appendChild(b)});
    $('#protegoBtn').onclick=()=>this.protego();$('#battleExit').onclick=()=>this.abort();
    this.pushLog('Дуэль начинается');
    this.updateHUD();
@@ -911,7 +1004,7 @@ class BattleEngine{
  draw(){
    const c=this.ctx,W=this.W,H=this.H;const sx=rnd(-this.screenShake,this.screenShake),sy=rnd(-this.screenShake,this.screenShake);c.save();c.translate(sx,sy);
    const intro=Math.max(0,(this.cinematicUntil-now())/1350),zoom=1+intro*.025;if(intro>0){c.translate(W*.5,H*.5);c.scale(zoom,zoom);c.translate(-W*.5,-H*.5)}
-   this.drawArena(c,W,H);if(this.tempo>=3){c.fillStyle='rgba(240,209,125,.05)';c.fillRect(0,0,W,H)}this.drawFighter(c,W*.24,H*.58,true,this.player);this.drawFighter(c,W*.76,H*.58,false,this.foe);
+   this.drawArena(c,W,H);if(this.tempo>=3){c.fillStyle='rgba(240,209,125,.05)';c.fillRect(0,0,W,H)}this.drawFighter(c,W*.27,H*.665,true,this.player);this.drawFighter(c,W*.73,H*.665,false,this.foe);
    this.projectiles.forEach(p=>{if(p.trail){p.trail.forEach((q,i)=>{c.globalAlpha=Math.max(0,q.life)*.24*(i/p.trail.length);c.fillStyle=p.spell.color||'#fff';const rr=(2+i/p.trail.length*3)*this.scale;c.fillRect(q.x-rr/2,q.y-rr/2,rr,rr)});c.globalAlpha=1}this.drawProjectile(c,p)});this.impactRings.forEach(r=>{c.globalAlpha=clamp(r.life,0,1);c.strokeStyle=r.color;c.lineWidth=(r.heavy?4:2)*this.scale;c.beginPath();c.arc(r.x,r.y,r.r,0,Math.PI*2);c.stroke()});c.globalAlpha=1;this.particles.forEach(p=>{c.globalAlpha=clamp(p.life*2,0,1);c.fillStyle=p.color;c.fillRect(Math.round(p.x),Math.round(p.y),5*this.scale,5*this.scale)});c.globalAlpha=1;
    this.floating.forEach(f=>{c.globalAlpha=clamp(f.life,0,1);c.fillStyle=f.color;c.font=`bold ${16*this.scale}px monospace`;c.textAlign='center';c.fillText(f.text,f.x,f.y)});c.globalAlpha=1;
    if(this.enemy.creature==='dementor'){c.fillStyle='rgba(2,5,12,.18)';c.fillRect(0,0,W,H)}if(this.tempo>=3){c.strokeStyle='rgba(240,209,125,.32)';c.lineWidth=3*this.scale;c.strokeRect(10*this.scale,10*this.scale,W-20*this.scale,H-20*this.scale)}if(this.enemyId==='voldemort2'&&this.phase>1){c.strokeStyle='rgba(255,255,255,.14)';c.lineWidth=2*this.scale;for(let i=0;i<this.phase*5;i++){c.beginPath();c.moveTo(W*rnd(.2,.8),H*.7);c.lineTo(W*rnd(.15,.85),H*rnd(.25,.65));c.stroke()}}if(this.flash>0){c.fillStyle=`rgba(255,255,255,${this.flash})`;c.fillRect(0,0,W,H)}if(this.player.hp<32){const a=(32-this.player.hp)/32*.22;c.fillStyle=`rgba(120,8,18,${a})`;c.fillRect(0,0,W,H)}c.restore();const vignette=$('#battleVignette');if(vignette){vignette.classList.toggle('low-health',this.player.hp<32);vignette.classList.toggle('boss-phase',this.enemy.boss&&this.phase>1)}
@@ -919,7 +1012,7 @@ class BattleEngine{
  }
  drawArena(c,W,H){drawArenaBackdrop(c,W,H,this.enemy.arena,this.scale,performance.now())}
  drawFighter(c,x,y,left,who){
-   const s=this.scale*1.11,enemyId=who===this.foe?this.enemyId:'harry',creature=who===this.foe?this.enemy.creature:null;const rooted=this.hasStatus(who,'root'),lev=this.hasStatus(who,'levitate');if(lev)y-=22*s;const bob=Math.sin(performance.now()/280+(left?0:1.6))*1.2*s;
+   const s=this.scale*1.52,enemyId=who===this.foe?this.enemyId:'harry',creature=who===this.foe?this.enemy.creature:null;const rooted=this.hasStatus(who,'root'),lev=this.hasStatus(who,'levitate');if(lev)y-=22*s;const bob=Math.sin(performance.now()/280+(left?0:1.6))*1.2*s;
    c.save();c.translate(x,y+bob);c.scale(left?1:-1,1);c.fillStyle='rgba(0,0,0,.38)';c.fillRect(-29*s,48*s,58*s,7*s);
    if(creature){drawCreaturePixel(c,creature,s)}else{const sp=CHARACTER_SPECS[enemyId]||CHARACTER_SPECS.slytherin;drawHumanPixel(c,s,sp,enemyId,{cast:(who.castUntil||0)>now(),castUntil:who.castUntil||0,hit:(who.hitUntil||0)>now(),rooted,shield:who.shieldUntil>now(),statuses:who.statuses})}
    // status visuals
