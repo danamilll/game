@@ -91,6 +91,9 @@ button,select,input{font:inherit}
 .spell-icon{position:relative;overflow:hidden}.spell-icon:after{content:'';position:absolute;inset:-40%;background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.15),transparent 65%);transform:translateX(-55%);transition:transform .35s ease}.spell-card.equipped .spell-icon:after{transform:translateX(55%)}
 .battle-btn.tempo-ready{animation:buttonPulse 1.4s ease-in-out infinite}.log-line{backdrop-filter:blur(4px)}
 @media (prefers-reduced-motion:reduce){.screen.active,.home-scene .fog,.home-scene .moon,.btn.primary,.battle-btn.tempo-ready,.duel-intro-card{animation:none!important}.btn,.battle-btn,.card,.spell-card{transition:none!important}}
+
+.battle-objective{width:min(860px,94vw);margin:3px auto 0;background:rgba(9,14,23,.82);border:1px solid rgba(240,209,125,.18);border-radius:9px;padding:6px 9px;font-size:10px;color:#dce6f6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}.battle-objective.done{color:#f6dc91;border-color:rgba(240,209,125,.42);box-shadow:0 0 14px rgba(240,209,125,.09) inset}.battle-log .log-line:nth-child(n+3){display:none}.stagger-wrap{height:5px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:4px}.stagger-wrap i{display:block;height:100%;background:linear-gradient(90deg,#8a9bb7,#ffd46e)}.rule-box{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.rule-chip{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:8px}.rule-chip b{display:block;color:#f0d17d;font-size:11px;margin-bottom:3px}.rule-chip span{font-size:11px;color:#d9e2ef;line-height:1.35}.weakness-note{color:#9fd4ff;font-size:11px;margin-top:7px}.goal-done{color:#f0d17d!important}.boss-phase-pip{display:inline-block;width:6px;height:6px;border-radius:50%;background:#71829a;margin-left:4px}.boss-phase-pip.on{background:#f0d17d;box-shadow:0 0 8px rgba(240,209,125,.5)}
+@media(max-height:430px){.battle-objective{padding:4px 7px;font-size:9px}.battle-log{display:none}.battle-strip{margin-top:4px;gap:5px}.battle-stat{min-height:38px;padding:4px 6px}}
 </style>
 
 <style id="v2-polish">
@@ -126,6 +129,25 @@ html,body,#app{width:100%;height:100%;overflow:hidden}
 @media(max-height:430px){#homeScreen .pixel-title{font-size:clamp(24px,4.2vw,44px)}#homeScreen .subtitle{font-size:10px}#homeScreen .panel.menu{gap:5px;padding:7px}#homeScreen .panel.menu .btn{min-height:35px;padding:5px 8px}.stage-preview{min-height:145px}.stage-hero,.campaign-meta{padding:10px}.spell-grid.paged{gap:6px}.spell-grid.paged .spell-card{padding:7px}.spell-grid.paged .spell-desc{display:none}}
 </style>
 
+
+<style id="v61-mobile-hotfix">
+@media (orientation:landscape) and (max-height:600px){
+  #battleHUD{padding:6px 8px!important;gap:0!important}
+  .hud-top{gap:8px!important;padding-top:max(4px,var(--safe-top))!important}
+  .fighter-panel{padding:5px 7px!important;border-width:1px!important;border-radius:7px!important}
+  .fighter-name{font-size:11px!important}.bar{height:9px!important;margin-top:3px!important;border-width:1px!important}.status-line{height:14px!important;font-size:9px!important;margin-top:2px!important}
+  .mode-badge{top:max(45px,calc(var(--safe-top) + 39px))!important;font-size:8px!important;padding:3px 7px!important}
+  .battle-strip{margin:4px auto 2px!important;gap:5px!important;width:min(900px,95vw)!important}
+  .battle-stat{min-height:34px!important;padding:4px 6px!important;border-radius:8px!important}
+  .battle-stat span{font-size:7px!important}.battle-stat b{font-size:11px!important}.battle-stat small{font-size:8px!important}
+  .battle-objective{margin:2px auto 0!important;padding:4px 7px!important;font-size:8px!important;max-width:88vw!important}
+  .battle-log{display:none!important}
+  .hud-center{height:18px!important;align-items:center!important}.battle-message{font-size:10px!important;padding:4px 7px!important;max-width:72vw!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  .hud-bottom{gap:6px!important;padding-left:max(8px,var(--safe-left))!important;padding-right:max(8px,var(--safe-right))!important;padding-bottom:max(6px,var(--safe-bottom))!important}
+  .spell-buttons{gap:5px!important}.battle-btn{min-height:44px!important;padding:4px 5px!important;border-width:1px!important}.battle-btn .glyph{font-size:12px!important}.battle-btn .bname{font-size:8px!important}.battle-btn .bmeta{font-size:7px!important;margin-top:2px!important}
+  .defense-stack{gap:5px!important}
+}
+</style>
 </head>
 <body>
 <div id="app">
@@ -218,8 +240,9 @@ html,body,#app{width:100%;height:100%;overflow:hidden}
           <div class="battle-stat"><span>Комбо</span><b id="comboStat">×0</b><small id="comboSub">держите темп боя</small></div>
           <div class="battle-stat"><span>Аркан-ритм</span><b id="tempoStat">0 / 3</b><div class="surge-meter"><i id="tempoFill" style="width:0%"></i></div></div>
           <div class="battle-stat"><span>Намерение врага</span><b id="enemyIntent">Импровизирует</b><small id="enemyIntentSub">следите за таймингом</small></div>
-          <div class="battle-stat"><span>Арена</span><b id="arenaStat">Стабильно</b><small id="arenaSub">окружение влияет на бой</small></div>
+          <div class="battle-stat"><span>Стойкость врага</span><b id="staggerStat">0%</b><div class="stagger-wrap"><i id="staggerFill" style="width:0%"></i></div><small id="arenaSub">окружение влияет на бой</small></div>
         </div>
+        <div id="battleObjective" class="battle-objective">Тактическая цель загружается…</div>
       </div>
       <div class="hud-center"><div id="battleMessage" class="battle-message"></div></div>
       <div id="battleLog" class="battle-log"></div>
@@ -258,8 +281,9 @@ const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
 const now = ()=>performance.now();
 const rnd = (a,b)=>a+Math.random()*(b-a);
 const pick = a=>a[Math.floor(Math.random()*a.length)];
+const weightedPick=(arr,weightFn)=>{let total=0,weights=arr.map(x=>{const w=Math.max(.01,weightFn(x));total+=w;return w});let r=Math.random()*total;for(let i=0;i<arr.length;i++){r-=weights[i];if(r<=0)return arr[i]}return arr[arr.length-1]};
 
-const GAME_VERSION='5.0.0-fan';
+const GAME_VERSION='6.1.0-fan';
 const SAVE_KEY='hp_pixel_duels_ru_v3';
 
 const STATUS_RU={
@@ -391,6 +415,32 @@ const STAGE_UNLOCKS={
  '6-0':'confringo','6-2':'sectumsempra','6-4':'vulnera',
  '7-0':'repello','7-2':'piertotum'
 };
+
+const BATTLE_RULES={
+ dummy:{goal:'variety3',objective:'Используйте 3 разных боевых заклинания',bonus:'Освойте базовый ритм, а не спам одной кнопки',xp:12,tip:'Разные типы чар быстрее ломают защиту.'},
+ draco:{goal:'snakeCounter',objective:'Ответьте на Серпенсортию заклинанием «Випера Эванеска»',bonus:'Тактическая контрмагия даёт бонус опыта',xp:22,tip:'Дождитесь змеи и не тратьте Виперу заранее.'},
+ boggart:{goal:'riddikulus',objective:'Примените «Риддикулус» против боггарта',bonus:'Правильное заклинание почти нейтрализует цель',xp:18,tip:'Особые противники требуют особых чар.'},
+ dementor_train:{goal:'patronus',objective:'Призовите Патронуса',bonus:'Обычная магия почти не вредит дементорам',xp:18,tip:'Сберегите концентрацию для Экспекто Патронум.'},
+ dementor:{goal:'patronus',objective:'Призовите Патронуса хотя бы один раз',bonus:'Патронус наносит тройной урон дементорам',xp:18,tip:'Дементор постепенно высасывает концентрацию.'},
+ dementor_patrol:{goal:'patronus',objective:'Отбейте дементора Патронусом',bonus:'Светлая магия — основная контрмера',xp:20,tip:'Не затягивайте бой: концентрация уходит со временем.'},
+ dementors:{goal:'patronus',objective:'Удержите Патронуса в бою с группой дементоров',bonus:'Победа с тактической целью даёт +25 XP',xp:25,tip:'Сначала защититесь, затем накопите на Патронуса.'},
+ dragon:{goal:'dragonGuard',objective:'Сбейте жаровую броню Агуаменти',bonus:'После воды чешуя уязвима 6 секунд',xp:24,tip:'Без Агуаменти обычные атаки наносят лишь 65% урона.'},
+ basilisk:{goal:'basiliskBlock',objective:'Переживите взгляд Василиска с помощью Протего',bonus:'Щит в момент взгляда предотвращает окаменение',xp:26,tip:'Не тратьте всю концентрацию перед предупреждением.'},
+ inferius:{goal:'fire',objective:'Используйте огонь против инфернала',bonus:'Инсендио и Конфринго наносят повышенный урон',xp:20,tip:'Инферналы сильно сопротивляются обычным чарам.'},
+ devilsnare:{goal:'fire',objective:'Подожгите Дьявольские силки',bonus:'Огонь наносит повышенный урон растению',xp:16,tip:'Контроль работает, но огонь — намного эффективнее.'},
+ snape:{goal:'variety4',objective:'Используйте 4 разных заклинания',bonus:'Снегг быстрее контрит повторяющиеся действия',xp:28,tip:'Меняйте темп и не повторяйте одну комбинацию.'},
+ voldemort1:{goal:'survive',objective:'Продержитесь до финального столкновения заклинаний',bonus:'Главная цель — выживание, а не быстрый DPS',xp:30,tip:'Берегите Протего и концентрацию.'},
+ nagini:{goal:'snakeCounter',objective:'Используйте «Випера Эванеска» против Нагайны',bonus:'Контрзаклинание наносит змее повышенный урон',xp:24,tip:'Яд опасен в длинном бою.'},
+ voldemort2:{goal:'clashWin',objective:'Победите хотя бы в одном столкновении заклинаний',bonus:'Финальный босс меняет стиль по фазам',xp:35,tip:'Не расходуйте концентрацию бездумно перед фазовыми переходами.'}
+};
+function enemyArchetype(e){if(e.adaptive)return'Адаптивный дуэлянт';if(e.creature==='dragon'||e.creature==='troll'||e.creature==='werewolf')return'Громила';if(e.creature)return'Магическое существо';if(e.def>.62)return'Контр-дуэлянт';if(e.aggro>.86)return'Агрессор';if(e.boss)return'Элитный дуэлянт';return'Сбалансированный дуэлянт'}
+function battleRuleFor(enemyId){if(BATTLE_RULES[enemyId])return BATTLE_RULES[enemyId];const e=ENEMIES[enemyId],hash=[...enemyId].reduce((n,c)=>n+c.charCodeAt(0),0)%5;if(e?.boss)return{goal:'perfect2',objective:'Сделайте 2 идеальных Протего',bonus:'Контратаки ускоряют бой с боссом',xp:22,tip:'У боссов повышенная устойчивость к слому защиты.'};if(e?.creature)return{goal:'breakGuard',objective:'Сломайте стойкость существа хотя бы один раз',bonus:'Контроль и тяжёлые чары быстрее заполняют шкалу слома',xp:16,tip:'Сочетайте контроль и сильный удар.'};return[
+ {goal:'combo3',objective:'Соберите комбо ×3',bonus:'Чередуйте заклинания без больших пауз',xp:12,tip:'Комбо помогает заряжать Аркан-ритм.'},
+ {goal:'variety3',objective:'Используйте 3 разных заклинания',bonus:'Разнообразный набор сложнее контрить',xp:12,tip:'Не спамьте одной кнопкой.'},
+ {goal:'perfect1',objective:'Сделайте идеальный Протего',bonus:'Идеальная защита отражает часть урона',xp:14,tip:'Кастуйте щит прямо перед попаданием.'},
+ {goal:'breakGuard',objective:'Сломайте защиту противника',bonus:'Контроль и тяжёлые чары быстрее заполняют шкалу слома',xp:14,tip:'После слома враг кратко оглушается.'},
+ {goal:'noRepeat',objective:'Не повторяйте одно заклинание два раза подряд',bonus:'Тактика против адаптивного ИИ',xp:14,tip:'Меняйте ритм боя.'}
+ ][hash]}
 
 const CHARACTER_SPECS={
  harry:{hair:'#171515',hairStyle:'messy',robe:'#222d3e',accent:'#7f2633',skin:'#d9a47e',scarf:'#7f2633',glasses:true,scar:true},
@@ -548,8 +598,8 @@ function renderCampaign(){
  meta.innerHTML=`<div><div class="year-kicker">${year}-й учебный год</div><div class="year-title">${y.title}</div><div class="screen-kpis"><div class="kpi-card"><span>Пройдено</span><b>${cleared}/${total}</b><small>испытаний года</small></div><div class="kpi-card"><span>S-ранг</span><b>${Object.values(save.ranks).filter(x=>x==='S').length}</b><small>лучших дуэлей</small></div><div class="kpi-card"><span>Текущий враг</span><b>${enemy.boss?'Босс':'Сцена'}</b><small>${enemy.name}</small></div><div class="kpi-card"><span>Локация</span><b>${enemy.arena.split(':')[0]}</b><small>${enemy.arena}</small></div></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="notice" style="margin-top:6px">Следующее испытание скрыто до победы. Кампания идёт строго по сюжету.</div><div class="campaign-dots"></div></div><div class="notice">Будущие противники и арены не показываются заранее — только текущий этап и ваш прогресс.</div>`;
  const dots=$('.campaign-dots',meta);for(let i=0;i<Math.max(total,3);i++){const d=document.createElement('div');d.className='campaign-dot '+(i<cleared?'done':i===cleared?'current':'unknown');d.textContent=i<cleared?'✓':i===cleared?'•':'?';dots.appendChild(d)}
  const hero=document.createElement('div');hero.className='stage-hero campaign-stage-current';
- const rewardId=STAGE_UNLOCKS[stageKey(year,index)],rewardName=rewardId?spellById(rewardId)?.name||rewardId:'';
- hero.innerHTML=`<div class="stage-copy"><div class="year-kicker">Текущее испытание</div><h3>${stage[1]}</h3><div class="opponent">${enemy.name}</div><div class="arena">${enemy.arena}${enemy.boss?' · БОСС':''}</div><div class="stage-tags"><span class="stage-tag">HP ${enemy.hp}</span><span class="stage-tag">${enemy.creature?'Существо/особый бой':'Дуэль с волшебником'}</span>${rewardName?`<span class="stage-tag">Награда: ${rewardName}</span>`:''}</div><button id="campaignFight" class="btn primary">Подготовиться к дуэли</button></div><canvas id="stagePreview" class="stage-preview"></canvas>`;
+ const rewardId=STAGE_UNLOCKS[stageKey(year,index)],rewardName=rewardId?spellById(rewardId)?.name||rewardId:'',rule=battleRuleFor(stage[0]);
+ hero.innerHTML=`<div class="stage-copy"><div class="year-kicker">Текущее испытание</div><h3>${stage[1]}</h3><div class="opponent">${enemy.name}</div><div class="arena">${enemy.arena}${enemy.boss?' · БОСС':''}</div><div class="stage-tags"><span class="stage-tag">HP ${enemy.hp}</span><span class="stage-tag">${enemyArchetype(enemy)}</span><span class="stage-tag">Цель: ${rule.objective}</span>${rewardName?`<span class="stage-tag">Награда: ${rewardName}</span>`:''}</div><button id="campaignFight" class="btn primary">Подготовиться к дуэли</button></div><canvas id="stagePreview" class="stage-preview"></canvas>`;
  root.append(meta,hero); $('#campaignFight').onclick=()=>{save.selectedEnemy=stage[0];persist();openPreBattle(stage[0],{campaign:{year,index}})};
  requestAnimationFrame(()=>{const cv=$('#stagePreview');if(!cv)return;const r=cv.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);cv.width=Math.max(420,Math.round(r.width*d));cv.height=Math.max(180,Math.round(r.height*d));const c=cv.getContext('2d');c.imageSmoothingEnabled=false;drawArenaBackdrop(c,cv.width,cv.height,enemy.arena,d,performance.now());const fake={statuses:{},shieldUntil:0,barrierUntil:0,castUntil:0};drawPreviewFighter(c,cv.width*.25,cv.height*.62,true,'harry',fake,d);drawPreviewFighter(c,cv.width*.75,cv.height*.62,false,stage[0],fake,d,enemy)});
 }
@@ -665,9 +715,9 @@ function renderCollection(){const pageSize=8,total=Math.max(1,Math.ceil(CARD_POO
 
 
 function openPreBattle(enemyId,extra={}){
- const e=ENEMIES[enemyId]; if(!e)return;
+ const e=ENEMIES[enemyId]; if(!e)return;const rule=battleRuleFor(enemyId),arch=enemyArchetype(e);
  $('#preBattleTitle').textContent=e.name;
- $('#preBattleDesc').innerHTML=`<b>Арена:</b> ${e.arena}<br><b>Здоровье:</b> ${e.hp}${e.boss?' · БОСС':''}<br><b>Стиль:</b> ${e.adaptive?'читает повторяющиеся действия':e.aggro>.85?'крайне агрессивный':e.def>.55?'защитный':'сбалансированный'}<br><br><b>Ваши заклинания:</b><br>${save.loadout.map(x=>'• '+spellById(x).name).join('<br>')}`;
+ $('#preBattleDesc').innerHTML=`<b>Арена:</b> ${e.arena}<br><b>Здоровье:</b> ${e.hp}${e.boss?' · БОСС':''}<br><b>Архетип:</b> ${arch}<div class="rule-box"><div class="rule-chip"><b>ТАКТИЧЕСКАЯ ЦЕЛЬ · +${rule.xp} XP</b><span>${rule.objective}</span></div><div class="rule-chip"><b>ОСОБЕННОСТЬ БОЯ</b><span>${rule.bonus}</span></div></div><div class="weakness-note">Совет: ${rule.tip}</div><br><b>Ваш набор:</b><br>${save.loadout.map(x=>'• '+spellGlyph(x)+' '+spellById(x).name).join('<br>')}`;
  const modal=$('#preBattleModal');modal.dataset.enemy=enemyId;modal._extra=extra;modal.classList.add('show');
 }
 
@@ -688,13 +738,13 @@ class BattleEngine{
  constructor(enemyId,mode='realtime',extra={}){
    this.enemyId=enemyId; this.enemy=structuredClone(ENEMIES[enemyId]); this.mode=mode; this.extra=extra;
    this.canvas=$('#battleCanvas');this.ctx=this.canvas.getContext('2d');this.ctx.imageSmoothingEnabled=false;
-   const diff=save.settings.difficulty==='student'?{dmg:.82,ai:.82,def:.82}:save.settings.difficulty==='auror'?{dmg:1.24,ai:1.18,def:1.16}:{dmg:1,ai:1,def:1};
+   const diff=save.settings.difficulty==='student'?{dmg:.82,ai:.82,def:.82,regen:.84}:save.settings.difficulty==='auror'?{dmg:1.20,ai:1.15,def:1.12,regen:1.14}:{dmg:1,ai:1,def:1,regen:1};
    this.diff=diff;this.enemy.aggro=clamp(this.enemy.aggro*diff.ai,0,1);this.enemy.def=clamp(this.enemy.def*diff.def,0,.98);this.enemy.speed=clamp(this.enemy.speed*diff.ai,.25,1.25);this.enemy.counter=clamp((this.enemy.counter||0)*diff.def,0,.98);
    this.player={name:'Гарри Поттер',hp:extra.startHp??100,maxHp:100,focus:extra.startFocus??100,statuses:{},shieldUntil:0,barrierUntil:0,lastSpell:null,hitUntil:0};
    this.foe={name:this.enemy.name,hp:this.enemy.hp,maxHp:this.enemy.hp,focus:100,statuses:{},shieldUntil:0,barrierUntil:0,lastSpell:null,hitUntil:0};
    this.cooldowns={};this.enemyCooldowns={};this.projectiles=[];this.particles=[];this.floating=[];this.running=false;this.last=0;this.startTime=0;
    this.enemyNext=0;this.messageUntil=0;this.combo=0;this.bestCombo=0;this.lastHitAt=0;this.perfects=0;this.damageTaken=0;this.damageDone=0;this.casts=0;this.usedSpells=new Set();this.playerHistory=[];
-   this.clash=null;this.turn='player';this.turnLocked=false;this.timing=null;this.pendingTurnSpell=null;this.specialTimer=0;this.phase=1;this.screenShake=0;this.flash=0;this.foeIntent=null;this._survivalTriggered=false;this.tempo=0;this.hazardClock=0;this.phaseTriggered=false;this.log=[];this.enemyIntentText='Импровизирует';this.impactRings=[];this.hitStopUntil=0;this.cinematicUntil=0;
+   this.clash=null;this.turn='player';this.turnLocked=false;this.timing=null;this.pendingTurnSpell=null;this.specialTimer=0;this.phase=1;this.screenShake=0;this.flash=0;this.foeIntent=null;this._survivalTriggered=false;this.tempo=0;this.hazardClock=0;this.hazardWarned=false;this.phaseTriggered=false;this.log=[];this.enemyIntentText='Импровизирует';this.impactRings=[];this.hitStopUntil=0;this.cinematicUntil=0;this.rule=battleRuleFor(enemyId);this.archetype=enemyArchetype(this.enemy);this.stagger=0;this.staggerBreaks=0;this.staggerMax=this.enemy.boss?130:(['dragon','troll','werewolf'].includes(this.enemy.creature)?120:100);this.protegoReady=0;this.dragonGuardUntil=0;this.turnCount=0;this.metrics={hits:0,variety:new Set(),lastSpell:null,noRepeat:true,snakeCounter:false,patronus:false,riddikulus:false,dragonGuard:false,basiliskBlock:false,fire:false,heavyControl:false,clashWin:false,survive:false};
    this.loadout=save.loadout.map(id=>effectiveSpell(spellById(id))).filter(Boolean).slice(0,4);
    while(this.loadout.length<4){const add=SPELLS.find(s=>s.combat&&isSpellUnlocked(s)&&!this.loadout.some(x=>x.id===s.id));if(!add)break;this.loadout.push(effectiveSpell(add))}
  }
@@ -702,7 +752,7 @@ class BattleEngine{
    showScreen('battleScreen');this.resize();window.addEventListener('resize',this._resize=()=>this.resize());
    this.bindHUD();this.running=true;this.startTime=now();this.last=this.startTime;this.enemyNext=this.startTime+1500;this.cinematicUntil=this.startTime+1350;
    $('#duelIntroArena').textContent=this.enemy.arena;$('#duelIntroEnemy').textContent=`Гарри Поттер  •  ${this.enemy.name}`;$('#duelIntro').classList.add('show');setTimeout(()=>$('#duelIntro').classList.remove('show'),1200);
-   this.message(`${this.enemy.name} — ${this.enemy.arena}`,1600);
+   this.message(`${this.enemy.name} — ${this.enemy.arena}`,1200);setTimeout(()=>{if(this.running)this.message(`ЦЕЛЬ: ${this.rule.objective}`,1400)},900);
    if(this.mode==='turnbased'){this.setupTurnMode()}else{this.loop(this.last)}
  }
  resize(){const dpr=Math.min(devicePixelRatio||1,2),rect=this.canvas.getBoundingClientRect();this.canvas.width=Math.max(640,Math.round(rect.width*dpr));this.canvas.height=Math.max(360,Math.round(rect.height*dpr));this.W=this.canvas.width;this.H=this.canvas.height;this.scale=dpr;}
@@ -723,24 +773,27 @@ class BattleEngine{
    $('#playerStatus').textContent=(this.statusText(this.player)||'Готов к дуэли')+(this.tempo?` · Темп ${this.tempo}/3`:'');$('#enemyStatus').textContent=this.statusText(this.foe)||(this.phase>1&&this.enemy.boss?'Фаза II':'Атакует');
    const hot=this.tempo>=3;$('#modeBadge').textContent=(this.mode==='realtime'?'РЕАЛЬНОЕ ВРЕМЯ':'ПОШАГОВЫЙ БОЙ')+(hot?' · УСИЛЕНИЕ ГОТОВО':'');$('#modeBadge').classList.toggle('hot',hot);
    const t=now();$$('#spellButtons .battle-btn').forEach((b,i)=>{const s=this.loadout[i],rem=Math.max(0,(this.cooldowns[s.id]||0)-t),pct=s.cd?rem/s.cd*100:0;$('.cooldown-mask',b).style.height=pct+'%';b.disabled=!this.canPlayerAct()||rem>0||this.player.focus<s.focus;b.classList.toggle('ready',!b.disabled);b.classList.toggle('tempo-ready',hot&&s.damage>0)});
-   $('#protegoBtn').disabled=!this.canPlayerAct()||this.player.focus<12||this.mode==='turnbased'&&this.turn!=='player';
-   if($('#comboStat')){$('#comboStat').textContent=`×${this.combo||0}`;$('#comboSub').textContent=this.bestCombo?`лучший: ×${this.bestCombo}`:'держите темп боя';$('#tempoStat').textContent=`${this.tempo} / 3`;$('#tempoFill').style.width=`${(this.tempo/3)*100}%`;$('#enemyIntent').textContent=this.enemyIntentText||'Импровизирует';$('#enemyIntentSub').textContent=this.mode==='turnbased'?'можно прочитать заранее':'real-time реакция';const arena=this.arenaInfo();$('#arenaStat').textContent=arena[0];$('#arenaSub').textContent=arena[1];}
+   $('#protegoBtn').disabled=!this.canPlayerAct()||this.player.focus<12||now()<this.protegoReady||this.mode==='turnbased'&&this.turn!=='player';
+   if($('#comboStat')){$('#comboStat').textContent=`×${this.combo||0}`;$('#comboSub').textContent=this.bestCombo?`лучший: ×${this.bestCombo}`:'держите темп боя';$('#tempoStat').textContent=`${this.tempo} / 3`;$('#tempoFill').style.width=`${(this.tempo/3)*100}%`;$('#enemyIntent').textContent=this.enemyIntentText||'Импровизирует';$('#enemyIntentSub').textContent=this.mode==='turnbased'?'можно прочитать заранее':'real-time реакция';const arena=this.arenaInfo();$('#staggerStat').textContent=`${Math.round(this.stagger/this.staggerMax*100)}%`;$('#staggerFill').style.width=`${Math.min(100,this.stagger/this.staggerMax*100)}%`;$('#arenaSub').textContent=arena[1];const done=this.goalCompleted();$('#battleObjective').classList.toggle('done',done);$('#battleObjective').textContent=`${done?'✓':'◆'} ${this.rule.objective} · ${this.goalProgressText()} · ${arena[0]}`;}
  }
 
  statusText(c){const t=now();return Object.entries(c.statuses).filter(([_,until])=>until>t).map(([k])=>STATUS_RU[k]||k).join(' · ')}
- arenaInfo(){const key=arenaKey(this.enemy.arena);const map={hall:['Дуэльный зал','чистая арена без помех'],chamber:['Тайная комната','яд и контроль'],forest:['Запретный лес','корни могут сковать'],graveyard:['Кладбище','высасывает концентрацию'],underwater:['Озеро','замедляет касты'],battlehogwarts:['Хогвартс','искры битвы усиливают хаос']};return map[key]||['Неизвестно','ожидайте сюрпризы']}
+ arenaInfo(){const key=arenaKey(this.enemy.arena);const map={hall:['Дуэльный зал','нейтральная арена'],chamber:['Тайная комната','ядовитые выбросы'],forest:['Запретный лес','корни выбирают случайную цель'],graveyard:['Кладбище','холод снижает концентрацию'],underwater:['Озеро','вода замедляет обоих'],battlehogwarts:['Хогвартс','искры поражают случайную цель']};return map[key]||['Арена','динамическое окружение']}
  pushLog(text,highlight=false){if(!text)return;this.log.unshift({text,highlight});this.log=this.log.slice(0,4);const el=$('#battleLog');if(el)el.innerHTML=this.log.map(x=>`<div class="log-line${x.highlight?' highlight':''}">${x.text}</div>`).join('')}
+ goalCompleted(){switch(this.rule.goal){case'hits3':return this.metrics.hits>=3;case'combo3':return this.bestCombo>=3;case'combo4':return this.bestCombo>=4;case'perfect1':return this.perfects>=1;case'perfect2':return this.perfects>=2;case'variety3':return this.metrics.variety.size>=3;case'variety4':return this.metrics.variety.size>=4;case'breakGuard':return this.staggerBreaks>=1;case'noRepeat':return this.metrics.noRepeat&&this.casts>=4;case'snakeCounter':return this.metrics.snakeCounter;case'patronus':return this.metrics.patronus;case'riddikulus':return this.metrics.riddikulus;case'dragonGuard':return this.metrics.dragonGuard;case'basiliskBlock':return this.metrics.basiliskBlock;case'fire':return this.metrics.fire;case'heavyControl':return this.metrics.heavyControl;case'clashWin':return this.metrics.clashWin;case'survive':return this.metrics.survive;default:return false}}
+ goalProgressText(){switch(this.rule.goal){case'hits3':return`${Math.min(3,this.metrics.hits)}/3 попаданий`;case'combo3':return`комбо ×${this.bestCombo}/3`;case'combo4':return`комбо ×${this.bestCombo}/4`;case'perfect1':return`${Math.min(1,this.perfects)}/1 идеальных`;case'perfect2':return`${Math.min(2,this.perfects)}/2 идеальных`;case'variety3':return`${Math.min(3,this.metrics.variety.size)}/3 разных`;case'variety4':return`${Math.min(4,this.metrics.variety.size)}/4 разных`;case'breakGuard':return`${this.staggerBreaks}/1 слом`;case'noRepeat':return this.metrics.noRepeat?'без повторов':'серия нарушена';default:return this.goalCompleted()?'выполнено':'в процессе'}}
+ addStagger(amount){if(amount<=0||!this.running)return;this.stagger=clamp(this.stagger+amount,0,this.staggerMax);if(this.stagger>=this.staggerMax){this.stagger=0;this.staggerBreaks++;this.addStatus(this.foe,'stun',this.enemy.boss?800:1250);this.foe.focus=Math.max(0,this.foe.focus-18);this.tempo=clamp(this.tempo+1,0,3);this.message('ЗАЩИТА СЛОМЛЕНА!',850);this.pushLog('Окно для мощной комбинации',true)}}
  hasStatus(c,s){return (c.statuses[s]||0)>now()}
  addStatus(c,s,dur){if(!s||dur<=0)return;c.statuses[s]=Math.max(c.statuses[s]||0,now()+dur)}
- canPlayerAct(){return this.running&&!this.hasStatus(this.player,'stun')&&!this.hasStatus(this.player,'root')&&!this.hasStatus(this.player,'levitate')&&!this.hasStatus(this.player,'disarm')&&!this.clash&&!this.turnLocked}
- canFoeAct(){return this.running&&!this.hasStatus(this.foe,'stun')&&!this.hasStatus(this.foe,'root')&&!this.hasStatus(this.foe,'levitate')&&!this.hasStatus(this.foe,'disarm')&&!this.clash}
+ canPlayerAct(){return this.running&&now()>=(this.player.castUntil||0)&&!this.hasStatus(this.player,'stun')&&!this.hasStatus(this.player,'root')&&!this.hasStatus(this.player,'levitate')&&!this.hasStatus(this.player,'disarm')&&!this.clash&&!this.turnLocked}
+ canFoeAct(){return this.running&&now()>=(this.foe.castUntil||0)&&!this.hasStatus(this.foe,'stun')&&!this.hasStatus(this.foe,'root')&&!this.hasStatus(this.foe,'levitate')&&!this.hasStatus(this.foe,'disarm')&&!this.clash}
  dodge(){
    if(!this.canPlayerAct())return;
    const t=now();this.player.dodgeUntil=t+520;this.message('УКЛОНЕНИЕ',420);tone(260,.04,'triangle');
    if(this.mode==='turnbased'){this.turnLocked=true;setTimeout(()=>{this.enemyTurn(true)},350)}
  }
  protego(){
-   if(!this.canPlayerAct()||this.player.focus<12)return;this.player.focus-=12;this.player.shieldUntil=now()+760;this.message('ПРОТЕГО!',500);sfx('shield');
+   if(!this.canPlayerAct()||this.player.focus<12||now()<this.protegoReady)return;this.player.focus-=12;this.protegoReady=now()+1050;this.player.shieldUntil=now()+760;this.message('ПРОТЕГО!',500);sfx('shield');
    if(this.mode==='turnbased'){this.turnLocked=true;setTimeout(()=>{this.enemyTurn(false,true)},350)}
  }
  playerCast(id,button){
@@ -752,7 +805,7 @@ class BattleEngine{
    if(!this.timing||!this.pendingTurnSpell)return;const v=this.timing.value,dist=Math.abs(v-.5);let mult=1,label='ХОРОШО';if(dist<.08){mult=1.2;label='ИДЕАЛЬНО'}else if(dist>.43){mult=.0;label='ПРОМАХ'}else if(dist>.3){mult=.7;label='СЛАБО'}this.message(label,700);$('#timingModal').classList.remove('show');const s=this.pendingTurnSpell;this.timing=null;this.pendingTurnSpell=null;this.turnLocked=true;if(mult===0){this.player.focus=Math.max(0,this.player.focus-s.focus*.5);this.cooldowns[s.id]=now()+s.cd*.5;setTimeout(()=>this.enemyTurn(),550)}else{this.executePlayerSpell(s,mult,true)}
  }
  executePlayerSpell(s,mult=1,turnMode=false){
-   const t=now();this.player.focus-=s.focus;this.cooldowns[s.id]=t+s.cd*(1-(save.skills.dueling||0)*.035);this.casts++;this.usedSpells.add(s.id);this.player.lastSpell=s.id;this.player.castUntil=t+330;this.playerHistory.push(s.id);if(this.playerHistory.length>6)this.playerHistory.shift();
+   const t=now();this.player.focus-=s.focus;this.cooldowns[s.id]=t+s.cd*(1-(save.skills.dueling||0)*.035);this.casts++;this.usedSpells.add(s.id);if(this.metrics.lastSpell===s.id)this.metrics.noRepeat=false;this.metrics.lastSpell=s.id;this.metrics.variety.add(s.id);this.player.lastSpell=s.id;this.player.castUntil=t+360;this.playerHistory.push(s.id);if(this.playerHistory.length>6)this.playerHistory.shift();
    if(s.special==='heal'||s.special==='majorHeal'){const heal=Math.abs(s.damage)*mult;this.player.hp=clamp(this.player.hp+heal,0,this.player.maxHp);delete this.player.statuses.bleed;this.floatText(this.W*.22,this.H*.48,'+'+Math.round(heal),'#7be1a5');this.message(s.name,650);spellSfx(s.id);if(turnMode)setTimeout(()=>this.enemyTurn(),650);return}
    if(s.special==='cleanse'){this.player.statuses={};this.message('Фините Инкантатем — эффекты сняты',750);if(turnMode)setTimeout(()=>this.enemyTurn(),650);return}
    if(s.special==='barrier'){this.player.barrierUntil=t+s.dur;this.message(s.name,650);sfx('shield');if(turnMode)setTimeout(()=>this.enemyTurn(),650);return}
@@ -772,47 +825,54 @@ class BattleEngine{
  intentMessage(){if(!this.foeIntent)return 'Ваш ход';const s=this.foeIntent;this.enemyIntentText=s.name;return s.heavy?`${this.enemy.name} готовит мощное заклинание…`:`${this.enemy.name} готовит ${s.type.toLowerCase()}…`}
  enemyTurn(playerDodged=false,playerShielded=false){
    if(!this.running)return;this.turn='enemy';
+   if(this.hasStatus(this.foe,'confuse')&&Math.random()<.28){this.message(`${this.enemy.name}: заклинание срывается!`,700);this.foeIntent=null;setTimeout(()=>this.finishEnemyTurn(),550);return}
    const s=this.foeIntent||this.chooseEnemySpell();this.foeIntent=null;if(!s){setTimeout(()=>this.finishEnemyTurn(),500);return}
    if(s._preview){delete s._preview;this.foe.focus-=s.focus;this.enemyCooldowns[s.id]=now()+s.cd*rnd(.8,1.15);this.foe.lastSpell=s.id}
    this.message(`${this.enemy.name}: ${s.name}!`,700);spellSfx(s.id);
    setTimeout(()=>{this.resolveHit(this.foe,this.player,s,'enemy',playerDodged,playerShielded);setTimeout(()=>this.finishEnemyTurn(),650)},400)
  }
- finishEnemyTurn(){if(!this.running)return;this.turn='player';this.turnLocked=false;this.player.focus=clamp(this.player.focus+18,0,100);this.foe.focus=clamp(this.foe.focus+16,0,100);this.prepareEnemyIntent();this.message(this.intentMessage(),900);this.updateHUD()}
+ finishEnemyTurn(){if(!this.running)return;this.turnCount++;this.turnPulse();this.turn='player';this.turnLocked=false;this.player.focus=clamp(this.player.focus+16,0,100);this.foe.focus=clamp(this.foe.focus+14*this.diff.regen,0,100);this.prepareEnemyIntent();this.message(this.intentMessage(),900);this.updateHUD()}
+ turnPulse(){for(const c of [this.player,this.foe]){for(const st of ['burn','bleed','poison'])if(this.hasStatus(c,st)){const dmg=st==='bleed'?4:3;c.hp=clamp(c.hp-dmg,0,c.maxHp);if(c===this.player)this.damageTaken+=dmg;else this.damageDone+=dmg;this.floatText(c===this.player?this.W*.27:this.W*.73,this.H*.4,'-'+dmg,st==='bleed'?'#c44962':st==='poison'?'#79c76b':'#ff8b47')}}if(this.turnCount%3===0)this.triggerArenaHazard();this.checkEnd()}
  chooseEnemySpell(preview=false){
-   let pool=this.enemy.spells.map(spellById).filter(Boolean).map(effectiveSpell).filter(s=>(this.enemyCooldowns[s.id]||0)<=now()&&this.foe.focus>=s.focus);
-   if(!pool.length)return null;
-   if(this.enemy.adaptive&&this.playerHistory.length>=3){const counts={};this.playerHistory.forEach(x=>counts[x]=(counts[x]||0)+1);const spam=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];if(spam&&spam[1]>=3&&Math.random()<.55){this.foe.shieldUntil=now()+800;this.message(`${this.enemy.name}: Протего!`,450)}}
-   const s=pick(pool);if(preview)return {...s,_preview:true};this.foe.focus-=s.focus;this.enemyCooldowns[s.id]=now()+s.cd*rnd(.8,1.15);this.foe.lastSpell=s.id;this.foe.castUntil=now()+330;return s
+   let pool=this.enemy.spells.map(spellById).filter(Boolean).map(effectiveSpell).filter(s=>(this.enemyCooldowns[s.id]||0)<=now()&&this.foe.focus>=s.focus);if(!pool.length)return null;
+   if(this.enemy.adaptive&&this.playerHistory.length>=3){const counts={};this.playerHistory.forEach(x=>counts[x]=(counts[x]||0)+1);const spam=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];if(spam&&spam[1]>=2&&Math.random()<.48){this.foe.shieldUntil=now()+820;this.enemyIntentText='Контрит повтор';this.message(`${this.enemy.name} читает ваш паттерн: Протего!`,520)}}
+   const playerControlled=['stun','root','levitate','disarm'].some(st=>this.hasStatus(this.player,st));
+   const s=weightedPick(pool,sp=>{let w=1;if(sp.id===this.enemy.signature)w*=2.2;if(sp.id===this.foe.lastSpell)w*=.58;if(sp.damage>=18&&this.player.hp<42)w*=1.75;if(sp.heavy&&playerControlled)w*=1.65;if(sp.status&&!this.hasStatus(this.player,sp.status))w*=1.25;if(this.player.shieldUntil>now()&&sp.heavy)w*=.62;if(this.foe.focus<35)w*=Math.max(.35,1-sp.focus/90);if(this.phase>1&&sp.damage>0)w*=1.15;return w});
+   if(preview)return {...s,_preview:true};this.foe.focus-=s.focus;this.enemyCooldowns[s.id]=now()+s.cd*rnd(.85,1.18);this.foe.lastSpell=s.id;this.foe.castUntil=now()+360;return s
  }
  enemyRealtime(t){
    if(t<this.enemyNext||!this.canFoeAct())return;
-   const slow=this.hasStatus(this.foe,'slow')?1.65:1;this.enemyNext=t+rnd(1300,2400)*slow/(this.enemy.speed||.7);
-   if(Math.random()<this.enemy.def && this.player.lastSpell){this.enemyIntentText='Протего';this.foe.shieldUntil=t+650;this.message(`${this.enemy.name}: Протего!`,450);sfx('shield');return}
-   const s=this.chooseEnemySpell();if(!s)return;
-   this.enemyIntentText=s.name;
-   this.message(`${this.enemy.name}: ${s.name}!`,600);spellSfx(s.id);setTimeout(()=>{if(this.running)this.spawnProjectile(this.foe,this.player,s,'enemy')},rnd(120,300));
+   const slow=this.hasStatus(this.foe,'slow')?1.65:1,fear=this.hasStatus(this.foe,'fear')?1.28:1,archetypeSpeed=this.archetype==='Громила'?1.14:this.archetype==='Агрессор'?.88:1;this.enemyNext=t+rnd(1300,2350)*slow*fear*archetypeSpeed/(this.enemy.speed||.7);
+   if(this.hasStatus(this.foe,'confuse')&&Math.random()<.28){this.enemyIntentText='Сбит с ритма';this.message(`${this.enemy.name}: заклинание срывается!`,650);this.foe.focus=Math.max(0,this.foe.focus-5);return}
+   let shieldChance=this.enemy.def+(this.archetype==='Контр-дуэлянт'&&this.foe.hp<this.foe.maxHp*.45?.12:0);if(Math.random()<shieldChance && this.player.lastSpell){this.enemyIntentText='Протего';this.foe.shieldUntil=t+650;this.message(`${this.enemy.name}: Протего!`,450);sfx('shield');return}
+   const s=this.chooseEnemySpell();if(!s)return;this.enemyIntentText=s.name;this.message(`${this.enemy.name}: ${s.name}!`,600);spellSfx(s.id);setTimeout(()=>{if(this.running)this.spawnProjectile(this.foe,this.player,s,'enemy')},rnd(120,300));
  }
  spawnProjectile(from,to,s,owner){
    const x=owner==='player'?this.W*.26:this.W*.74,y=this.H*.52;const tx=owner==='player'?this.W*.74:this.W*.26;const dir=Math.sign(tx-x);this.projectiles.push({x,y,vx:dir*s.speed*this.scale,spell:s,owner,r:Math.max(5,7*this.scale),born:now(),trail:[]});
  }
  resolveHit(from,to,s,owner,forceDodge=false,forceShield=false){
-   const t=now(); let dmg=s.damage;
-   if(this.enemy.creature==='dementor'&&owner==='player'){if(s.id==='patronus'){dmg=Math.max(38,dmg*3);save.achievements.patronus=true}else if(!['lumos_maxima'].includes(s.id))dmg=Math.round(dmg*.25)}
+   const t=now();let dmg=s.damage,controlledBefore=this.hasStatus(to,'root')||this.hasStatus(to,'levitate')||this.hasStatus(to,'stun');
+   if(this.enemy.creature==='dementor'&&owner==='player'){if(s.id==='patronus'){dmg=Math.max(38,dmg*3);save.achievements.patronus=true;this.metrics.patronus=true}else if(!['lumos_maxima'].includes(s.id))dmg=Math.round(dmg*.25)}
    if(this.enemy.creature==='spider'&&owner==='player'&&s.id==='aranea')dmg=Math.max(36,dmg*2);
-   if(this.enemy.creature==='boggart'&&owner==='player'&&s.id==='riddikulus')dmg=Math.max(45,dmg*4);
-   if(owner==='player'&&s.id==='vipera'&&this.foe.lastSpell==='serpensortia')dmg=28;
+   if(this.enemy.creature==='boggart'&&owner==='player'&&s.id==='riddikulus'){dmg=Math.max(45,dmg*4);this.metrics.riddikulus=true}
+   if(owner==='player'&&s.id==='vipera'&&(this.foe.lastSpell==='serpensortia'||this.enemy.creature==='snake')){dmg=Math.max(28,dmg*2);this.metrics.snakeCounter=true;delete this.player.statuses.poison;this.message('КОНТРМЕРА ПРОТИВ ЗМЕИ!',650)}
+   if(owner==='player'&&['inferius','plant'].includes(this.enemy.creature)){if(['incendio','confringo'].includes(s.id)){dmg=Math.round(dmg*1.75);this.metrics.fire=true;this.message('СЛАБОСТЬ К ОГНЮ!',650)}else dmg=Math.round(dmg*.68)}
+   if(owner==='player'&&this.enemy.creature==='armour'){if(['reducto','bombarda','bombarda_maxima','confringo'].includes(s.id))dmg=Math.round(dmg*1.5);else if(s.status)dmg=Math.round(dmg*.75)}
+   if(owner==='player'&&this.enemy.creature==='troll'&&s.id==='wingardium')dmg=Math.round(dmg*1.65);
+   if(owner==='player'&&this.enemy.creature==='dragon'){if(s.id==='aguamenti'){this.dragonGuardUntil=t+6000;this.metrics.dragonGuard=true;this.message('ЧЕШУЯ ОХЛАЖДЕНА — ОКНО 6 СЕК!',850)}else if(t>this.dragonGuardUntil)dmg=Math.round(dmg*.65)}
    if(owner==='player'&&s.id==='aguamenti'&&this.hasStatus(this.player,'burn')){delete this.player.statuses.burn;this.message('Агуаменти тушит огонь!',700)}
-   if(owner==='player'&&s.id==='aguamenti'&&this.hasStatus(to,'burn')){delete to.statuses.burn;dmg+=10;this.message('ПАРОВОЙ УДАР!',650)}
-   if(owner==='player'&&s.heavy&&this.hasStatus(to,'root')){delete to.statuses.root;dmg+=8;this.message('РАЗРЫВ КОНТРОЛЯ!',650)}
-   if(owner==='player'&&['bombarda','bombarda_maxima','reducto','confringo'].includes(s.id)&&this.hasStatus(to,'levitate')){delete to.statuses.levitate;dmg+=10;this.message('ВОЗДУШНЫЙ ДОЖИМ!',650)}
+   if(owner==='player'&&s.id==='aguamenti'&&this.hasStatus(to,'burn')){delete to.statuses.burn;dmg+=12;this.message('ПАРОВОЙ УДАР!',650)}
+   if(owner==='player'&&['incendio','confringo'].includes(s.id)&&this.hasStatus(to,'poison')){delete to.statuses.poison;dmg+=8;this.message('ТОКСИЧНОЕ ВОСПЛАМЕНЕНИЕ!',650)}
+   if(owner==='player'&&s.heavy&&this.hasStatus(to,'root')){delete to.statuses.root;dmg+=10;this.metrics.heavyControl=true;this.message('РАЗРЫВ КОНТРОЛЯ!',650)}
+   if(owner==='player'&&['bombarda','bombarda_maxima','reducto','confringo'].includes(s.id)&&this.hasStatus(to,'levitate')){delete to.statuses.levitate;dmg+=12;this.metrics.heavyControl=true;this.message('ВОЗДУШНЫЙ ДОЖИМ!',650)}
    const shielded=forceShield || to.shieldUntil>t;
-   if(shielded){const perfect=Math.abs((to.shieldUntil-760)-t)<220+(save.skills.defense||0)*24;if(perfect&&owner==='enemy'){this.perfects++;this.message('ИДЕАЛЬНОЕ ПРОТЕГО',650);sfx('perfect');this.foe.hp=clamp(this.foe.hp-Math.max(4,Math.round(dmg*.55)),0,this.foe.maxHp);this.floatText(this.W*.73,this.H*.45,'ОТРАЖЕНО','#9ed7ff');this.tempo=clamp(this.tempo+1,0,3);this.checkEnd();return}else{this.message('ПРОТЕГО',420);sfx('shield');return}}
+   if(shielded){const perfect=Math.abs((to.shieldUntil-760)-t)<220+(save.skills.defense||0)*24;if(perfect&&owner==='enemy'){this.perfects++;this.message('ИДЕАЛЬНОЕ ПРОТЕГО',650);sfx('perfect');this.foe.hp=clamp(this.foe.hp-Math.max(4,Math.round(dmg*.55)),0,this.foe.maxHp);this.floatText(this.W*.73,this.H*.45,'ОТРАЖЕНО','#9ed7ff');this.tempo=clamp(this.tempo+1,0,3);this.addStagger(12);this.checkEnd();return}else{this.message('ПРОТЕГО',420);sfx('shield');return}}
    if(to.barrierUntil>t)dmg=Math.round(dmg*.45);
    if(owner==='enemy')dmg=Math.round(dmg*this.diff.dmg*(1-(save.skills.defense||0)*.035));
-   if(owner==='player'&&s.status)s={...s,dur:Math.round(s.dur*(1+(save.skills.knowledge||0)*.08))};
+   if(owner==='player'&&s.status){let dur=Math.round(s.dur*(1+(save.skills.knowledge||0)*.08));if(this.enemy.creature==='werewolf')dur=Math.round(dur*.68);s={...s,dur}}
    if(s.damage<0){to.hp=clamp(to.hp+Math.abs(dmg),0,to.maxHp);return}
    to.hp=clamp(to.hp-dmg,0,to.maxHp);to.hitUntil=now()+260;
-   if(owner==='enemy'){this.damageTaken+=dmg;this.combo=0;this.tempo=Math.max(0,this.tempo-1)}else{this.damageDone+=dmg;const gap=t-this.lastHitAt;this.combo=gap<2800?this.combo+1:1;this.lastHitAt=t;if(this.combo>=3)dmg+=0;this.bestCombo=Math.max(this.bestCombo,this.combo);this.tempo=clamp(this.tempo+1,0,3);if(this.combo>=2)this.message(`КОМБО ×${this.combo}`,500)}
+   if(owner==='enemy'){this.damageTaken+=dmg;this.combo=0;this.tempo=Math.max(0,this.tempo-1)}else{this.damageDone+=dmg;this.metrics.hits++;const gap=t-this.lastHitAt;this.combo=gap<2800?this.combo+1:1;this.lastHitAt=t;this.bestCombo=Math.max(this.bestCombo,this.combo);this.tempo=clamp(this.tempo+1,0,3);const staggerGain=(s.heavy?24:8)+(s.status?11:0)+(controlledBefore?5:0)+(this.combo>=3?4:0);this.addStagger(Math.round(staggerGain*(this.enemy.boss?.78:1)));if(this.combo>=2)this.message(`КОМБО ×${this.combo}`,500)}
    if(s.status)this.addStatus(to,s.status,s.dur);
    this.screenShake=Math.min(20,(s.heavy?16:8)*this.scale);this.flash=s.heavy?.22:.10;if(s.heavy||dmg>=18)this.hitStopUntil=now()+(s.heavy?70:42);sfx('hit');haptic(s.heavy?45:18);const fx=owner==='player'?this.W*.73:this.W*.27,fy=this.H*.48;this.floatText(fx,this.H*.42,'-'+dmg,s.color||'#fff');this.impactRings.push({x:fx,y:fy,r:7*this.scale,life:1,color:s.color||'#fff',heavy:!!s.heavy});for(let i=0;i<(s.heavy?32:17);i++)this.particles.push({x:fx+rnd(-7,7)*this.scale,y:fy+rnd(-10,10)*this.scale,vx:rnd(-190,190)*this.scale,vy:rnd(-220,50)*this.scale,life:rnd(.35,.75),color:s.color||'#fff'});this.checkEnd();
  }
@@ -820,20 +880,21 @@ class BattleEngine{
  applyDots(dt){
    const t=now();for(const c of [this.player,this.foe]){for(const st of ['burn','bleed','poison'])if(this.hasStatus(c,st)){c._dot=(c._dot||0)+dt;if(c._dot>900){c._dot=0;const dmg=st==='bleed'?3:st==='poison'?2:2;c.hp=clamp(c.hp-dmg,0,c.maxHp);if(c===this.player)this.damageTaken+=dmg;else this.damageDone+=dmg;this.floatText(c===this.player?this.W*.27:this.W*.73,this.H*.4,'-'+dmg,st==='bleed'?'#c44962':st==='poison'?'#79c76b':'#ff8b47')}}}
    if(this.enemy.creature==='dementor'){this.specialTimer+=dt;if(this.specialTimer>1800){this.specialTimer=0;this.player.focus=clamp(this.player.focus-5,0,100)}}
-   if(this.enemy.creature==='basilisk'){this.specialTimer+=dt;if(this.specialTimer>6500){this.specialTimer=0;this.message('ВАСИЛИСК СМОТРИТ — ПРИКРОЙСЯ ПРОТЕГО!',900);setTimeout(()=>{if(this.running&&this.player.shieldUntil<now()){this.addStatus(this.player,'root',2600);this.player.hp=clamp(this.player.hp-18,0,100);this.damageTaken+=18;this.message('ОКАМЕНЕНИЕ!',900);this.checkEnd()}},900)}}
+   if(this.enemy.creature==='basilisk'){this.specialTimer+=dt;if(this.specialTimer>6500){this.specialTimer=0;this.message('ВАСИЛИСК СМОТРИТ — ПРИКРОЙСЯ ПРОТЕГО!',900);setTimeout(()=>{if(!this.running)return;if(this.player.shieldUntil<now()){this.addStatus(this.player,'root',2600);this.player.hp=clamp(this.player.hp-18,0,100);this.damageTaken+=18;this.message('ОКАМЕНЕНИЕ!',900);this.checkEnd()}else{this.metrics.basiliskBlock=true;this.message('ВЗГЛЯД ОТБИТ ПРОТЕГО!',800)}},900)}}
  }
- applyArenaHazard(dt){this.hazardClock+=dt;if(this.hazardClock<9000)return;this.hazardClock=0;const key=arenaKey(this.enemy.arena);this.enemyIntentText=this.enemyIntentText||'Импровизирует';if(key==='forest'){this.addStatus(this.foe,'root',1200);this.message('Корни леса сковывают врага!',800)}else if(key==='graveyard'){this.player.focus=Math.max(0,this.player.focus-10);this.foe.focus=Math.max(0,this.foe.focus-6);this.message('Кладбищенский холод вытягивает силы',800)}else if(key==='chamber'){this.addStatus(this.player,'poison',1800);this.message('Ядовитое шипение Тайной комнаты!',800)}else if(key==='underwater'){this.addStatus(this.player,'slow',1400);this.addStatus(this.foe,'slow',1400);this.message('Вода замедляет обоих дуэлянтов',800)}else if(key==='battlehogwarts'){this.addStatus(this.foe,'burn',1600);this.message('Искры битвы обжигают врага!',800)}}
+ applyArenaHazard(dt){this.hazardClock+=dt;const key=arenaKey(this.enemy.arena);if(this.hazardClock>6500&&!this.hazardWarned){this.hazardWarned=true;const warn={forest:'Корни начинают двигаться…',graveyard:'Холод кладбища сгущается…',chamber:'По полу растекается яд…',underwater:'Течение усиливается…',battlehogwarts:'С потолка сыплются магические искры…'}[key];if(warn)this.message(warn,700)}if(this.hazardClock<9000)return;this.hazardClock=0;this.hazardWarned=false;this.triggerArenaHazard()}
+ triggerArenaHazard(){const key=arenaKey(this.enemy.arena);if(key==='forest'){const target=Math.random()<.5?this.player:this.foe;this.addStatus(target,'root',1100);this.message(target===this.player?'Корни сковывают Гарри!':'Корни сковывают врага!',800)}else if(key==='graveyard'){this.player.focus=Math.max(0,this.player.focus-9);this.foe.focus=Math.max(0,this.foe.focus-7);this.message('Кладбищенский холод вытягивает силы',800)}else if(key==='chamber'){const target=Math.random()<.52?this.player:this.foe;this.addStatus(target,'poison',1800);this.message(target===this.player?'Яд Тайной комнаты задевает Гарри!':'Яд Тайной комнаты задевает врага!',800)}else if(key==='underwater'){this.addStatus(this.player,'slow',1400);this.addStatus(this.foe,'slow',1400);this.message('Течение замедляет обоих дуэлянтов',800)}else if(key==='battlehogwarts'){const target=Math.random()<.5?this.player:this.foe;this.addStatus(target,'burn',1500);this.message(target===this.player?'Искры битвы обжигают Гарри!':'Искры битвы обжигают врага!',800)}}
 
  startClash(ps,es){
    this.clash={value:.5,start:now(),playerSpell:ps,enemySpell:es,lastTap:now()};this.message('СТОЛКНОВЕНИЕ ЗАКЛИНАНИЙ!',900);$('#clashModal').classList.add('show');$('#clashTap').onclick=()=>{if(this.clash){this.clash.value=clamp(this.clash.value+.055,0,1);this.clash.lastTap=now();tone(760,.03)}};
  }
- updateClash(dt){if(!this.clash)return;const c=this.clash;c.value-=dt*.000025*(1+(this.enemy.aggro||.6));c.value=clamp(c.value,0,1);$('#clashFill').style.width=(c.value*100)+'%';if(c.value>=.99){$('#clashModal').classList.remove('show');const cdmg=c.survivalFinal?this.foe.hp:28;this.foe.hp=clamp(this.foe.hp-cdmg,0,this.foe.maxHp);this.damageDone+=cdmg;this.message('ВЫ ПОБЕДИЛИ В СТОЛКНОВЕНИИ!',900);this.clash=null;this.checkEnd()}else if(c.value<=.01){$('#clashModal').classList.remove('show');this.player.hp=clamp(this.player.hp-24,0,100);this.damageTaken+=24;this.message('ВОЛНА ОТБРОСИЛА ГАРРИ!',900);this.clash=null;this.checkEnd()}}
+ updateClash(dt){if(!this.clash)return;const c=this.clash;c.value-=dt*.000025*(1+(this.enemy.aggro||.6));c.value=clamp(c.value,0,1);$('#clashFill').style.width=(c.value*100)+'%';if(c.value>=.99){$('#clashModal').classList.remove('show');const cdmg=c.survivalFinal?this.foe.hp:28;this.foe.hp=clamp(this.foe.hp-cdmg,0,this.foe.maxHp);this.damageDone+=cdmg;this.metrics.clashWin=true;this.message('ВЫ ПОБЕДИЛИ В СТОЛКНОВЕНИИ!',900);this.clash=null;this.checkEnd()}else if(c.value<=.01){$('#clashModal').classList.remove('show');this.player.hp=clamp(this.player.hp-24,0,100);this.damageTaken+=24;this.message('ВОЛНА ОТБРОСИЛА ГАРРИ!',900);this.clash=null;this.checkEnd()}}
  floatText(x,y,text,color){this.floating.push({x,y,text,color,life:1})}
  message(text,dur=600){const el=$('#battleMessage');el.textContent=text;el.classList.add('show');clearTimeout(this._msgTimer);this._msgTimer=setTimeout(()=>el.classList.remove('show'),dur);this.pushLog(text,/КОМБО|ФАЗА|СТОЛКНОВЕНИЕ|ПОБЕДА|ПОРАЖЕНИЕ|ИДЕАЛЬНОЕ|УСИЛЕНИЕ/.test(text));}
  loop(t){if(!this.running)return;const dt=Math.min(40,t-this.last);this.last=t;this.update(dt,t);this.draw();requestAnimationFrame(x=>this.loop(x))}
  update(dt,t){
    if(t<this.hitStopUntil){this.updateHUD();return}
-   this.player.focus=clamp(this.player.focus+dt*.007*(1+(save.skills.dueling||0)*.10),0,100);this.foe.focus=clamp(this.foe.focus+dt*.006,0,100);this.enemyRealtime(t);this.applyDots(dt);this.applyArenaHazard(dt);this.updateClash(dt);this.updateBossPhase();
+   this.player.focus=clamp(this.player.focus+dt*.0058*(1+(save.skills.dueling||0)*.08),0,100);const fearRegen=this.hasStatus(this.foe,'fear')?.58:1;this.foe.focus=clamp(this.foe.focus+dt*.0048*this.diff.regen*fearRegen,0,100);this.enemyRealtime(t);this.applyDots(dt);this.applyArenaHazard(dt);this.updateClash(dt);this.updateBossPhase();
    if(this.enemy.survival&&!this._survivalTriggered&&(t-this.startTime)>45000&&!this.clash){this._survivalTriggered=true;this.message('ФИНАЛЬНОЕ СТОЛКНОВЕНИЕ!',1200);const ps=effectiveSpell(spellById('expelliarmus')),es=effectiveSpell(spellById('avada'));this.startClash(ps,es);this.clash.survivalFinal=true;}
    for(const p of this.projectiles){p.trail||=[];p.trail.push({x:p.x,y:p.y,life:1});if(p.trail.length>12)p.trail.shift();for(const q of p.trail)q.life-=dt/220;p.x+=p.vx*dt/1000;const hit=p.owner==='player'?p.x>=this.W*.70:p.x<=this.W*.30;if(hit&&!p.dead){p.dead=true;this.resolveHit(p.owner==='player'?this.player:this.foe,p.owner==='player'?this.foe:this.player,p.spell,p.owner)}}this.projectiles=this.projectiles.filter(p=>!p.dead&&t-p.born<4000);for(const r of this.impactRings){r.r+=dt*(r.heavy?.10:.065)*this.scale;r.life-=dt/360}this.impactRings=this.impactRings.filter(r=>r.life>0);
    for(const p of this.particles){p.x+=p.vx*dt/1000;p.y+=p.vy*dt/1000;p.vy+=340*this.scale*dt/1000;p.life-=dt/1000}this.particles=this.particles.filter(p=>p.life>0);
@@ -843,7 +904,7 @@ class BattleEngine{
 
  updateBossPhase(){
    const ratio=this.foe.hp/this.foe.maxHp;
-   if(this.enemy.boss&&!this.phaseTriggered&&ratio<=.5){this.phaseTriggered=true;this.phase=2;this.enemy.aggro=clamp(this.enemy.aggro+.12,0,1);this.enemy.speed=clamp(this.enemy.speed+.10,0,1.3);this.foe.focus=clamp(this.foe.focus+20,0,100);this.screenShake=20*this.scale;this.flash=.28;this.message(`ФАЗА II: ${this.enemy.name} меняет ритм боя`,1300)}
+   if(this.enemy.boss&&!this.phaseTriggered&&ratio<=.5){this.phaseTriggered=true;this.phase=2;this.enemy.aggro=clamp(this.enemy.aggro+.12,0,1);this.enemy.speed=clamp(this.enemy.speed+.10,0,1.3);this.foe.focus=clamp(this.foe.focus+20,0,100);if(this.enemyId==='dragon'){this.enemy.aggro=1;this.dragonGuardUntil=0;this.message('ФАЗА II: ДРАКОН В ЯРОСТИ — ЧЕШУЯ СНОВА РАСКАЛЕНА',1400)}else if(this.enemyId==='snape'){this.enemy.def=clamp(this.enemy.def+.07,0,.96);this.message('ФАЗА II: СНЕГГ НАЧИНАЕТ ЧИТАТЬ ВАШИ ПАТТЕРНЫ',1400)}else if(this.enemyId.includes('bellatrix')){this.foe.focus=100;this.enemy.speed=clamp(this.enemy.speed+.08,0,1.3);this.message('ФАЗА II: БЕЛЛАТРИСА ВПАДАЕТ В БЕШЕНСТВО',1400)}else this.message(`ФАЗА II: ${this.enemy.name} меняет ритм боя`,1300);this.screenShake=20*this.scale;this.flash=.28}
    if(this.enemy.phases&&this.enemy.phases>=2){let next=ratio<=.33?3:ratio<=.66?2:1;if(next>this.phase){this.phase=next;this.enemy.aggro=clamp(this.enemy.aggro+.08,0,1);this.enemy.speed=clamp(this.enemy.speed+.08,0,1.25);this.screenShake=20*this.scale;this.flash=.28;this.message(`ФАЗА ${this.phase}: ${this.enemy.name} усиливается`,1300);}}
  }
 
@@ -874,7 +935,7 @@ class BattleEngine{
  end(win){
    if(!this.running)return;this.running=false;window.removeEventListener('resize',this._resize);$('#clashModal').classList.remove('show');$('#timingModal').classList.remove('show');
    win?sfx('win'):sfx('lose');win?save.stats.wins++:save.stats.losses++;save.stats.bestCombo=Math.max(save.stats.bestCombo,this.bestCombo);save.stats.perfects+=this.perfects;save.stats.casts+=this.casts;
-   if(win){save.achievements.firstWin=true;if(this.perfects>=5)save.achievements.perfect5=true;if(this.bestCombo>=4)save.achievements.combo4=true;if(this.damageTaken===0)save.achievements.noDamage=true;const xp=30+(this.enemy.boss?35:0)+Math.round(this.foe.maxHp/10);save.xp+=xp;const next=save.playerLevel*140;if(save.xp>=next){save.xp-=next;save.playerLevel++;save.skillPoints++}
+   if(win){if(this.enemyId==='voldemort1'&&this._survivalTriggered)this.metrics.survive=true;save.achievements.firstWin=true;if(this.perfects>=5)save.achievements.perfect5=true;if(this.bestCombo>=4)save.achievements.combo4=true;if(this.damageTaken===0)save.achievements.noDamage=true;this._goalDone=this.goalCompleted();let xp=30+(this.enemy.boss?35:0)+Math.round(this.foe.maxHp/10)+(this._goalDone?this.rule.xp:0);this._xpEarned=xp;save.xp+=xp;let next=save.playerLevel*140;while(save.xp>=next){save.xp-=next;save.playerLevel++;save.skillPoints++;next=save.playerLevel*140}
      this.usedSpells.forEach(id=>{save.spellMastery[id]=clamp((save.spellMastery[id]||0)+12+(this.enemy.boss?5:0)+(save.skills.knowledge||0)*2,0,100)});
      if(this.enemy.boss&&Math.random()<.72){const card=awardCard();if(card)this._newCard=card}
      this.unlockAfterWin();
@@ -892,9 +953,9 @@ class BattleEngine{
      if(year===7&&index>=CAMPAIGN[6].stages.length-1){save.secretSpells=true;['crucio','imperio','avada'].forEach(id=>{if(!save.unlockedSpells.includes(id))save.unlockedSpells.push(id)});this._newSpell='Открыты Тёмные искусства'}
    }
  }
- calcRank(win,elapsed){if(!win)return 'C';let score=100;score-=this.damageTaken*.55;score+=this.perfects*4+this.bestCombo*3;score-=Math.max(0,elapsed-70)*.12;if(score>=105)return'S';if(score>=82)return'A';if(score>=58)return'B';return'C'}
+ calcRank(win,elapsed){if(!win)return 'C';let score=96;score-=this.damageTaken*.50;score+=this.perfects*4+this.bestCombo*3+this.staggerBreaks*3+(this.goalCompleted()?8:0);score-=Math.max(0,elapsed-75)*.10;if(score>=108)return'S';if(score>=84)return'A';if(score>=60)return'B';return'C'}
  showResults(win,rank,elapsed){
-   $('#resultTitle').textContent=win?'ДУЭЛЬ ЗАВЕРШЕНА':'ПОРАЖЕНИЕ';$('#resultRank').textContent=rank;$('#resultStats').innerHTML=`<div class="stat">Время<b>${Math.floor(elapsed/60)}:${String(Math.floor(elapsed%60)).padStart(2,'0')}</b></div><div class="stat">Получено урона<b>${this.damageTaken}</b></div><div class="stat">Идеальных защит<b>${this.perfects}</b></div><div class="stat">Лучшее комбо<b>×${this.bestCombo}</b></div>`;$('#resultNew').textContent=[this._newSpell?`Новое заклинание: ${this._newSpell}`:'',this._newCard?`Карточка: ${this._newCard}`:'',this.extra.endless&&win?`Серия побед: ${(this.extra.streak||0)+1}`:''].filter(Boolean).join(' · ');$('#resultContinue').textContent=this.extra.endless&&win?'Следующий противник':'Продолжить';$('#resultModal').classList.add('show');
+   $('#resultTitle').textContent=win?'ДУЭЛЬ ЗАВЕРШЕНА':'ПОРАЖЕНИЕ';$('#resultRank').textContent=rank;$('#resultStats').innerHTML=`<div class="stat">Время<b>${Math.floor(elapsed/60)}:${String(Math.floor(elapsed%60)).padStart(2,'0')}</b></div><div class="stat">Получено урона<b>${this.damageTaken}</b></div><div class="stat">Сломов защиты<b>${this.staggerBreaks}</b></div><div class="stat">Лучшее комбо<b>×${this.bestCombo}</b></div>`;$('#resultNew').textContent=[win?`${this._goalDone?'✓ Цель выполнена':'◇ Цель не выполнена'}: ${this.rule.objective}`:'',this._xpEarned?`+${this._xpEarned} XP`:'',this._newSpell?`Новое заклинание: ${this._newSpell}`:'',this._newCard?`Карточка: ${this._newCard}`:'',this.extra.endless&&win?`Серия побед: ${(this.extra.streak||0)+1}`:''].filter(Boolean).join(' · ');$('#resultContinue').textContent=this.extra.endless&&win?'Следующий противник':'Продолжить';$('#resultModal').classList.add('show');
  }
  abort(){if(confirm('Выйти из дуэли? Прогресс боя не сохранится.')){this.running=false;window.removeEventListener('resize',this._resize);$('#resultModal').classList.remove('show');$('#clashModal').classList.remove('show');$('#timingModal').classList.remove('show');showScreen('homeScreen')}}
 }
@@ -916,7 +977,7 @@ function initUI(){
 
 function applyDifficulty(){/* reserved: battle engine reads save difficulty in future balancing */}
 
-window.HPD={SPELLS,ENEMIES,CAMPAIGN,BattleEngine,getSave:()=>save,reset:resetSave,startBattle};
+window.HPD={SPELLS,ENEMIES,CAMPAIGN,BATTLE_RULES,BattleEngine,battleRuleFor,getSave:()=>save,reset:resetSave,startBattle};
 window.addEventListener('DOMContentLoaded',()=>{initUI();renderAll();showScreen('homeScreen');});
 })();
 
